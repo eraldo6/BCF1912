@@ -1,0 +1,26 @@
+{
+  "season_id": "4",
+  "season_name": "2023/2024",
+  "club_name": "BC Frankfurt 1912 e.V.",
+  "fetched_at": "2026-05-10T19:34:14.521589",
+  "teams": [
+    {
+      "team_id": "373",
+      "staffel_id": "42",
+      "team_name": "BC Frankfurt 1912 e.V. 3",
+      "league": "Bezirksliga",
+      "standings": [],
+      "matches": [],
+      "total_matches": 0
+    },
+    {
+      "team_id": "376",
+      "staffel_id": "43",
+      "team_name": "BC Frankfurt 1912 e.V. 2",
+      "league": "Bezirksliga",
+      "standings": [],
+      "matches": [],
+      "total_matches": 0
+    }
+  ]
+}

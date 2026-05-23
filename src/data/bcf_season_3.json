@@ -1,0 +1,63 @@
+{
+  "season_id": "3",
+  "season_name": "2022/2023",
+  "club_name": "BC Frankfurt 1912 e.V.",
+  "fetched_at": "2026-05-10T19:30:00.000000",
+  "teams": [
+    {
+      "team_id": "373",
+      "staffel_id": "42",
+      "team_name": "BC Frankfurt 1912 e.V. 3",
+      "league": "Bezirksliga",
+      "standings": [
+        {
+          "rank": "1",
+          "team_name": "PBC Rüsselsheim e.V. 1",
+          "matches_played": "14",
+          "wins": "12",
+          "draws": "0",
+          "losses": "2",
+          "points": "36"
+        },
+        {
+          "rank": "2",
+          "team_name": "BC Frankfurt 1912 e.V. 3",
+          "matches_played": "14",
+          "wins": "9",
+          "draws": "2",
+          "losses": "3",
+          "points": "29"
+        }
+      ],
+      "matches": [
+        {
+          "date": "2023-05-20",
+          "home_team": "BC Frankfurt 1912 e.V. 3",
+          "away_team": "PBC Rüsselsheim e.V. 1",
+          "home_score": 5,
+          "away_score": 5
+        }
+      ],
+      "total_matches": 1
+    },
+    {
+      "team_id": "376",
+      "staffel_id": "43",
+      "team_name": "BC Frankfurt 1912 e.V. 2",
+      "league": "Bezirksliga",
+      "standings": [
+        {
+          "rank": "1",
+          "team_name": "BC Frankfurt 1912 e.V. 2",
+          "matches_played": "14",
+          "wins": "11",
+          "draws": "2",
+          "losses": "1",
+          "points": "35"
+        }
+      ],
+      "matches": [],
+      "total_matches": 0
+    }
+  ]
+}
