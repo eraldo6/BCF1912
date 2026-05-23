@@ -1,0 +1,268 @@
+{
+  "season_id": "5",
+  "season_name": "2024/2025",
+  "club_name": "BC Frankfurt 1912 e.V.",
+  "fetched_at": "2026-05-23T21:51:30+00:00",
+  "teams": [
+    {
+      "team_id": "373",
+      "staffel_id": "42",
+      "team_name": "BC Frankfurt 1912 e.V. 3",
+      "league": "Bezirksliga",
+      "standings": [
+        {
+          "rank": "1",
+          "team_name": "PBC Rüsselsheim e.V. 1",
+          "matches_played": "12",
+          "wins": "10",
+          "draws": "1",
+          "losses": "1",
+          "points": "31",
+          "goals_for": "84",
+          "goals_against": "36"
+        },
+        {
+          "rank": "2",
+          "team_name": "BC Frankfurt 1912 e.V. 3",
+          "matches_played": "12",
+          "wins": "8",
+          "draws": "2",
+          "losses": "2",
+          "points": "26",
+          "goals_for": "72",
+          "goals_against": "48"
+        },
+        {
+          "rank": "3",
+          "team_name": "1. BC Bensheim e.V. 2",
+          "matches_played": "12",
+          "wins": "7",
+          "draws": "2",
+          "losses": "3",
+          "points": "23",
+          "goals_for": "68",
+          "goals_against": "52"
+        },
+        {
+          "rank": "4",
+          "team_name": "PSG Griesheim 1981 e.V. 2",
+          "matches_played": "12",
+          "wins": "6",
+          "draws": "1",
+          "losses": "5",
+          "points": "19",
+          "goals_for": "58",
+          "goals_against": "62"
+        },
+        {
+          "rank": "5",
+          "team_name": "BC Trebur e.V. 1",
+          "matches_played": "12",
+          "wins": "4",
+          "draws": "3",
+          "losses": "5",
+          "points": "15",
+          "goals_for": "52",
+          "goals_against": "68"
+        },
+        {
+          "rank": "6",
+          "team_name": "BC Wiesbaden 1957 e.V. 3",
+          "matches_played": "12",
+          "wins": "3",
+          "draws": "2",
+          "losses": "7",
+          "points": "11",
+          "goals_for": "44",
+          "goals_against": "76"
+        },
+        {
+          "rank": "7",
+          "team_name": "BC Mainz 1925 e.V. 2",
+          "matches_played": "12",
+          "wins": "1",
+          "draws": "1",
+          "losses": "10",
+          "points": "4",
+          "goals_for": "32",
+          "goals_against": "88"
+        }
+      ],
+      "matches": [
+        {
+          "date": "2025-03-15",
+          "home_team": "BC Frankfurt 1912 e.V. 3",
+          "away_team": "PBC Rüsselsheim e.V. 1",
+          "home_score": 5,
+          "away_score": 3
+        },
+        {
+          "date": "2025-03-08",
+          "home_team": "1. BC Bensheim e.V. 2",
+          "away_team": "BC Frankfurt 1912 e.V. 3",
+          "home_score": 4,
+          "away_score": 6
+        },
+        {
+          "date": "2025-03-01",
+          "home_team": "BC Frankfurt 1912 e.V. 3",
+          "away_team": "PSG Griesheim 1981 e.V. 2",
+          "home_score": 7,
+          "away_score": 1
+        },
+        {
+          "date": "2025-02-22",
+          "home_team": "BC Trebur e.V. 1",
+          "away_team": "BC Frankfurt 1912 e.V. 3",
+          "home_score": 4,
+          "away_score": 4
+        },
+        {
+          "date": "2025-02-15",
+          "home_team": "BC Frankfurt 1912 e.V. 3",
+          "away_team": "BC Wiesbaden 1957 e.V. 3",
+          "home_score": 6,
+          "away_score": 2
+        },
+        {
+          "date": "2025-02-08",
+          "home_team": "BC Mainz 1925 e.V. 2",
+          "away_team": "BC Frankfurt 1912 e.V. 3",
+          "home_score": 2,
+          "away_score": 5
+        }
+      ],
+      "total_matches": 6
+    },
+    {
+      "team_id": "376",
+      "staffel_id": "43",
+      "team_name": "BC Frankfurt 1912 e.V. 2",
+      "league": "Bezirksliga",
+      "standings": [
+        {
+          "rank": "1",
+          "team_name": "BC Frankfurt 1912 e.V. 2",
+          "matches_played": "12",
+          "wins": "11",
+          "draws": "0",
+          "losses": "1",
+          "points": "33",
+          "goals_for": "88",
+          "goals_against": "32"
+        },
+        {
+          "rank": "2",
+          "team_name": "BC Darmstadt 1974 e.V. 1",
+          "matches_played": "12",
+          "wins": "9",
+          "draws": "1",
+          "losses": "2",
+          "points": "28",
+          "goals_for": "76",
+          "goals_against": "44"
+        },
+        {
+          "rank": "3",
+          "team_name": "BC Offenbach e.V. 2",
+          "matches_played": "12",
+          "wins": "8",
+          "draws": "0",
+          "losses": "4",
+          "points": "24",
+          "goals_for": "68",
+          "goals_against": "52"
+        },
+        {
+          "rank": "4",
+          "team_name": "PBC Hanau e.V. 1",
+          "matches_played": "12",
+          "wins": "6",
+          "draws": "2",
+          "losses": "4",
+          "points": "20",
+          "goals_for": "62",
+          "goals_against": "58"
+        },
+        {
+          "rank": "5",
+          "team_name": "BC Bad Homburg e.V. 2",
+          "matches_played": "12",
+          "wins": "4",
+          "draws": "2",
+          "losses": "6",
+          "points": "14",
+          "goals_for": "48",
+          "goals_against": "72"
+        },
+        {
+          "rank": "6",
+          "team_name": "BC Langen e.V. 1",
+          "matches_played": "12",
+          "wins": "2",
+          "draws": "1",
+          "losses": "9",
+          "points": "7",
+          "goals_for": "38",
+          "goals_against": "82"
+        },
+        {
+          "rank": "7",
+          "team_name": "BC Rodgau e.V. 1",
+          "matches_played": "12",
+          "wins": "1",
+          "draws": "0",
+          "losses": "11",
+          "points": "3",
+          "goals_for": "28",
+          "goals_against": "86"
+        }
+      ],
+      "matches": [
+        {
+          "date": "2025-03-15",
+          "home_team": "BC Frankfurt 1912 e.V. 2",
+          "away_team": "BC Darmstadt 1974 e.V. 1",
+          "home_score": 6,
+          "away_score": 2
+        },
+        {
+          "date": "2025-03-08",
+          "home_team": "BC Offenbach e.V. 2",
+          "away_team": "BC Frankfurt 1912 e.V. 2",
+          "home_score": 3,
+          "away_score": 7
+        },
+        {
+          "date": "2025-03-01",
+          "home_team": "BC Frankfurt 1912 e.V. 2",
+          "away_team": "PBC Hanau e.V. 1",
+          "home_score": 8,
+          "away_score": 0
+        },
+        {
+          "date": "2025-02-22",
+          "home_team": "BC Bad Homburg e.V. 2",
+          "away_team": "BC Frankfurt 1912 e.V. 2",
+          "home_score": 2,
+          "away_score": 6
+        },
+        {
+          "date": "2025-02-15",
+          "home_team": "BC Frankfurt 1912 e.V. 2",
+          "away_team": "BC Langen e.V. 1",
+          "home_score": 7,
+          "away_score": 1
+        },
+        {
+          "date": "2025-02-08",
+          "home_team": "BC Rodgau e.V. 1",
+          "away_team": "BC Frankfurt 1912 e.V. 2",
+          "home_score": 1,
+          "away_score": 5
+        }
+      ],
+      "total_matches": 6
+    }
+  ]
+}
