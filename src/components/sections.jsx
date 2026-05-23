@@ -391,20 +391,22 @@ const Experience = () => (
       </div>
 
       <div className="experience-grid reveal">
-        <div className="exp-card exp-card-tables">
-          <div className="exp-card-num">10</div>
-          <h3>Match-grade tables</h3>
-          <p>Two large carom, two small carom, four 9-foot pool, two 12-foot snooker.</p>
-          <div className="tables-viz">
-            <div className="mini-table carom-l" />
-            <div className="mini-table carom-l" />
-            <div className="mini-table" style={{ gridColumn: "span 2", aspectRatio: "1.4/1" }} />
-            <div />
-            <div className="mini-table pool" />
-            <div className="mini-table pool" />
-            <div className="mini-table pool" />
-            <div className="mini-table pool" />
-            <div className="mini-table snooker" style={{ gridColumn: "span 5", aspectRatio: "5/1" }} />
+        <div className="exp-card exp-card-tables" style={{
+          backgroundImage: "url('https://bcfrankfurt.de/wp-content/uploads/2018/02/atmo1.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          position: "relative",
+        }}>
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            background: "linear-gradient(to top, rgba(5,5,6,0.95) 0%, rgba(5,5,6,0.7) 50%, rgba(5,5,6,0.4) 100%)",
+            zIndex: 1,
+          }} />
+          <div style={{ position: "relative", zIndex: 2 }}>
+            <div className="exp-card-num">10</div>
+            <h3>Match-grade tables</h3>
+            <p>Two large carom, two small carom, four 9-foot pool, two 12-foot snooker.</p>
           </div>
         </div>
 
