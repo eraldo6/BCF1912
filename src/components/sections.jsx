@@ -1,6 +1,276 @@
 /* Sections — broken down for maintainability */
 
+// Translation context
+const TranslationContext = React.createContext({ lang: "EN", t: (key) => key, setLang: () => {} });
+window.TranslationContext = TranslationContext;
+
+const TRANSLATIONS = {
+  EN: {
+    // Nav
+    "nav.club": "Club",
+    "nav.disciplines": "Disciplines",
+    "nav.experience": "Experience",
+    "nav.membership": "Membership",
+    "nav.gallery": "Gallery",
+    "nav.games": "Games",
+    "nav.visit": "Visit",
+    "nav.becomeMember": "Become a Member",
+
+    // Hero
+    "hero.eyebrow": "Est. 1912 — Frankfurt am Main",
+    "hero.title": "Frankfurt's home<br />of <em>Billard</em><br />since 1912.",
+    "hero.subtitle": "Karambol. Pool. Snooker. A century of tradition, competition and community — under one roof on the eastern edge of the city.",
+    "hero.becomeMember": "Become a Member",
+    "hero.visitClub": "Visit the Club",
+
+    // About
+    "about.num": "01",
+    "about.eyebrow": "Founded 1912",
+    "about.title": "More than a<br /><em>century</em> of play.",
+    "about.p1": "BC Frankfurt is a working clubhouse — not a museum. Match-grade tables are in daily use, not roped off. The brass lamps over the carom tables date to 1968, refurbished twice but never replaced.",
+    "about.p2": "Founded as Billard Club Frankfurt 1912 e.V., we're one of the oldest dedicated billiard clubs in Germany. Members have ranged from city councillors to shift workers, united by the game.",
+    "about.p3": "We compete in the Pool Bundesliga, the 2. Bundesliga, and the Hessen regional leagues — but the heart of the club is the Tuesday and Thursday open play, where regulars teach newcomers the old way: by example, then by correction.",
+
+    // Disciplines
+    "disciplines.num": "02",
+    "disciplines.eyebrow": "Three disciplines",
+    "disciplines.title": "Karambol,<br />Pool, <em>Snooker</em>.",
+    "disciplines.lede": "Few clubs in Germany maintain match-grade equipment for all three cue sports under one roof. We do — and we've been doing it since before most of our competitors existed.",
+    "disciplines.karambol.title": "Karambol",
+    "disciplines.karambol.subtitle": "The oldest discipline",
+    "disciplines.karambol.detail": "Four tables — two large (2.84m), two small (2.10m) — all Müller carom tables with heated slate. We play Libre, Cadre, and 3-cushion. Training on Tuesdays, league matches most Fridays. The club was founded for carom, and it remains the first discipline taught to new members.",
+    "disciplines.pool.title": "Pool",
+    "disciplines.pool.subtitle": "Bundesliga standard",
+    "disciplines.pool.detail": "Four Brunswick Gold Crown tables kept to tournament specification. 8-Ball, 9-Ball, 10-Ball, 14.1 Continuous — we play them all. BCF I competes in the Pool Bundesliga, BCF II in the 2. Bundesliga Süd. Home matches draw 60+ spectators. The tables are re-clothed every July with Simonis 860.",
+    "disciplines.snooker.title": "Snooker",
+    "disciplines.snooker.subtitle": "Full-size championship tables",
+    "disciplines.snooker.detail": "Two full-size 12-foot snooker tables, kept under match-grade conditions. We host the Hessen Snooker Cup every spring and run a development programme for juniors. Coaching available by appointment with our certified coaches.",
+
+    // Experience
+    "experience.num": "03",
+    "experience.eyebrow": "The Clubhouse",
+    "experience.title": "What to expect<br />on your <em>first visit</em>.",
+    "experience.tables.title": "Match-grade tables",
+    "experience.tables.desc": "Two large carom, two small carom, four 9-foot pool, two 12-foot snooker.",
+    "experience.cloth.eyebrow": "Annually renewed",
+    "experience.cloth.title": "Tournament cloth, every <em>summer</em>.",
+    "experience.cloth.desc": "Every July we close for one week and re-cloth all ten tables with Simonis 860 / 300 Rapide — the same cloth used at world championship play.",
+    "experience.lounge.title": "The Lounge",
+    "experience.lounge.desc": "Leather, low light, and a dedicated space for spectating — or for the conversation between frames.",
+    "experience.snacks.title": "Bar & Kitchen",
+    "experience.snacks.desc": "Cold drinks, decent coffee, and a small menu of snacks — Apfelwein on Fridays, by tradition.",
+    "experience.trial.eyebrow": "First visit free",
+    "experience.trial.title": "Trial Membership",
+    "experience.trial.desc": "Two evenings on us. Bring a friend. We'll lend you a cue.",
+    "experience.trial.reserve": "Reserve",
+
+    // Membership
+    "membership.num": "04",
+    "membership.eyebrow": "Join the Club",
+    "membership.title": "Membership<br /><em>tiers</em>.",
+    "membership.trial.tag": "Tier 01",
+    "membership.trial.name": "Trial",
+    "membership.trial.price": "Free",
+    "membership.trial.feat1": "Two complimentary evenings",
+    "membership.trial.feat2": "All tables + equipment",
+    "membership.trial.feat3": "Introduction to house rules",
+    "membership.trial.feat4": "No commitment required",
+    "membership.trial.cta": "Book Trial",
+
+    "membership.social.tag": "Tier 02",
+    "membership.social.name": "Social",
+    "membership.social.price": "€18",
+    "membership.social.period": "per month",
+    "membership.social.feat1": "Unlimited weekday access (Mon–Fri)",
+    "membership.social.feat2": "All disciplines + tables",
+    "membership.social.feat3": "Member lounge + bar access",
+    "membership.social.feat4": "Guest privileges (2/month)",
+    "membership.social.cta": "Join as Social",
+
+    "membership.full.tag": "Tier 03",
+    "membership.full.name": "Full Member",
+    "membership.full.price": "€32",
+    "membership.full.period": "per month",
+    "membership.full.feat1": "Unlimited access (7 days/week)",
+    "membership.full.feat2": "Voting rights at general assembly",
+    "membership.full.feat3": "League team eligibility",
+    "membership.full.feat4": "Reserved table booking",
+    "membership.full.cta": "Become Full Member",
+
+    // Gallery
+    "gallery.num": "05",
+    "gallery.eyebrow": "Inside the Club",
+    "gallery.title": "<em>Atmosphere</em><br />in still frames.",
+
+    // Contact
+    "contact.num": "06",
+    "contact.eyebrow": "Location",
+    "contact.title": "Visit <em>us</em>.",
+    "contact.address.title": "Address",
+    "contact.address.line1": "BC Frankfurt 1912 e.V.",
+    "contact.address.line2": "Borsigallee 45",
+    "contact.address.line3": "60388 Frankfurt am Main",
+    "contact.hours.title": "Opening Hours",
+    "contact.hours.weekdays": "Tue–Fri",
+    "contact.hours.weekdaysTimes": "18:00–23:00",
+    "contact.hours.weekend": "Sat–Sun",
+    "contact.hours.weekendTimes": "14:00–23:00",
+    "contact.hours.closed": "Closed Mondays",
+    "contact.contact.title": "Contact",
+
+    // Footer
+    "footer.about.title": "The Club",
+    "footer.about.line1": "Frankfurt's oldest billiard club.",
+    "footer.about.line2": "Founded 1912. Pool Bundesliga,",
+    "footer.about.line3": "Karambol, Snooker.",
+    "footer.info.title": "Quick Links",
+    "footer.info.membership": "Become a member",
+    "footer.info.visit": "Visit the club",
+    "footer.info.games": "Games & Results",
+    "footer.info.contact": "Contact & Hours",
+    "footer.legal.title": "Legal",
+    "footer.legal.imprint": "Imprint",
+    "footer.legal.privacy": "Privacy Policy",
+    "footer.legal.terms": "Terms of Use",
+    "footer.copyright": "BC Frankfurt 1912 e.V. All rights reserved.",
+  },
+  DE: {
+    // Nav
+    "nav.club": "Verein",
+    "nav.disciplines": "Disziplinen",
+    "nav.experience": "Clubhaus",
+    "nav.membership": "Mitgliedschaft",
+    "nav.gallery": "Galerie",
+    "nav.games": "Spiele",
+    "nav.visit": "Besuchen",
+    "nav.becomeMember": "Mitglied werden",
+
+    // Hero
+    "hero.eyebrow": "Gegr. 1912 — Frankfurt am Main",
+    "hero.title": "Frankfurts Heimat<br />des <em>Billards</em><br />seit 1912.",
+    "hero.subtitle": "Karambol. Pool. Snooker. Ein Jahrhundert Tradition, Wettkampf und Gemeinschaft — unter einem Dach am östlichen Stadtrand.",
+    "hero.becomeMember": "Mitglied werden",
+    "hero.visitClub": "Club besuchen",
+
+    // About
+    "about.num": "01",
+    "about.eyebrow": "Gegründet 1912",
+    "about.title": "Mehr als ein<br /><em>Jahrhundert</em> Spiel.",
+    "about.p1": "Der BC Frankfurt ist ein aktives Vereinshaus — kein Museum. Wettkampftische werden täglich bespielt, nicht abgesperrt. Die Messinglampen über den Karambol-Tischen stammen aus dem Jahr 1968, zweimal restauriert, aber nie ersetzt.",
+    "about.p2": "Gegründet als Billard Club Frankfurt 1912 e.V., sind wir einer der ältesten Billardvereine Deutschlands. Unsere Mitglieder reichten von Stadträten bis zu Schichtarbeitern, vereint durch das Spiel.",
+    "about.p3": "Wir spielen in der Pool Bundesliga, der 2. Bundesliga und den hessischen Regionalligen — aber das Herzstück des Vereins ist das offene Spiel dienstags und donnerstags, wo Stammgäste Neulingen auf die alte Art beibringen: durch Vorbild, dann durch Korrektur.",
+
+    // Disciplines
+    "disciplines.num": "02",
+    "disciplines.eyebrow": "Drei Disziplinen",
+    "disciplines.title": "Karambol,<br />Pool, <em>Snooker</em>.",
+    "disciplines.lede": "Nur wenige Vereine in Deutschland unterhalten wettkampftaugliche Ausrüstung für alle drei Billardarten unter einem Dach. Wir tun es — und das schon seit vor den meisten unserer Konkurrenten.",
+    "disciplines.karambol.title": "Karambol",
+    "disciplines.karambol.subtitle": "Die älteste Disziplin",
+    "disciplines.karambol.detail": "Vier Tische — zwei große (2,84m), zwei kleine (2,10m) — alles Müller-Karambol-Tische mit beheizter Schieferplatte. Wir spielen Libre, Cadre und Dreiband. Training dienstags, Ligaspiele meist freitags. Der Verein wurde für Karambol gegründet und es bleibt die erste Disziplin, die neuen Mitgliedern beigebracht wird.",
+    "disciplines.pool.title": "Pool",
+    "disciplines.pool.subtitle": "Bundesliga-Standard",
+    "disciplines.pool.detail": "Vier Brunswick Gold Crown Tische nach Turnierstandard. 8-Ball, 9-Ball, 10-Ball, 14.1 Endlos — wir spielen alles. BCF I spielt in der Pool Bundesliga, BCF II in der 2. Bundesliga Süd. Heimspiele ziehen über 60 Zuschauer an. Die Tische werden jeden Juli mit Simonis 860 neu bezogen.",
+    "disciplines.snooker.title": "Snooker",
+    "disciplines.snooker.subtitle": "Meisterschaftstische in voller Größe",
+    "disciplines.snooker.detail": "Zwei 12-Fuß-Snookertische in voller Größe, gehalten unter Wettkampfbedingungen. Wir veranstalten jeden Frühling den Hessen Snooker Cup und führen ein Entwicklungsprogramm für Junioren durch. Training nach Vereinbarung mit unseren zertifizierten Trainern.",
+
+    // Experience
+    "experience.num": "03",
+    "experience.eyebrow": "Das Clubhaus",
+    "experience.title": "Was Sie bei Ihrem<br /><em>ersten Besuch</em> erwartet.",
+    "experience.tables.title": "Wettkampftische",
+    "experience.tables.desc": "Zwei große Karambol, zwei kleine Karambol, vier 9-Fuß Pool, zwei 12-Fuß Snooker.",
+    "experience.cloth.eyebrow": "Jährlich erneuert",
+    "experience.cloth.title": "Turniertuch, jeden <em>Sommer</em>.",
+    "experience.cloth.desc": "Jeden Juli schließen wir für eine Woche und beziehen alle zehn Tische neu mit Simonis 860 / 300 Rapide — dasselbe Tuch, das bei Weltmeisterschaften verwendet wird.",
+    "experience.lounge.title": "Die Lounge",
+    "experience.lounge.desc": "Leder, gedämpftes Licht und ein eigener Raum zum Zuschauen — oder für Gespräche zwischen den Frames.",
+    "experience.snacks.title": "Bar & Küche",
+    "experience.snacks.desc": "Kalte Getränke, guter Kaffee und eine kleine Speisekarte — Apfelwein freitags, aus Tradition.",
+    "experience.trial.eyebrow": "Erster Besuch kostenlos",
+    "experience.trial.title": "Probemitgliedschaft",
+    "experience.trial.desc": "Zwei Abende auf unsere Kosten. Bringen Sie einen Freund mit. Wir leihen Ihnen ein Queue.",
+    "experience.trial.reserve": "Reservieren",
+
+    // Membership
+    "membership.num": "04",
+    "membership.eyebrow": "Dem Verein beitreten",
+    "membership.title": "Mitgliedschafts<em>stufen</em>.",
+    "membership.trial.tag": "Stufe 01",
+    "membership.trial.name": "Probe",
+    "membership.trial.price": "Kostenlos",
+    "membership.trial.feat1": "Zwei kostenlose Abende",
+    "membership.trial.feat2": "Alle Tische + Ausrüstung",
+    "membership.trial.feat3": "Einführung in die Hausregeln",
+    "membership.trial.feat4": "Keine Verpflichtung erforderlich",
+    "membership.trial.cta": "Probe buchen",
+
+    "membership.social.tag": "Stufe 02",
+    "membership.social.name": "Sozial",
+    "membership.social.price": "18€",
+    "membership.social.period": "pro Monat",
+    "membership.social.feat1": "Unbegrenzter Zugang wochentags (Mo–Fr)",
+    "membership.social.feat2": "Alle Disziplinen + Tische",
+    "membership.social.feat3": "Mitglieder-Lounge + Bar-Zugang",
+    "membership.social.feat4": "Gästeprivilegien (2/Monat)",
+    "membership.social.cta": "Als Sozial beitreten",
+
+    "membership.full.tag": "Stufe 03",
+    "membership.full.name": "Vollmitglied",
+    "membership.full.price": "32€",
+    "membership.full.period": "pro Monat",
+    "membership.full.feat1": "Unbegrenzter Zugang (7 Tage/Woche)",
+    "membership.full.feat2": "Stimmrecht in der Mitgliederversammlung",
+    "membership.full.feat3": "Ligateam-Berechtigung",
+    "membership.full.feat4": "Reservierte Tischbuchung",
+    "membership.full.cta": "Vollmitglied werden",
+
+    // Gallery
+    "gallery.num": "05",
+    "gallery.eyebrow": "Im Verein",
+    "gallery.title": "<em>Atmosphäre</em><br />in Standbildern.",
+
+    // Contact
+    "contact.num": "06",
+    "contact.eyebrow": "Standort",
+    "contact.title": "Besuchen Sie <em>uns</em>.",
+    "contact.address.title": "Adresse",
+    "contact.address.line1": "BC Frankfurt 1912 e.V.",
+    "contact.address.line2": "Borsigallee 45",
+    "contact.address.line3": "60388 Frankfurt am Main",
+    "contact.hours.title": "Öffnungszeiten",
+    "contact.hours.weekdays": "Di–Fr",
+    "contact.hours.weekdaysTimes": "18:00–23:00",
+    "contact.hours.weekend": "Sa–So",
+    "contact.hours.weekendTimes": "14:00–23:00",
+    "contact.hours.closed": "Montags geschlossen",
+    "contact.contact.title": "Kontakt",
+
+    // Footer
+    "footer.about.title": "Der Verein",
+    "footer.about.line1": "Frankfurts ältester Billardverein.",
+    "footer.about.line2": "Gegründet 1912. Pool Bundesliga,",
+    "footer.about.line3": "Karambol, Snooker.",
+    "footer.info.title": "Schnellzugriff",
+    "footer.info.membership": "Mitglied werden",
+    "footer.info.visit": "Verein besuchen",
+    "footer.info.games": "Spiele & Ergebnisse",
+    "footer.info.contact": "Kontakt & Öffnungszeiten",
+    "footer.legal.title": "Rechtliches",
+    "footer.legal.imprint": "Impressum",
+    "footer.legal.privacy": "Datenschutz",
+    "footer.legal.terms": "Nutzungsbedingungen",
+    "footer.copyright": "BC Frankfurt 1912 e.V. Alle Rechte vorbehalten.",
+  }
+};
+
+window.TRANSLATIONS = TRANSLATIONS;
+
+const useTranslation = () => React.useContext(TranslationContext);
+
 const Nav = () => {
+  const { t } = useTranslation();
   const [scrolled, setScrolled] = React.useState(false);
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -18,18 +288,18 @@ const Nav = () => {
         <span>BC Frankfurt <em style={{ fontStyle: "italic", color: "var(--brass-500)", fontWeight: 400 }}>1912</em></span>
       </a>
       <ul className="nav-links">
-        <li><a href="#about">Club</a></li>
-        <li><a href="#disciplines">Disciplines</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#membership">Membership</a></li>
-        <li><a href="#gallery">Gallery</a></li>
-        <li><a href="assets/calendar.html">Spiele</a></li>
-        <li><a href="#contact">Visit</a></li>
+        <li><a href="#about">{t("nav.club")}</a></li>
+        <li><a href="#disciplines">{t("nav.disciplines")}</a></li>
+        <li><a href="#experience">{t("nav.experience")}</a></li>
+        <li><a href="#membership">{t("nav.membership")}</a></li>
+        <li><a href="#gallery">{t("nav.gallery")}</a></li>
+        <li><a href="assets/calendar.html">{t("nav.games")}</a></li>
+        <li><a href="#contact">{t("nav.visit")}</a></li>
       </ul>
       <div className="nav-cta">
         <LangPicker />
         <a href="#membership" className="btn btn-brass" style={{ padding: "10px 20px", fontSize: 12 }}>
-          Become a Member <Arrow size={12} />
+          {t("nav.becomeMember")} <Arrow size={12} />
         </a>
       </div>
     </nav>
@@ -37,9 +307,9 @@ const Nav = () => {
 };
 
 const LangPicker = () => {
+  const { lang, setLang } = useTranslation();
   const [open, setOpen] = React.useState(false);
-  const [lang, setLang] = React.useState("EN");
-  const langs = ["EN", "DE", "FR", "ES", "IT", "NL", "PT", "PL", "TR", "RU", "ZH", "JA"];
+  const langs = ["EN", "DE"];
   return (
     <div style={{ position: "relative" }}>
       <div className="nav-lang" onClick={() => setOpen(o => !o)}>
@@ -50,7 +320,7 @@ const LangPicker = () => {
           position: "absolute", top: "calc(100% + 8px)", right: 0,
           background: "rgba(10,10,12,0.95)", backdropFilter: "blur(20px)",
           border: "1px solid var(--ink-300)", borderRadius: 12,
-          padding: 6, minWidth: 90, maxHeight: 220, overflowY: "auto",
+          padding: 6, minWidth: 90,
           zIndex: 200, boxShadow: "0 12px 40px rgba(0,0,0,0.6)",
         }}>
           {langs.map(l => (
@@ -73,6 +343,7 @@ const LangPicker = () => {
 };
 
 const Hero = () => {
+  const { t } = useTranslation();
   const [parallax, setParallax] = React.useState(0);
   React.useEffect(() => {
     const onScroll = () => setParallax(window.scrollY * 0.3);
@@ -93,27 +364,21 @@ const Hero = () => {
       <div className="container hero-content">
         <div className="hero-mark reveal in-view">
           <div style={{ width: 40, height: 1, background: "var(--brass-500)" }} />
-          <span className="eyebrow">Est. 1912 — Frankfurt am Main</span>
+          <span className="eyebrow">{t("hero.eyebrow")}</span>
         </div>
 
-        <h1 className="hero-title reveal in-view delay-1">
-          Frankfurt's home<br />
-          of <em>Billard</em><br />
-          since 1912.
-        </h1>
+        <h1 className="hero-title reveal in-view delay-1" dangerouslySetInnerHTML={{ __html: t("hero.title") }} />
 
         <p className="hero-subtitle reveal in-view delay-2">
-          Karambol. Pool. Snooker. A century of tradition,
-          competition and community — under one roof on the
-          eastern edge of the city.
+          {t("hero.subtitle")}
         </p>
 
         <div className="hero-cta reveal in-view delay-3">
           <a href="#membership" className="btn btn-brass">
-            Become a Member <Arrow />
+            {t("hero.becomeMember")} <Arrow />
           </a>
           <a href="#contact" className="btn btn-ghost">
-            Visit the Club <ArrowOut />
+            {t("hero.visitClub")} <ArrowOut />
           </a>
         </div>
       </div>
@@ -159,46 +424,29 @@ const Marquee = () => (
   </div>
 );
 
-const About = () => (
+const About = () => {
+  const { t } = useTranslation();
+  return (
   <section className="section" id="about">
     <div className="container">
       <div className="section-head reveal">
         <div>
           <div className="section-eyebrow-row">
-            <span className="section-num">01</span>
+            <span className="section-num">{t("about.num")}</span>
             <span className="section-divider" />
-            <span className="eyebrow">The Club</span>
+            <span className="eyebrow">{t("about.eyebrow")}</span>
           </div>
-          <h2 className="section-title" style={{ marginTop: 24 }}>
-            One of <em>Germany's</em><br />oldest billiard clubs.
-          </h2>
+          <h2 className="section-title" style={{ marginTop: 24 }} dangerouslySetInnerHTML={{ __html: t("about.title") }} />
         </div>
         <p className="section-lede">
-          Founded in 1912 and continuously active for over a century,
-          BC Frankfurt is a working clubhouse — not a museum. Match-grade
-          equipment, serious players, an open door for those who want to learn.
+          {t("about.p1")}
         </p>
       </div>
 
       <div className="about-grid">
         <div className="about-narrative reveal">
-          <p>
-            For more than a hundred years, generations of Frankfurters have
-            chalked their cues at our tables. The club has moved, grown, and
-            modernised — but the rhythm of a quiet evening among the felt has
-            never changed.
-          </p>
-          <p>
-            Today we field competitive teams across all three disciplines,
-            host regional and national tournaments, and welcome newcomers
-            on every weekday. Equipment is renewed annually. Cloth is kept
-            tournament-ready. Lighting is engineered to international standards.
-          </p>
-          <p>
-            What you'll find inside is rare: a place where Bundesliga players
-            and first-time visitors share the same room, the same drink at the
-            bar, and the same respect for a clean break.
-          </p>
+          <p>{t("about.p2")}</p>
+          <p>{t("about.p3")}</p>
 
           <div className="about-stats">
             <div className="about-stat">
@@ -253,7 +501,7 @@ const About = () => (
       </div>
     </div>
   </section>
-);
+)};
 
 const DISCIPLINES = [
   {

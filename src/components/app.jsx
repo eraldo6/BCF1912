@@ -8,6 +8,19 @@ const TWEAKS_DEFAULTS = /*EDITMODE-BEGIN*/{
 
 const App = () => {
   const [tweaks, setTweak] = useTweaks(TWEAKS_DEFAULTS);
+  const [lang, setLangState] = React.useState(() => {
+    return localStorage.getItem('bcf_lang') || 'EN';
+  });
+
+  const setLang = (newLang) => {
+    setLangState(newLang);
+    localStorage.setItem('bcf_lang', newLang);
+  };
+
+  const t = (key) => {
+    const translations = window.TRANSLATIONS || {};
+    return translations[lang]?.[key] || key;
+  };
 
   React.useEffect(() => {
     const r = document.documentElement;
@@ -36,16 +49,18 @@ const App = () => {
 
   return (
     <>
-      <Nav />
-      <Hero />
-      <Marquee />
-      <About />
-      <Disciplines />
-      <Experience />
-      <Membership />
-      <Gallery />
-      <Contact />
-      <Footer />
+      <window.TranslationContext.Provider value={{ lang, setLang, t }}>
+        <Nav />
+        <Hero />
+        <Marquee />
+        <About />
+        <Disciplines />
+        <Experience />
+        <Membership />
+        <Gallery />
+        <Contact />
+        <Footer />
+      </window.TranslationContext.Provider>
 
       <TweaksPanel title="Tweaks">
         <TweakSection title="Color">
