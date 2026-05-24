@@ -293,6 +293,7 @@ const Nav = () => {
         <li><a href="#experience">{t("nav.experience")}</a></li>
         <li><a href="#membership">{t("nav.membership")}</a></li>
         <li><a href="#gallery">{t("nav.gallery")}</a></li>
+        <li><a href="#news">News</a></li>
         <li><a href="assets/calendar.html">{t("nav.games")}</a></li>
         <li><a href="#contact">{t("nav.visit")}</a></li>
       </ul>
