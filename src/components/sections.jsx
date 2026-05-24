@@ -510,7 +510,7 @@ const DISCIPLINES = [
     nameItalic: "Karambol",
     desc: "Three balls, no pockets, pure geometry. The historical heart of the club.",
     tables: "4 Tables",
-    size: "2.84m & 2.10m",
+    size: "2 big (2.84m) · 2 small (2.10m)",
     league: "Regionalliga Süd",
     detail: "From classic three-cushion to free game and cadre — Karambol is the discipline that built this club. Played on heated tables without pockets, it rewards angle, spin and patience over power. Our four tables — two large match-size, two smaller for training — see Bundesliga practice every Tuesday and Thursday.",
     tags: ["Three-Cushion", "Cadre", "Free Game", "Heated Tables"],
@@ -522,7 +522,7 @@ const DISCIPLINES = [
     nameItalic: "Pool",
     desc: "Fast, expressive, social. Open daily for members and guests alike.",
     tables: "4 Tables",
-    size: "9-foot tournament",
+    size: "4 × 9-foot tournament",
     league: "Bundesliga 2",
     detail: "Our four 9-foot tournament tables host everything from casual evenings to Bundesliga 2 matches. 8-Ball, 9-Ball, 10-Ball, Straight Pool — all played here, all night long. Open table on most weekdays; matchroom hire by reservation.",
     tags: ["8-Ball", "9-Ball", "10-Ball", "Straight Pool", "Open Daily"],
@@ -534,7 +534,7 @@ const DISCIPLINES = [
     nameItalic: "Snooker",
     desc: "Twelve feet of felt. The longest, most cinematic game we offer.",
     tables: "2 Tables",
-    size: "12-foot match",
+    size: "2 × 12-foot match",
     league: "Hessen Cup",
     detail: "Two full-size 12-foot snooker tables, kept under match-grade conditions. We host the Hessen Snooker Cup every spring and run a development programme for juniors. Coaching available by appointment with our certified coaches.",
     tags: ["12-Foot Match", "Hessen Cup", "Junior Programme", "Coaching"],
@@ -639,22 +639,186 @@ const Experience = () => (
       </div>
 
       <div className="experience-grid reveal">
-        <div className="exp-card exp-card-tables" style={{
-          backgroundImage: "url('https://bcfrankfurt.de/wp-content/uploads/2018/02/atmo1.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          position: "relative",
-        }}>
+        <div className="exp-card exp-card-tables">
+          <div className="exp-card-num">10</div>
+          <h3>Match-grade tables</h3>
+          <p style={{ marginBottom: 32 }}>Two large carom, two small carom, four 9-foot pool, two 12-foot snooker.</p>
+
           <div style={{
-            position: "absolute",
-            inset: 0,
-            background: "linear-gradient(to top, rgba(5,5,6,0.95) 0%, rgba(5,5,6,0.7) 50%, rgba(5,5,6,0.4) 100%)",
-            zIndex: 1,
-          }} />
-          <div style={{ position: "relative", zIndex: 2 }}>
-            <div className="exp-card-num">10</div>
-            <h3>Match-grade tables</h3>
-            <p>Two large carom, two small carom, four 9-foot pool, two 12-foot snooker.</p>
+            display: "grid",
+            gridTemplateColumns: "repeat(3, 1fr)",
+            gap: "8px",
+            marginTop: "auto",
+          }}>
+            {/* Row 1 */}
+            <div style={{
+              background: "var(--brass-700)",
+              border: "1px solid var(--brass-500)",
+              borderRadius: "6px",
+              padding: "16px 8px",
+              textAlign: "center",
+              fontSize: "10px",
+              fontFamily: "var(--font-mono)",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: "var(--bone-100)",
+              aspectRatio: "1.7/1",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}>Big Karambol</div>
+            <div style={{
+              background: "var(--felt-700)",
+              border: "1px solid var(--felt-500)",
+              borderRadius: "6px",
+              padding: "16px 8px",
+              textAlign: "center",
+              fontSize: "10px",
+              fontFamily: "var(--font-mono)",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: "var(--bone-100)",
+              aspectRatio: "1.7/1",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}>Pool</div>
+            <div style={{
+              background: "var(--felt-700)",
+              border: "1px solid var(--felt-500)",
+              borderRadius: "6px",
+              padding: "16px 8px",
+              textAlign: "center",
+              fontSize: "10px",
+              fontFamily: "var(--font-mono)",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: "var(--bone-100)",
+              aspectRatio: "1.7/1",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}>Pool</div>
+
+            {/* Row 2 */}
+            <div style={{
+              background: "var(--brass-700)",
+              border: "1px solid var(--brass-500)",
+              borderRadius: "6px",
+              padding: "16px 8px",
+              textAlign: "center",
+              fontSize: "10px",
+              fontFamily: "var(--font-mono)",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: "var(--bone-100)",
+              aspectRatio: "1.7/1",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}>Big Karambol</div>
+            <div style={{
+              gridColumn: "span 2",
+              background: "oklch(0.35 0.08 145)",
+              border: "1px solid oklch(0.45 0.10 145)",
+              borderRadius: "6px",
+              padding: "16px 8px",
+              textAlign: "center",
+              fontSize: "10px",
+              fontFamily: "var(--font-mono)",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: "var(--bone-100)",
+              aspectRatio: "3.5/1",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}>Snooker 12ft</div>
+
+            {/* Row 3 */}
+            <div style={{
+              background: "var(--brass-900)",
+              border: "1px solid var(--brass-700)",
+              borderRadius: "6px",
+              padding: "16px 8px",
+              textAlign: "center",
+              fontSize: "10px",
+              fontFamily: "var(--font-mono)",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: "var(--bone-100)",
+              aspectRatio: "1.7/1",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}>Small Karambol</div>
+            <div style={{
+              background: "var(--brass-900)",
+              border: "1px solid var(--brass-700)",
+              borderRadius: "6px",
+              padding: "16px 8px",
+              textAlign: "center",
+              fontSize: "10px",
+              fontFamily: "var(--font-mono)",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: "var(--bone-100)",
+              aspectRatio: "1.7/1",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}>Small Karambol</div>
+            <div style={{
+              background: "var(--felt-700)",
+              border: "1px solid var(--felt-500)",
+              borderRadius: "6px",
+              padding: "16px 8px",
+              textAlign: "center",
+              fontSize: "10px",
+              fontFamily: "var(--font-mono)",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: "var(--bone-100)",
+              aspectRatio: "1.7/1",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}>Pool</div>
+
+            {/* Row 4 */}
+            <div style={{
+              gridColumn: "span 2",
+              background: "oklch(0.35 0.08 145)",
+              border: "1px solid oklch(0.45 0.10 145)",
+              borderRadius: "6px",
+              padding: "16px 8px",
+              textAlign: "center",
+              fontSize: "10px",
+              fontFamily: "var(--font-mono)",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: "var(--bone-100)",
+              aspectRatio: "3.5/1",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}>Snooker 12ft</div>
+            <div style={{
+              background: "var(--felt-700)",
+              border: "1px solid var(--felt-500)",
+              borderRadius: "6px",
+              padding: "16px 8px",
+              textAlign: "center",
+              fontSize: "10px",
+              fontFamily: "var(--font-mono)",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: "var(--bone-100)",
+              aspectRatio: "1.7/1",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}>Pool</div>
           </div>
         </div>
 
@@ -668,6 +832,7 @@ const Experience = () => (
               <p style={{ maxWidth: "44ch", marginTop: 16 }}>
                 Every July we close for one week and re-cloth all ten tables with
                 Simonis 860 / 300 Rapide — the same cloth used at world championship play.
+                Professional training available for Karambol, Pool, and Snooker.
               </p>
             </div>
             <div style={{
@@ -716,24 +881,25 @@ const Experience = () => (
 const PLANS = [
   {
     tag: "Tier 01",
-    name: "Trial",
-    price: "0",
-    period: "/ first visits",
-    tagline: "Two evenings, fully equipped, no commitment.",
+    name: "Student",
+    price: "20",
+    period: "/ month",
+    tagline: "Discounted rate for students with valid ID.",
     features: [
-      "Two full evenings of play",
-      "Equipment provided",
-      "Introduction by a board member",
-      "Optional rules walk-through",
+      "Valid student ID required",
+      "Unlimited access during opening hours",
+      "All ten tables, all three disciplines",
+      "Eligibility for league teams",
+      "Member rates on tournaments",
     ],
-    cta: "Reserve a visit",
+    cta: "Apply as student",
     featured: false,
   },
   {
-    tag: "Tier 02 — most chosen",
-    name: "Full Member",
-    price: "320",
-    period: "/ year",
+    tag: "Tier 02 — recommended",
+    name: "Regular",
+    price: "40",
+    period: "/ month",
     tagline: "Unlimited play, all tables, all disciplines.",
     features: [
       "Unrestricted access · all opening hours",
@@ -748,17 +914,18 @@ const PLANS = [
   },
   {
     tag: "Tier 03",
-    name: "Student & Family",
-    price: "180",
-    period: "/ year",
-    tagline: "For those under 27, in study, or joining as a household.",
+    name: "Family",
+    price: "40",
+    period: "/ month",
+    tagline: "Register any family member under one membership.",
     features: [
-      "Full member benefits",
-      "Reduced annual contribution",
-      "Family rate covers two adults + minors",
-      "Coaching sessions discounted",
+      "Same price as regular membership",
+      "Register spouse and children",
+      "Family members share access",
+      "All regular member benefits",
+      "Additional guest passes (6 / year)",
     ],
-    cta: "Check eligibility",
+    cta: "Register family",
     featured: false,
   },
 ];
@@ -909,75 +1076,95 @@ const Contact = () => (
           </div>
 
           <div className="contact-info-block">
-            <h4>Open Hours</h4>
-            <p style={{ fontSize: 22, fontStyle: "italic", color: "var(--brass-500)" }}>
-              24 / 7 / 365.
-            </p>
-            <p style={{ fontSize: 14, color: "var(--bone-300)", fontFamily: "var(--font-sans)", marginTop: 8, lineHeight: 1.6, fontStyle: "normal" }}>
-              10 tables. 365 days. ∞ Apfelwein, ∞ coffee, ∞ ways to miss the easy ones.<br />
-              The lights stay on. The cloth stays green. Someone is always racking.
+            <h4>Opening Hours</h4>
+            <p style={{ fontSize: 14, color: "var(--bone-200)", fontFamily: "var(--font-sans)", lineHeight: 1.6 }}>
+              Tuesday–Friday: 18:00–23:00<br />
+              Saturday–Sunday: 14:00–23:00<br />
+              <span style={{ color: "var(--bone-400)", fontStyle: "italic" }}>Closed Mondays</span>
             </p>
           </div>
 
           <div className="contact-info-block">
-            <h4>Email</h4>
-            <a href="mailto:hello@bcfrankfurt.de">hello@bcfrankfurt.de</a>
+            <h4>Contact</h4>
+            <p style={{ marginBottom: 8 }}>
+              <a href="mailto:info@bcfrankfurt1912.de" style={{ color: "var(--brass-500)", textDecoration: "none" }}>
+                info@bcfrankfurt1912.de
+              </a>
+            </p>
+            <p>
+              <a href="mailto:membership@bcfrankfurt1912.de" style={{ color: "var(--brass-500)", textDecoration: "none" }}>
+                membership@bcfrankfurt1912.de
+              </a>
+            </p>
           </div>
         </div>
 
-        <div className="contact-form">
-          <div className="eyebrow" style={{ marginBottom: 24 }}>Send us a message</div>
-          <h3 style={{ fontFamily: "var(--font-display)", fontSize: 36, fontWeight: 400, marginBottom: 8, lineHeight: 1, letterSpacing: "-0.02em" }}>
-            Plan your <em style={{ fontStyle: "italic", color: "var(--brass-500)" }}>first visit</em>.
+        <div className="contact-form" style={{
+          background: "var(--ink-100)",
+          border: "1px solid var(--ink-300)",
+          borderRadius: "16px",
+          padding: "48px",
+        }}>
+          <div className="eyebrow" style={{ marginBottom: 24, color: "var(--brass-500)" }}>Members Only</div>
+          <h3 style={{ fontFamily: "var(--font-display)", fontSize: 36, fontWeight: 400, marginBottom: 16, lineHeight: 1.2, letterSpacing: "-0.02em" }}>
+            This is a <em style={{ fontStyle: "italic", color: "var(--brass-500)" }}>private club</em>,<br />
+            not a public bar.
           </h3>
-          <p style={{ color: "var(--bone-300)", fontSize: 14, marginBottom: 32 }}>
-            We'll get back to you within a working day.
+          <p style={{ color: "var(--bone-300)", fontSize: 15, marginBottom: 24, lineHeight: 1.6 }}>
+            BC Frankfurt 1912 is a registered members-only association. We do not operate
+            as a commercial establishment or walk-in venue. Access to our facilities is
+            restricted to active members and their guests.
+          </p>
+          <p style={{ color: "var(--bone-300)", fontSize: 15, marginBottom: 32, lineHeight: 1.6 }}>
+            If you're interested in becoming a member, please review our membership tiers
+            and contact us via email to begin the application process.
           </p>
 
-          <form onSubmit={(e) => { e.preventDefault(); alert("Thank you. We'll be in touch."); }}>
-            <div className="form-row">
-              <div className="form-field">
-                <label>First name</label>
-                <input type="text" defaultValue="" />
-              </div>
-              <div className="form-field">
-                <label>Last name</label>
-                <input type="text" defaultValue="" />
-              </div>
-            </div>
-            <div className="form-row">
-              <div className="form-field full">
-                <label>Email address</label>
-                <input type="email" defaultValue="" />
-              </div>
-            </div>
-            <div className="form-row">
-              <div className="form-field full">
-                <label>Interested in</label>
-                <select defaultValue="">
-                  <option value="">Select an option</option>
-                  <option>Trial membership</option>
-                  <option>Full membership</option>
-                  <option>Student / family rate</option>
-                  <option>Tournament inquiry</option>
-                  <option>Coaching</option>
-                </select>
-              </div>
-            </div>
-            <div className="form-row">
-              <div className="form-field full">
-                <label>Message</label>
-                <textarea defaultValue=""></textarea>
-              </div>
-            </div>
-            <button type="submit" className="btn btn-brass" style={{ width: "100%", justifyContent: "space-between", marginTop: 8 }}>
-              Send message <Arrow />
-            </button>
-          </form>
+          <div style={{
+            background: "var(--ink-050)",
+            border: "1px solid var(--ink-300)",
+            borderRadius: "12px",
+            padding: "24px",
+            marginTop: "auto",
+          }}>
+            <h5 style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: "10px",
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              color: "var(--bone-500)",
+              marginBottom: 16,
+            }}>Membership Inquiries</h5>
+            <p style={{ marginBottom: 12 }}>
+              <a href="mailto:info@bcfrankfurt1912.de" style={{
+                color: "var(--brass-500)",
+                textDecoration: "none",
+                fontFamily: "var(--font-mono)",
+                fontSize: "14px",
+                display: "block",
+              }}>
+                info@bcfrankfurt1912.de
+              </a>
+            </p>
+            <p>
+              <a href="mailto:membership@bcfrankfurt1912.de" style={{
+                color: "var(--brass-500)",
+                textDecoration: "none",
+                fontFamily: "var(--font-mono)",
+                fontSize: "14px",
+                display: "block",
+              }}>
+                membership@bcfrankfurt1912.de
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </div>
   </section>
+);
+
+
 );
 
 const Footer = () => (
@@ -1029,7 +1216,6 @@ const Footer = () => (
       </div>
       <div className="footer-bottom">
         <span>© 1912 — 2026 · Billard Club Frankfurt e.V.</span>
-        <span>Designed in Frankfurt · Felt by Simonis</span>
       </div>
     </div>
   </footer>
