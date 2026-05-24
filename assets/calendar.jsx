@@ -13,6 +13,8 @@ const Games = () => {
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
   const [showSeasonPicker, setShowSeasonPicker] = React.useState(false);
+  const [selectedDate, setSelectedDate] = React.useState(null);
+  const [currentMonth, setCurrentMonth] = React.useState(new Date());
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -64,14 +66,81 @@ const Games = () => {
     }
   };
 
+  // Get all matches organized by date
+  const getMatchesByDate = () => {
+    if (!data) return {};
+
+    const matchesByDate = {};
+    data.teams.forEach(team => {
+      if (team.matches) {
+        team.matches.forEach(match => {
+          const dateKey = match.date;
+          if (!matchesByDate[dateKey]) {
+            matchesByDate[dateKey] = [];
+          }
+          matchesByDate[dateKey].push({
+            ...match,
+            teamName: team.team_name,
+            league: team.league
+          });
+        });
+      }
+    });
+
+    return matchesByDate;
+  };
+
+  // Generate calendar days
+  const generateCalendarDays = () => {
+    const year = currentMonth.getFullYear();
+    const month = currentMonth.getMonth();
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    const startingDayOfWeek = firstDay.getDay();
+    const daysInMonth = lastDay.getDate();
+
+    const days = [];
+
+    // Add empty cells for days before month starts
+    for (let i = 0; i < startingDayOfWeek; i++) {
+      days.push(null);
+    }
+
+    // Add actual days
+    for (let day = 1; day <= daysInMonth; day++) {
+      days.push(new Date(year, month, day));
+    }
+
+    return days;
+  };
+
+  const matchesByDate = getMatchesByDate();
+  const calendarDays = generateCalendarDays();
   const currentSeasonName = AVAILABLE_SEASONS.find(s => s.id === selectedSeason)?.name || selectedSeason;
+
+  const hasMatchesOnDate = (date) => {
+    if (!date) return false;
+    const dateStr = date.toISOString().split('T')[0];
+    return matchesByDate[dateStr] && matchesByDate[dateStr].length > 0;
+  };
+
+  const getMatchesForSelectedDate = () => {
+    if (!selectedDate) return [];
+    const dateStr = selectedDate.toISOString().split('T')[0];
+    return matchesByDate[dateStr] || [];
+  };
+
+  const changeMonth = (offset) => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + offset, 1));
+    setSelectedDate(null);
+  };
 
   return (
     <section id="games" className="section games-section reveal">
       <div className="container">
         <div className="section-header">
           <div className="title-wrapper">
-            <h2 className="section-title">Spiele & Ergebnisse</h2>
+            <h2 className="section-title">Spielkalender</h2>
             <div className="season-selector">
               <button
                 className="season-btn"
@@ -111,97 +180,291 @@ const Games = () => {
         {error && (
           <div className="error-state">
             <p>❌ {error}</p>
-            <p className="error-hint">Bitte führen Sie zuerst das Python-Script aus: <code>python fetch_bcf_season.py {selectedSeason}</code></p>
           </div>
         )}
 
         {!loading && !error && data && (
           <div className="games-content">
-            {data.teams.map((team, idx) => (
-              <div key={idx} className="team-section">
-                <h3 className="team-name">
-                  {team.team_name}
-                  <span className="team-league">{team.league}</span>
+            {/* Calendar Navigation */}
+            <div style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: 24,
+              padding: "16px 24px",
+              background: "var(--ink-100)",
+              borderRadius: "12px",
+              border: "1px solid var(--ink-300)"
+            }}>
+              <button
+                onClick={() => changeMonth(-1)}
+                style={{
+                  background: "transparent",
+                  border: "1px solid var(--ink-300)",
+                  color: "var(--brass-500)",
+                  padding: "8px 16px",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "12px"
+                }}
+              >
+                ← Vorher
+              </button>
+              <h3 style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "24px",
+                color: "var(--bone-100)",
+                margin: 0
+              }}>
+                {currentMonth.toLocaleDateString('de-DE', { month: 'long', year: 'numeric' })}
+              </h3>
+              <button
+                onClick={() => changeMonth(1)}
+                style={{
+                  background: "transparent",
+                  border: "1px solid var(--ink-300)",
+                  color: "var(--brass-500)",
+                  padding: "8px 16px",
+                  borderRadius: "8px",
+                  cursor: "pointer",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "12px"
+                }}
+              >
+                Nächste →
+              </button>
+            </div>
+
+            {/* Calendar Grid */}
+            <div style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(7, 1fr)",
+              gap: "8px",
+              marginBottom: 32
+            }}>
+              {/* Weekday headers */}
+              {['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'].map(day => (
+                <div key={day} style={{
+                  textAlign: "center",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "10px",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  color: "var(--bone-500)",
+                  padding: "8px"
+                }}>
+                  {day}
+                </div>
+              ))}
+
+              {/* Calendar days */}
+              {calendarDays.map((date, i) => {
+                if (!date) {
+                  return <div key={`empty-${i}`} />;
+                }
+
+                const hasMatches = hasMatchesOnDate(date);
+                const isSelected = selectedDate && date.toDateString() === selectedDate.toDateString();
+                const isToday = date.toDateString() === new Date().toDateString();
+
+                return (
+                  <button
+                    key={i}
+                    onClick={() => hasMatches && setSelectedDate(date)}
+                    disabled={!hasMatches}
+                    style={{
+                      aspectRatio: "1",
+                      background: isSelected ? "var(--brass-500)" : hasMatches ? "var(--felt-900)" : "var(--ink-100)",
+                      border: isToday ? "2px solid var(--brass-500)" : "1px solid var(--ink-300)",
+                      borderRadius: "8px",
+                      color: isSelected ? "var(--ink-000)" : hasMatches ? "var(--felt-300)" : "var(--bone-400)",
+                      cursor: hasMatches ? "pointer" : "default",
+                      fontFamily: "var(--font-sans)",
+                      fontSize: "14px",
+                      fontWeight: hasMatches ? 600 : 400,
+                      transition: "all 0.2s",
+                      position: "relative",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                    onMouseEnter={(e) => hasMatches && !isSelected && (e.currentTarget.style.background = "var(--felt-700)")}
+                    onMouseLeave={(e) => hasMatches && !isSelected && (e.currentTarget.style.background = "var(--felt-900)")}
+                  >
+                    {date.getDate()}
+                    {hasMatches && (
+                      <div style={{
+                        position: "absolute",
+                        bottom: 4,
+                        width: 4,
+                        height: 4,
+                        borderRadius: "50%",
+                        background: isSelected ? "var(--ink-000)" : "var(--brass-500)"
+                      }} />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Matches for selected date */}
+            {selectedDate && (
+              <div style={{
+                background: "var(--ink-100)",
+                border: "1px solid var(--brass-500)",
+                borderRadius: "14px",
+                padding: "32px",
+                marginTop: 24
+              }}>
+                <h3 style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "28px",
+                  color: "var(--bone-100)",
+                  marginBottom: 24
+                }}>
+                  Spiele am {selectedDate.toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' })}
                 </h3>
 
-                {team.standings && team.standings.length > 0 && (
-                  <div className="standings-wrapper">
-                    <h4 className="subsection-title">Tabelle</h4>
-                    <div className="table-container">
-                      <table className="standings-table">
-                        <thead>
-                          <tr>
-                            <th>Rang</th>
-                            <th>Mannschaft</th>
-                            <th>Sp</th>
-                            <th>S</th>
-                            <th>U</th>
-                            <th>N</th>
-                            <th>Pkt</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {team.standings.map((standing, i) => {
-                            const isBCF = standing.team_name.includes("BC Frankfurt");
-                            return (
-                              <tr key={i} className={isBCF ? "highlight-row" : ""}>
-                                <td className="rank">{standing.rank}</td>
-                                <td className="team">{standing.team_name}</td>
-                                <td>{standing.matches_played}</td>
-                                <td>{standing.wins}</td>
-                                <td>{standing.draws}</td>
-                                <td>{standing.losses}</td>
-                                <td className="points"><strong>{standing.points}</strong></td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                )}
+                <div style={{ display: "grid", gap: "16px" }}>
+                  {getMatchesForSelectedDate().map((match, i) => {
+                    const result = getMatchResult(match, match.teamName);
+                    return (
+                      <div key={i} style={{
+                        background: "var(--ink-050)",
+                        border: "1px solid var(--ink-300)",
+                        borderRadius: "12px",
+                        padding: "24px",
+                        display: "grid",
+                        gridTemplateColumns: "auto 1fr auto",
+                        gap: "24px",
+                        alignItems: "center"
+                      }}>
+                        <div style={{
+                          padding: "12px 16px",
+                          background: "var(--felt-900)",
+                          borderRadius: "8px",
+                          minWidth: "100px",
+                          textAlign: "center"
+                        }}>
+                          <div style={{
+                            fontFamily: "var(--font-mono)",
+                            fontSize: "10px",
+                            color: "var(--bone-500)",
+                            marginBottom: 4,
+                            textTransform: "uppercase",
+                            letterSpacing: "0.1em"
+                          }}>
+                            {match.teamName}
+                          </div>
+                          <div style={{
+                            fontFamily: "var(--font-mono)",
+                            fontSize: "11px",
+                            color: "var(--felt-300)",
+                            letterSpacing: "0.08em"
+                          }}>
+                            {match.league}
+                          </div>
+                        </div>
 
-                {team.matches && team.matches.length > 0 && (
-                  <div className="matches-wrapper">
-                    <h4 className="subsection-title">Letzte Spiele</h4>
-                    <div className="matches-grid">
-                      {team.matches.slice(0, 6).map((match, i) => {
-                        const result = getMatchResult(match, team.team_name);
-                        return (
-                          <div key={i} className={`match-card ${result}`}>
-                            <div className="match-date">{formatDate(match.date)}</div>
-                            <div className="match-teams">
-                              <div className="match-team home">
-                                <span className="team-name">{match.home_team}</span>
-                              </div>
-                              <div className="match-score">
-                                {match.home_score !== null && match.away_score !== null ? (
-                                  <span className="score">{match.home_score}:{match.away_score}</span>
-                                ) : (
-                                  <span className="vs">vs</span>
-                                )}
-                              </div>
-                              <div className="match-team away">
-                                <span className="team-name">{match.away_team}</span>
-                              </div>
+                        <div style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "16px",
+                          justifyContent: "center"
+                        }}>
+                          <div style={{
+                            textAlign: "right",
+                            flex: 1
+                          }}>
+                            <div style={{
+                              fontFamily: "var(--font-sans)",
+                              fontSize: "16px",
+                              color: "var(--bone-100)",
+                              fontWeight: match.home_team.includes("BC Frankfurt") ? 600 : 400
+                            }}>
+                              {match.home_team}
                             </div>
-                            {result !== "scheduled" && (
-                              <div className={`match-result ${result}`}>
-                                {result === "win" ? "Sieg" : result === "loss" ? "Niederlage" : "Unentschieden"}
-                              </div>
+                          </div>
+
+                          <div style={{
+                            padding: "8px 16px",
+                            background: "var(--ink-200)",
+                            borderRadius: "8px",
+                            minWidth: "80px",
+                            textAlign: "center"
+                          }}>
+                            {match.home_score !== null && match.away_score !== null ? (
+                              <span style={{
+                                fontFamily: "var(--font-display)",
+                                fontSize: "24px",
+                                color: "var(--bone-100)",
+                                fontWeight: 500
+                              }}>
+                                {match.home_score} : {match.away_score}
+                              </span>
+                            ) : (
+                              <span style={{
+                                fontFamily: "var(--font-mono)",
+                                fontSize: "12px",
+                                color: "var(--brass-500)",
+                                letterSpacing: "0.1em"
+                              }}>
+                                vs
+                              </span>
                             )}
                           </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
 
-                {(!team.matches || team.matches.length === 0) && (
-                  <p className="no-data">Keine Spieldaten verfügbar</p>
-                )}
+                          <div style={{
+                            textAlign: "left",
+                            flex: 1
+                          }}>
+                            <div style={{
+                              fontFamily: "var(--font-sans)",
+                              fontSize: "16px",
+                              color: "var(--bone-100)",
+                              fontWeight: match.away_team.includes("BC Frankfurt") ? 600 : 400
+                            }}>
+                              {match.away_team}
+                            </div>
+                          </div>
+                        </div>
+
+                        {result !== "scheduled" && (
+                          <div style={{
+                            padding: "8px 16px",
+                            background: result === "win" ? "oklch(0.35 0.08 145)" : result === "loss" ? "oklch(0.35 0.08 25)" : "var(--ink-200)",
+                            borderRadius: "999px",
+                            fontFamily: "var(--font-mono)",
+                            fontSize: "10px",
+                            letterSpacing: "0.12em",
+                            textTransform: "uppercase",
+                            color: result === "win" ? "oklch(0.65 0.15 145)" : result === "loss" ? "oklch(0.7 0.18 25)" : "var(--bone-300)",
+                            whiteSpace: "nowrap"
+                          }}>
+                            {result === "win" ? "Sieg" : result === "loss" ? "Niederlage" : "Unentschieden"}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            ))}
+            )}
+
+            {/* Instruction text */}
+            {!selectedDate && (
+              <div style={{
+                textAlign: "center",
+                padding: "48px 24px",
+                color: "var(--bone-400)",
+                fontFamily: "var(--font-mono)",
+                fontSize: "12px",
+                letterSpacing: "0.08em"
+              }}>
+                Klicken Sie auf ein Datum mit Spielen (markiert), um die Spiele anzuzeigen
+              </div>
+            )}
           </div>
         )}
       </div>

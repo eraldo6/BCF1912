@@ -346,7 +346,7 @@ const Hero = () => {
   const { t } = useTranslation();
   const [parallax, setParallax] = React.useState(0);
   React.useEffect(() => {
-    const onScroll = () => setParallax(window.scrollY * 0.3);
+    const onScroll = () => setParallax(window.scrollY * 0.5);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -1027,13 +1027,159 @@ const Gallery = () => (
   </section>
 );
 
+const NEWS = [
+  {
+    date: "2026-05-20",
+    category: "Tournament",
+    title: "Hessen Snooker Cup 2026",
+    excerpt: "Annual tournament returns June 15-16. Registration open for all skill levels.",
+    badge: "Upcoming"
+  },
+  {
+    date: "2026-05-10",
+    category: "Promotion",
+    title: "BCF II Promoted to Bundesliga",
+    excerpt: "After a dominant season, our second team secures promotion to the top flight.",
+    badge: "Team News"
+  },
+  {
+    date: "2026-04-28",
+    category: "Event",
+    title: "Spring Member Tournament Results",
+    excerpt: "Congratulations to Marcel Behr (Karambol), Lisa Weber (Pool), and Thomas Klein (Snooker).",
+    badge: "Results"
+  },
+  {
+    date: "2026-04-15",
+    category: "Tournament",
+    title: "Regional Karambol Championship",
+    excerpt: "BCF hosts the Süd Regional Championship, September 8-10. Spectators welcome.",
+    badge: "Hosting"
+  },
+];
+
+const News = () => (
+  <section className="section" id="news" style={{ background: "var(--ink-050)" }}>
+    <div className="container">
+      <div className="section-head reveal">
+        <div>
+          <div className="section-eyebrow-row">
+            <span className="section-num">06</span>
+            <span className="section-divider" />
+            <span className="eyebrow">News & Updates</span>
+          </div>
+          <h2 className="section-title" style={{ marginTop: 24 }}>
+            Tournaments,<br /><em>promotions</em> & events.
+          </h2>
+        </div>
+        <p className="section-lede">
+          Stay up to date with league results, upcoming tournaments, and club achievements.
+        </p>
+      </div>
+
+      <div style={{ display: "grid", gap: "16px", marginTop: 48 }} className="reveal">
+        {NEWS.map((item, i) => (
+          <div key={i} style={{
+            background: "var(--ink-100)",
+            border: "1px solid var(--ink-300)",
+            borderRadius: "14px",
+            padding: "32px",
+            display: "grid",
+            gridTemplateColumns: "auto 1fr auto",
+            gap: "24px",
+            alignItems: "center",
+            transition: "all 0.3s var(--ease-out)",
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.borderColor = "var(--brass-500)"}
+          onMouseLeave={(e) => e.currentTarget.style.borderColor = "var(--ink-300)"}
+          >
+            <div style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              padding: "16px",
+              background: "var(--ink-050)",
+              borderRadius: "10px",
+              minWidth: "80px",
+            }}>
+              <div style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "32px",
+                fontWeight: 500,
+                color: "var(--brass-500)",
+                lineHeight: 1,
+              }}>
+                {new Date(item.date).getDate()}
+              </div>
+              <div style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "10px",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: "var(--bone-400)",
+                marginTop: 4,
+              }}>
+                {new Date(item.date).toLocaleDateString('en', { month: 'short' })}
+              </div>
+            </div>
+
+            <div>
+              <div style={{
+                fontFamily: "var(--font-mono)",
+                fontSize: "10px",
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                color: "var(--brass-500)",
+                marginBottom: 8,
+              }}>
+                {item.category}
+              </div>
+              <h3 style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "24px",
+                fontWeight: 400,
+                marginBottom: 8,
+                color: "var(--bone-100)",
+              }}>
+                {item.title}
+              </h3>
+              <p style={{
+                color: "var(--bone-300)",
+                fontSize: "14px",
+                lineHeight: 1.6,
+              }}>
+                {item.excerpt}
+              </p>
+            </div>
+
+            <div style={{
+              padding: "8px 16px",
+              background: "var(--felt-900)",
+              border: "1px solid var(--felt-700)",
+              borderRadius: "999px",
+              fontFamily: "var(--font-mono)",
+              fontSize: "10px",
+              letterSpacing: "0.12em",
+              textTransform: "uppercase",
+              color: "var(--felt-300)",
+              whiteSpace: "nowrap",
+            }}>
+              {item.badge}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
 const Contact = () => (
   <section className="section contact" id="contact">
     <div className="container">
       <div className="section-head reveal">
         <div>
           <div className="section-eyebrow-row">
-            <span className="section-num">06</span>
+            <span className="section-num">07</span>
             <span className="section-divider" />
             <span className="eyebrow">Visit & Contact</span>
           </div>
@@ -1162,9 +1308,6 @@ const Contact = () => (
       </div>
     </div>
   </section>
-);
-
-
 );
 
 const Footer = () => (
