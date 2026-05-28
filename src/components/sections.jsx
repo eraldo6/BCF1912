@@ -477,29 +477,6 @@ const About = () => {
           />
         </div>
       </div>
-
-      <div className="league-strip reveal">
-        <div className="league-item">
-          <div className="league-status live"><span className="dot" /> Live now</div>
-          <div className="league-title">Pool Bundesliga</div>
-          <div className="league-meta">vs. BC Düsseldorf · 18:00</div>
-        </div>
-        <div className="league-item">
-          <div className="league-status"><span className="dot" /> Upcoming</div>
-          <div className="league-title">Karambol Regionalliga</div>
-          <div className="league-meta">Sat 03 May · Home</div>
-        </div>
-        <div className="league-item">
-          <div className="league-status"><span className="dot" /> Open</div>
-          <div className="league-title">Hessen Snooker Cup</div>
-          <div className="league-meta">17–19 May · Registration open</div>
-        </div>
-        <div className="league-item">
-          <div className="league-status"><span className="dot" /> Weekly</div>
-          <div className="league-title">Members' Tournament</div>
-          <div className="league-meta">Every Thursday · 19:30</div>
-        </div>
-      </div>
     </div>
   </section>
 )};
@@ -507,27 +484,25 @@ const About = () => {
 const DISCIPLINES = [
   {
     num: "01",
-    name: "Karambol",
-    nameItalic: "Karambol",
-    desc: "Three balls, no pockets, pure geometry. The historical heart of the club.",
-    tables: "4 Tables",
-    size: "2 big (2.84m) · 2 small (2.10m)",
-    league: "Regionalliga Süd",
-    detail: "From classic three-cushion to free game and cadre — Karambol is the discipline that built this club. Played on heated tables without pockets, it rewards angle, spin and patience over power. Our four tables — two large match-size, two smaller for training — see Bundesliga practice every Tuesday and Thursday.",
-    tags: ["Three-Cushion", "Cadre", "Free Game", "Heated Tables"],
-    image: "https://bcfrankfurt.de/wp-content/uploads/2018/02/Karambolage.jpg",
-  },
-  {
-    num: "02",
     name: "Pool",
     nameItalic: "Pool",
     desc: "Fast, expressive, social. Open daily for members and guests alike.",
     tables: "4 Tables",
-    size: "4 × 9-foot tournament",
-    league: "Bundesliga 2",
+    size: "9-foot",
     detail: "Our four 9-foot tournament tables host everything from casual evenings to Bundesliga 2 matches. 8-Ball, 9-Ball, 10-Ball, Straight Pool — all played here, all night long. Open table on most weekdays; matchroom hire by reservation.",
     tags: ["8-Ball", "9-Ball", "10-Ball", "Straight Pool", "Open Daily"],
     image: "https://bcfrankfurt.de/wp-content/uploads/2018/02/kugeln_s.jpg",
+  },
+  {
+    num: "02",
+    name: "Karambol",
+    nameItalic: "Karambol",
+    desc: "Three balls, no pockets, pure geometry. The historical heart of the club.",
+    tables: "4 Tables",
+    size: "2 big · 2 small",
+    detail: "From classic three-cushion to free game and cadre — Karambol is the discipline that built this club. Played on heated tables without pockets, it rewards angle, spin and patience over power. Our four tables — two large match-size, two smaller for training — see Bundesliga practice every Tuesday and Thursday.",
+    tags: ["Three-Cushion", "Cadre", "Free Game", "Heated Tables"],
+    image: "https://bcfrankfurt.de/wp-content/uploads/2018/02/Karambolage.jpg",
   },
   {
     num: "03",
@@ -535,8 +510,7 @@ const DISCIPLINES = [
     nameItalic: "Snooker",
     desc: "Twelve feet of felt. The longest, most cinematic game we offer.",
     tables: "2 Tables",
-    size: "2 × 12-foot match",
-    league: "Hessen Cup",
+    size: "12-foot",
     detail: "Two full-size 12-foot snooker tables, kept under match-grade conditions. We host the Hessen Snooker Cup every spring and run a development programme for juniors. Coaching available by appointment with our certified coaches.",
     tags: ["12-Foot Match", "Hessen Cup", "Junior Programme", "Coaching"],
     image: "https://bcfrankfurt.de/wp-content/uploads/2018/02/atmo3.jpg",
@@ -585,10 +559,6 @@ const Disciplines = () => {
                 <div className="discipline-meta-row">
                   <span className="discipline-meta-key">Size</span>
                   <span className="discipline-meta-val">{d.size}</span>
-                </div>
-                <div className="discipline-meta-row">
-                  <span className="discipline-meta-key">League</span>
-                  <span className="discipline-meta-val">{d.league}</span>
                 </div>
               </div>
               <div className="discipline-arrow">
