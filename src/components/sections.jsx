@@ -310,32 +310,97 @@ const Nav = () => {
 const LangPicker = () => {
   const { lang, setLang } = useTranslation();
   const [open, setOpen] = React.useState(false);
-  const langs = ["EN", "DE"];
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const flags = {
+    EN: "🇬🇧",
+    DE: "🇩🇪"
+  };
+
+  const langNames = {
+    EN: "English",
+    DE: "Deutsch"
+  };
+
+  const langs = ["DE", "EN"];
+
+  // Desktop: Two flag buttons
+  if (!isMobile) {
+    return (
+      <div style={{ display: "flex", gap: 8 }}>
+        {langs.map(l => (
+          <button
+            key={l}
+            onClick={() => setLang(l)}
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: "50%",
+              border: l === lang ? "2px solid var(--brass-500)" : "1px solid var(--ink-300)",
+              background: l === lang ? "rgba(218,178,96,0.1)" : "rgba(10,10,12,0.6)",
+              cursor: "pointer",
+              fontSize: 18,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              transition: "all 0.2s ease",
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.borderColor = "var(--brass-500)";
+              e.currentTarget.style.transform = "scale(1.05)";
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.borderColor = l === lang ? "var(--brass-500)" : "var(--ink-300)";
+              e.currentTarget.style.transform = "scale(1)";
+            }}
+            title={langNames[l]}
+          >
+            {flags[l]}
+          </button>
+        ))}
+      </div>
+    );
+  }
+
+  // Mobile: Dropdown with flags
   return (
     <div style={{ position: "relative" }}>
-      <div className="nav-lang" onClick={() => setOpen(o => !o)}>
-        {lang} <span style={{ opacity: 0.5, marginLeft: 4 }}>▾</span>
+      <div className="nav-lang" onClick={() => setOpen(o => !o)} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <span style={{ fontSize: 18 }}>{flags[lang]}</span>
+        {lang}
+        <span style={{ opacity: 0.5 }}>▾</span>
       </div>
       {open && (
         <div style={{
           position: "absolute", top: "calc(100% + 8px)", right: 0,
           background: "rgba(10,10,12,0.95)", backdropFilter: "blur(20px)",
           border: "1px solid var(--ink-300)", borderRadius: 12,
-          padding: 6, minWidth: 90,
+          padding: 6, minWidth: 120,
           zIndex: 200, boxShadow: "0 12px 40px rgba(0,0,0,0.6)",
         }}>
           {langs.map(l => (
             <div key={l}
               onClick={() => { setLang(l); setOpen(false); }}
               style={{
-                padding: "8px 14px", fontFamily: "var(--font-mono)",
-                fontSize: 11, letterSpacing: "0.1em", color: l === lang ? "var(--brass-500)" : "var(--bone-200)",
+                padding: "10px 14px", fontFamily: "var(--font-mono)",
+                fontSize: 12, letterSpacing: "0.1em", color: l === lang ? "var(--brass-500)" : "var(--bone-200)",
                 cursor: "pointer", borderRadius: 6,
                 background: l === lang ? "rgba(218,178,96,0.06)" : "transparent",
+                display: "flex", alignItems: "center", gap: 10,
               }}
               onMouseEnter={e => e.currentTarget.style.background = "rgba(218,178,96,0.08)"}
               onMouseLeave={e => e.currentTarget.style.background = l === lang ? "rgba(218,178,96,0.06)" : "transparent"}
-            >{l}</div>
+            >
+              <span style={{ fontSize: 18 }}>{flags[l]}</span>
+              {langNames[l]}
+            </div>
           ))}
         </div>
       )}
@@ -807,20 +872,18 @@ const Experience = () => (
         </div>
 
         <div className="exp-card exp-card-cloth">
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 24 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
             <div>
-              <div className="eyebrow" style={{ marginBottom: 16 }}>Annually renewed</div>
-              <h3 style={{ fontSize: 56, lineHeight: 1, marginBottom: 16 }}>
+              <div className="eyebrow" style={{ marginBottom: 12 }}>Annually renewed</div>
+              <h3 style={{ fontSize: 28, lineHeight: 1.2, marginBottom: 12 }}>
                 Tournament cloth, every <em style={{ fontStyle: "italic", color: "var(--brass-500)" }}>summer</em>.
               </h3>
-              <p style={{ maxWidth: "44ch", marginTop: 16 }}>
-                Every July we close for one week and re-cloth all ten tables with
-                Simonis 860 / 300 Rapide — the same cloth used at world championship play.
-                Professional training available for Karambol, Pool, and Snooker.
+              <p style={{ fontSize: 13, maxWidth: "36ch" }}>
+                Every July we re-cloth all ten tables with Simonis 860 / 300 Rapide — world championship standard.
               </p>
             </div>
             <div style={{
-              width: 120, height: 120, borderRadius: "50%",
+              width: 60, height: 60, borderRadius: "50%",
               background: "var(--felt-500)",
               border: "1px solid var(--felt-300)",
               flexShrink: 0,
@@ -839,14 +902,6 @@ const Experience = () => (
           <p>Leather, low light, and a dedicated space for spectating — or for the conversation between frames.</p>
         </div>
 
-        <div className="exp-card exp-card-snacks">
-          <svg className="exp-card-icon" viewBox="0 0 24 24" fill="none">
-            <path d="M6 3v6a4 4 0 008 0V3M10 13v8M7 21h6" stroke="currentColor" strokeWidth="1.5" />
-          </svg>
-          <h3>Bar & Kitchen</h3>
-          <p>Cold drinks, decent coffee, and a small menu of snacks — Apfelwein on Fridays, by tradition.</p>
-        </div>
-
         <div className="exp-card exp-card-trial">
           <div className="eyebrow" style={{ marginBottom: 12, color: "var(--brass-300)" }}>First visit free</div>
           <h3>Trial Membership</h3>
@@ -856,6 +911,14 @@ const Experience = () => (
           <a href="#membership" className="btn btn-brass" style={{ marginTop: 24, alignSelf: "flex-start", padding: "12px 20px", fontSize: 12 }}>
             Reserve <Arrow size={12} />
           </a>
+        </div>
+
+        <div className="exp-card exp-card-snacks">
+          <svg className="exp-card-icon" viewBox="0 0 24 24" fill="none">
+            <path d="M6 3v6a4 4 0 008 0V3M10 13v8M7 21h6" stroke="currentColor" strokeWidth="1.5" />
+          </svg>
+          <h3>Bar & Kitchen</h3>
+          <p>Cold drinks, decent coffee, and a small menu of snacks — Apfelwein on Fridays, by tradition.</p>
         </div>
       </div>
     </div>
@@ -874,7 +937,6 @@ const PLANS = [
       "Unlimited access during opening hours",
       "All ten tables, all three disciplines",
       "Eligibility for league teams",
-      "Member rates on tournaments",
     ],
     cta: "Apply as student",
     featured: false,
@@ -890,8 +952,6 @@ const PLANS = [
       "All ten tables, all three disciplines",
       "Eligibility for league teams",
       "Locker & cue storage",
-      "Member rates on tournaments",
-      "Guest passes (4 / year)",
     ],
     cta: "Apply for membership",
     featured: true,
@@ -907,7 +967,6 @@ const PLANS = [
       "Register spouse and children",
       "Family members share access",
       "All regular member benefits",
-      "Additional guest passes (6 / year)",
     ],
     cta: "Register family",
     featured: false,

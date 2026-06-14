@@ -9,7 +9,7 @@ const TWEAKS_DEFAULTS = /*EDITMODE-BEGIN*/{
 const App = () => {
   const [tweaks, setTweak] = useTweaks(TWEAKS_DEFAULTS);
   const [lang, setLangState] = React.useState(() => {
-    return localStorage.getItem('bcf_lang') || 'EN';
+    return localStorage.getItem('bcf_lang') || 'DE';
   });
 
   const setLang = (newLang) => {

@@ -1304,11 +1304,11 @@ section {
   opacity: 1;
 }
 
-.exp-card-tables { grid-column: span 5; min-height: 380px; }
-.exp-card-cloth { grid-column: span 7; min-height: 380px; }
-.exp-card-lounge { grid-column: span 4; min-height: 280px; }
-.exp-card-snacks { grid-column: span 4; min-height: 280px; }
-.exp-card-trial { grid-column: span 4; min-height: 280px; background: linear-gradient(135deg, var(--felt-700), var(--felt-900)); border-color: var(--felt-500); }
+.exp-card-tables { grid-column: span 5; grid-row: span 2; min-height: 380px; }
+.exp-card-cloth { grid-column: span 4; min-height: 180px; }
+.exp-card-lounge { grid-column: span 3; min-height: 180px; }
+.exp-card-snacks { grid-column: span 3; min-height: 180px; }
+.exp-card-trial { grid-column: span 4; min-height: 180px; background: linear-gradient(135deg, var(--felt-700), var(--felt-900)); border-color: var(--felt-500); }
 
 .exp-card-num {
   font-family: var(--font-display);
