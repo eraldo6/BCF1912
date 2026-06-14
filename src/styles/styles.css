@@ -1797,7 +1797,7 @@ section {
 .marquee-track {
   display: flex;
   width: max-content;
-  animation: marquee 60s linear infinite;
+  animation: marquee 90s linear infinite;
   font-family: var(--font-display);
   font-size: 28px;
   color: var(--bone-200);

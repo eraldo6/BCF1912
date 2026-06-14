@@ -407,7 +407,7 @@ const Hero = () => {
 const Marquee = () => {
   const { lang } = useTranslation();
   const words = lang === "DE"
-    ? ["Pool", "Leidenschaft", "Snooker", "Training", "Karambol", "Gemeinschaft", "Liga", "Tradition", "Förderung"]
+    ? ["Billard", "Leidenschaft", "Snooker", "Training", "Karambol", "Gemeinschaft", "Liga", "Tradition", "Förderung"]
     : ["Pool", "Passion", "Snooker", "Training", "Karambol", "Friends", "League", "Tradition", "Coaching"];
 
   const wordElements = words.map((word, i) => (
