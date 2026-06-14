@@ -404,26 +404,39 @@ const Hero = () => {
   );
 };
 
-const Marquee = () => (
-  <div className="marquee">
-    <div className="marquee-track">
-      <span>
-        Karambol <span className="marquee-dot" />
-        Pool <span className="marquee-dot" />
-        Snooker <span className="marquee-dot" />
-        Bundesliga <span className="marquee-dot" />
-        Tradition <span className="marquee-dot" />
-        Community <span className="marquee-dot" />
-        Karambol <span className="marquee-dot" />
-        Pool <span className="marquee-dot" />
-        Snooker <span className="marquee-dot" />
-        Bundesliga <span className="marquee-dot" />
-        Tradition <span className="marquee-dot" />
-        Community <span className="marquee-dot" />
-      </span>
+const Marquee = () => {
+  const { lang } = useTranslation();
+  const words = lang === "DE"
+    ? ["Pool", "Leidenschaft", "Snooker", "Training", "Karambol", "Gemeinschaft", "Liga", "Tradition", "Förderung"]
+    : ["Pool", "Passion", "Snooker", "Training", "Karambol", "Friends", "League", "Tradition", "Coaching"];
+
+  const wordElements = words.map((word, i) => (
+    <React.Fragment key={i}>
+      {word} <span className="marquee-dot" />
+    </React.Fragment>
+  ));
+
+  return (
+    <div className="marquee">
+      <div className="marquee-track">
+        <div className="marquee-content">
+          {wordElements}
+          {wordElements}
+          {wordElements}
+          {wordElements}
+          {wordElements}
+        </div>
+        <div className="marquee-content">
+          {wordElements}
+          {wordElements}
+          {wordElements}
+          {wordElements}
+          {wordElements}
+        </div>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const About = () => {
   const { t } = useTranslation();

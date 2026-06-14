@@ -1796,13 +1796,18 @@ section {
 
 .marquee-track {
   display: flex;
-  gap: 64px;
-  white-space: nowrap;
-  animation: marquee 40s linear infinite;
+  width: max-content;
+  animation: marquee 60s linear infinite;
   font-family: var(--font-display);
   font-size: 28px;
   color: var(--bone-200);
   font-style: italic;
+}
+.marquee-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 64px;
+  padding-right: 64px;
 }
 .marquee-track span {
   display: inline-flex;
