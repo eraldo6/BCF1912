@@ -36,6 +36,28 @@ const TRANSLATIONS = {
     "disciplines.eyebrow": "Three disciplines",
     "disciplines.title": "Karambol,<br />Pool, <em>Snooker</em>.",
     "disciplines.lede": "Few clubs in Germany maintain match-grade equipment for all three cue sports under one roof. We do — and we've been doing it since before most of our competitors existed.",
+    "disciplines.pickGame": "Pick your <em>game</em>.",
+    "disciplines.fewClubs": "Few clubs in Germany maintain match-grade equipment for all three major billiard disciplines. We do — and we play them all, year-round.",
+    "disciplines.aboutGame": "About the game",
+
+    // Discipline details
+    "disc.pool.desc": "Fast, expressive, social. Open daily for members and guests alike.",
+    "disc.pool.tables": "4 Tables",
+    "disc.pool.size": "9-foot",
+    "disc.pool.detail": "Our four 9-foot tournament tables host everything from casual evenings to Bundesliga 2 matches. 8-Ball, 9-Ball, 10-Ball, Straight Pool — all played here, all night long. Open table on most weekdays; matchroom hire by reservation.",
+    "disc.pool.tags": "8-Ball,9-Ball,10-Ball,Straight Pool,Open Daily",
+    "disc.karambol.desc": "Three balls, no pockets, pure geometry. The historical heart of the club.",
+    "disc.karambol.tables": "4 Tables",
+    "disc.karambol.size": "2 big · 2 small",
+    "disc.karambol.detail": "From classic three-cushion to free game and cadre — Karambol is the discipline that built this club. Played on heated tables without pockets, it rewards angle, spin and patience over power. Our four tables — two large match-size, two smaller for training — see Bundesliga practice every Tuesday and Thursday.",
+    "disc.karambol.tags": "Three-Cushion,Cadre,Free Game,Heated Tables",
+    "disc.snooker.desc": "Twelve feet of felt. The longest, most cinematic game we offer.",
+    "disc.snooker.tables": "2 Tables",
+    "disc.snooker.size": "12-foot",
+    "disc.snooker.detail": "Two full-size 12-foot snooker tables, kept under match-grade conditions. We host the Hessen Snooker Cup every spring and run a development programme for juniors. Coaching available by appointment with our certified coaches.",
+    "disc.snooker.tags": "12-Foot Match,Hessen Cup,Junior Programme,Coaching",
+    "disc.tables": "Tables",
+    "disc.size": "Size",
     "disciplines.karambol.title": "Karambol",
     "disciplines.karambol.subtitle": "The oldest discipline",
     "disciplines.karambol.detail": "Four tables — two large (2.84m), two small (2.10m) — all Müller carom tables with heated slate. We play Libre, Cadre, and 3-cushion. Training on Tuesdays, league matches most Fridays. The club was founded for carom, and it remains the first discipline taught to new members.",
@@ -76,6 +98,35 @@ const TRANSLATIONS = {
     "membership.trial.feat3": "Introduction to house rules",
     "membership.trial.feat4": "No commitment required",
     "membership.trial.cta": "Book Trial",
+
+    // Membership plans
+    "membership.period": "/ month",
+    "membership.student.tag": "Tier 01",
+    "membership.student.name": "Student",
+    "membership.student.tagline": "Discounted rate for students with valid ID.",
+    "membership.student.feat1": "Valid student ID required",
+    "membership.student.feat2": "Unlimited access during opening hours",
+    "membership.student.feat3": "All ten tables, all three disciplines",
+    "membership.student.feat4": "Eligibility for league teams",
+    "membership.student.cta": "Apply as student",
+
+    "membership.regular.tag": "Tier 02 — recommended",
+    "membership.regular.name": "Regular",
+    "membership.regular.tagline": "Unlimited play, all tables, all disciplines.",
+    "membership.regular.feat1": "Unrestricted access · all opening hours",
+    "membership.regular.feat2": "All ten tables, all three disciplines",
+    "membership.regular.feat3": "Eligibility for league teams",
+    "membership.regular.feat4": "Locker & cue storage",
+    "membership.regular.cta": "Apply for membership",
+
+    "membership.family.tag": "Tier 03",
+    "membership.family.name": "Family",
+    "membership.family.tagline": "Register any family member under one membership.",
+    "membership.family.feat1": "Same price as regular membership",
+    "membership.family.feat2": "Register spouse and children",
+    "membership.family.feat3": "Family members share access",
+    "membership.family.feat4": "All regular member benefits",
+    "membership.family.cta": "Register family",
 
     "membership.social.tag": "Tier 02",
     "membership.social.name": "Social",
@@ -133,6 +184,42 @@ const TRANSLATIONS = {
     "footer.legal.privacy": "Privacy Policy",
     "footer.legal.terms": "Terms of Use",
     "footer.copyright": "BC Frankfurt 1912 e.V. All rights reserved.",
+
+    // Additional sections
+    "disciplines.pickGame": "Pick your <em>game</em>.",
+    "disciplines.fewClubs": "Few clubs in Germany maintain match-grade equipment for all three major billiard disciplines. We do — and we play them all, year-round.",
+    "experience.whyJoin": "Why Join",
+    "experience.moreThan": "More than <em>a room</em><br />with tables.",
+    "experience.workingClubhouse": "A working clubhouse with a lounge, a bar, and the kind of regulars who'll stay for one more frame — and remember your name when you come back.",
+    "experience.cloth.short": "Every July we re-cloth all ten tables with Simonis 860 / 300 Rapide — world championship standard.",
+    "membership.threeWays": "Three ways to <em>belong</em>.",
+    "membership.flatFair": "A flat, fair contribution structure. No initiation fee, no per-hour billing — just an annual membership and the keys to the room.",
+    "gallery.letLight": "We let the light, the wood and the felt do the talking. Photography by club member Andreas Becker.",
+    "news.num": "06",
+    "news.eyebrow": "News & Updates",
+    "news.title": "Tournaments,<br /><em>promotions</em> & events.",
+    "news.lede": "Stay up to date with league results, upcoming tournaments, and club achievements.",
+    "contact.num": "07",
+    "contact.visitContact": "Visit & Contact",
+    "contact.borsigallee": "Borsigallee 45,<br /><em>Frankfurt</em> am Main.",
+    "contact.fiveMinutes": "Five minutes from Hessen-Center, four from the U7 stop, parking on site. Drop in any evening from 18:00 — or send a note ahead.",
+    "contact.getDirections": "Get Directions",
+    "contact.openInMaps": "Open in Maps",
+    "contact.membersOnly": "Members Only",
+    "contact.privateClub": "This is a <em>private club</em>,<br />not a public bar.",
+    "contact.privateClubDesc1": "BC Frankfurt 1912 is a registered members-only association. We do not operate as a commercial establishment or walk-in venue. Access to our facilities is restricted to active members and their guests.",
+    "contact.privateClubDesc2": "If you're interested in becoming a member, please review our membership tiers and contact us via email to begin the application process.",
+    "contact.membershipInquiries": "Membership Inquiries",
+    "footer.getInvolved": "Get Involved",
+    "footer.trialVisit": "Trial visit",
+    "footer.leagueTeams": "League teams",
+    "footer.juniorProgramme": "Junior programme",
+    "footer.history": "History",
+    "footer.facilities": "Facilities",
+    "footer.boardStatutes": "Board & Statutes",
+    "footer.visit": "Visit",
+    "footer.calendar": "Calendar",
+    "footer.imprintPrivacy": "Imprint · Datenschutz",
   },
   DE: {
     // Nav
@@ -165,6 +252,9 @@ const TRANSLATIONS = {
     "disciplines.eyebrow": "Drei Disziplinen",
     "disciplines.title": "Karambol,<br />Pool, <em>Snooker</em>.",
     "disciplines.lede": "Nur wenige Vereine in Deutschland unterhalten wettkampftaugliche Ausrüstung für alle drei Billardarten unter einem Dach. Wir tun es — und das schon seit vor den meisten unserer Konkurrenten.",
+    "disciplines.pickGame": "Wähle dein <em>Spiel</em>.",
+    "disciplines.fewClubs": "Nur wenige Vereine in Deutschland unterhalten wettkampftaugliche Ausrüstung für alle drei Billardarten unter einem Dach. Wir tun es — das ganze Jahr über.",
+    "disciplines.aboutGame": "Über das Spiel",
     "disciplines.karambol.title": "Karambol",
     "disciplines.karambol.subtitle": "Die älteste Disziplin",
     "disciplines.karambol.detail": "Vier Tische — zwei große (2,84m), zwei kleine (2,10m) — alles Müller-Karambol-Tische mit beheizter Schieferplatte. Wir spielen Libre, Cadre und Dreiband. Training dienstags, Ligaspiele meist freitags. Der Verein wurde für Karambol gegründet und es bleibt die erste Disziplin, die neuen Mitgliedern beigebracht wird.",
@@ -174,6 +264,25 @@ const TRANSLATIONS = {
     "disciplines.snooker.title": "Snooker",
     "disciplines.snooker.subtitle": "Meisterschaftstische in voller Größe",
     "disciplines.snooker.detail": "Zwei 12-Fuß-Snookertische in voller Größe, gehalten unter Wettkampfbedingungen. Wir veranstalten jeden Frühling den Hessen Snooker Cup und führen ein Entwicklungsprogramm für Junioren durch. Training nach Vereinbarung mit unseren zertifizierten Trainern.",
+
+    // Discipline details
+    "disc.pool.desc": "Schnell, ausdrucksstark, gesellig. Täglich geöffnet für Mitglieder und Gäste.",
+    "disc.pool.tables": "4 Tische",
+    "disc.pool.size": "9-Fuß",
+    "disc.pool.detail": "Unsere vier 9-Fuß-Turniertische bieten alles von gemütlichen Abenden bis zu Bundesliga-2-Spielen. 8-Ball, 9-Ball, 10-Ball, 14.1 Endlos — alles wird hier gespielt, die ganze Nacht. Offener Tisch an den meisten Wochentagen; Spielraum-Miete auf Reservierung.",
+    "disc.pool.tags": "8-Ball,9-Ball,10-Ball,14.1 Endlos,Täglich geöffnet",
+    "disc.karambol.desc": "Drei Kugeln, keine Taschen, reine Geometrie. Das historische Herz des Vereins.",
+    "disc.karambol.tables": "4 Tische",
+    "disc.karambol.size": "2 groß · 2 klein",
+    "disc.karambol.detail": "Vom klassischen Dreiband bis zu Freiem Spiel und Cadre — Karambol ist die Disziplin, die diesen Verein aufgebaut hat. Gespielt auf beheizten Tischen ohne Taschen, belohnt es Winkel, Effet und Geduld statt Kraft. Unsere vier Tische — zwei große Wettkampf-Tische, zwei kleinere für Training — sehen jeden Dienstag und Donnerstag Bundesliga-Training.",
+    "disc.karambol.tags": "Dreiband,Cadre,Freies Spiel,Beheizte Tische",
+    "disc.snooker.desc": "Zwölf Fuß Tuch. Das längste, filmreifste Spiel, das wir anbieten.",
+    "disc.snooker.tables": "2 Tische",
+    "disc.snooker.size": "12-Fuß",
+    "disc.snooker.detail": "Zwei 12-Fuß-Snookertische in voller Größe, gehalten unter Wettkampfbedingungen. Wir veranstalten jeden Frühling den Hessen Snooker Cup und führen ein Jugendprogramm durch. Training nach Vereinbarung mit unseren zertifizierten Trainern.",
+    "disc.snooker.tags": "12-Fuß-Wettkampf,Hessen Cup,Jugendprogramm,Training",
+    "disc.tables": "Tische",
+    "disc.size": "Größe",
 
     // Experience
     "experience.num": "03",
@@ -197,6 +306,38 @@ const TRANSLATIONS = {
     "membership.num": "04",
     "membership.eyebrow": "Dem Verein beitreten",
     "membership.title": "Mitgliedschafts<em>stufen</em>.",
+    "membership.threeWays": "Drei Wege <em>dazuzugehören</em>.",
+    "membership.flatFair": "Eine faire, transparente Beitragsstruktur. Keine Aufnahmegebühr, keine Stundenabrechnung — nur eine Mitgliedschaft und Zugang zum Vereinsheim.",
+
+    // Membership plans
+    "membership.period": "/ Monat",
+    "membership.student.tag": "Stufe 01",
+    "membership.student.name": "Student",
+    "membership.student.tagline": "Ermäßigter Tarif für Studenten mit gültigem Ausweis.",
+    "membership.student.feat1": "Gültiger Studentenausweis erforderlich",
+    "membership.student.feat2": "Unbegrenzter Zugang während der Öffnungszeiten",
+    "membership.student.feat3": "Alle zehn Tische, alle drei Disziplinen",
+    "membership.student.feat4": "Berechtigung für Ligateams",
+    "membership.student.cta": "Als Student bewerben",
+
+    "membership.regular.tag": "Stufe 02 — empfohlen",
+    "membership.regular.name": "Regulär",
+    "membership.regular.tagline": "Unbegrenztes Spielen, alle Tische, alle Disziplinen.",
+    "membership.regular.feat1": "Uneingeschränkter Zugang · alle Öffnungszeiten",
+    "membership.regular.feat2": "Alle zehn Tische, alle drei Disziplinen",
+    "membership.regular.feat3": "Berechtigung für Ligateams",
+    "membership.regular.feat4": "Schließfach & Queue-Aufbewahrung",
+    "membership.regular.cta": "Mitgliedschaft beantragen",
+
+    "membership.family.tag": "Stufe 03",
+    "membership.family.name": "Familie",
+    "membership.family.tagline": "Registrieren Sie Familienmitglieder unter einer Mitgliedschaft.",
+    "membership.family.feat1": "Gleicher Preis wie reguläre Mitgliedschaft",
+    "membership.family.feat2": "Partner und Kinder anmelden",
+    "membership.family.feat3": "Familienmitglieder teilen den Zugang",
+    "membership.family.feat4": "Alle Vorteile der regulären Mitgliedschaft",
+    "membership.family.cta": "Familie anmelden",
+
     "membership.trial.tag": "Stufe 01",
     "membership.trial.name": "Probe",
     "membership.trial.price": "Kostenlos",
@@ -262,6 +403,42 @@ const TRANSLATIONS = {
     "footer.legal.privacy": "Datenschutz",
     "footer.legal.terms": "Nutzungsbedingungen",
     "footer.copyright": "BC Frankfurt 1912 e.V. Alle Rechte vorbehalten.",
+
+    // Additional sections
+    "disciplines.pickGame": "Wähle dein <em>Spiel</em>.",
+    "disciplines.fewClubs": "Nur wenige Vereine in Deutschland unterhalten wettkampftaugliche Ausrüstung für alle drei Billardarten unter einem Dach. Wir tun es — das ganze Jahr über.",
+    "experience.whyJoin": "Warum beitreten",
+    "experience.moreThan": "Mehr als <em>ein Raum</em><br />mit Tischen.",
+    "experience.workingClubhouse": "Ein aktives Vereinshaus mit Lounge, Bar und Stammgästen, die gerne noch ein Spiel bleiben — und sich an deinen Namen erinnern.",
+    "experience.cloth.short": "Jeden Juli beziehen wir alle zehn Tische neu mit Simonis 860 / 300 Rapide — Weltmeisterschaftsstandard.",
+    "membership.threeWays": "Drei Wege <em>dazuzugehören</em>.",
+    "membership.flatFair": "Eine faire, transparente Beitragsstruktur. Keine Aufnahmegebühr, keine Stundenabrechnung — nur eine Mitgliedschaft und Zugang zum Vereinsheim.",
+    "gallery.letLight": "Wir lassen Licht, Holz und Tuch für sich sprechen. Fotografie von Vereinsmitglied Andreas Becker.",
+    "news.num": "06",
+    "news.eyebrow": "Neuigkeiten",
+    "news.title": "Turniere,<br /><em>Aufstiege</em> & Events.",
+    "news.lede": "Bleiben Sie auf dem Laufenden über Ligaergebnisse, kommende Turniere und Vereinserfolge.",
+    "contact.num": "07",
+    "contact.visitContact": "Besuch & Kontakt",
+    "contact.borsigallee": "Borsigallee 45,<br /><em>Frankfurt</em> am Main.",
+    "contact.fiveMinutes": "Fünf Minuten vom Hessen-Center, vier von der U7-Haltestelle, Parkplätze vor Ort. Kommen Sie jeden Abend ab 18:00 vorbei — oder schreiben Sie uns vorher.",
+    "contact.getDirections": "Route planen",
+    "contact.openInMaps": "In Maps öffnen",
+    "contact.membersOnly": "Nur für Mitglieder",
+    "contact.privateClub": "Dies ist ein <em>privater Verein</em>,<br />keine öffentliche Bar.",
+    "contact.privateClubDesc1": "BC Frankfurt 1912 ist ein eingetragener Verein nur für Mitglieder. Wir betreiben keine kommerzielle Einrichtung oder Laufkundschaft. Der Zugang zu unseren Räumlichkeiten ist auf aktive Mitglieder und deren Gäste beschränkt.",
+    "contact.privateClubDesc2": "Wenn Sie Mitglied werden möchten, lesen Sie bitte unsere Mitgliedschaftsstufen und kontaktieren Sie uns per E-Mail, um den Bewerbungsprozess zu starten.",
+    "contact.membershipInquiries": "Mitgliedschaftsanfragen",
+    "footer.getInvolved": "Mitmachen",
+    "footer.trialVisit": "Probebesuch",
+    "footer.leagueTeams": "Ligateams",
+    "footer.juniorProgramme": "Jugendprogramm",
+    "footer.history": "Geschichte",
+    "footer.facilities": "Einrichtungen",
+    "footer.boardStatutes": "Vorstand & Satzung",
+    "footer.visit": "Besuchen",
+    "footer.calendar": "Kalender",
+    "footer.imprintPrivacy": "Impressum · Datenschutz",
   }
 };
 
@@ -559,44 +736,46 @@ const About = () => {
   </section>
 )};
 
-const DISCIPLINES = [
+const getDisciplines = (t, lang) => [
   {
     num: "01",
-    name: "Pool",
-    nameItalic: "Pool",
-    desc: "Fast, expressive, social. Open daily for members and guests alike.",
-    tables: "4 Tables",
-    size: "9-foot",
-    detail: "Our four 9-foot tournament tables host everything from casual evenings to Bundesliga 2 matches. 8-Ball, 9-Ball, 10-Ball, Straight Pool — all played here, all night long. Open table on most weekdays; matchroom hire by reservation.",
-    tags: ["8-Ball", "9-Ball", "10-Ball", "Straight Pool", "Open Daily"],
+    name: lang === "DE" ? "Billard" : "Pool",
+    nameItalic: lang === "DE" ? "Billard" : "Pool",
+    desc: t("disc.pool.desc"),
+    tables: t("disc.pool.tables"),
+    size: t("disc.pool.size"),
+    detail: t("disc.pool.detail"),
+    tags: t("disc.pool.tags").split(","),
     image: "https://bcfrankfurt.de/wp-content/uploads/2018/02/kugeln_s.jpg",
   },
   {
     num: "02",
     name: "Karambol",
     nameItalic: "Karambol",
-    desc: "Three balls, no pockets, pure geometry. The historical heart of the club.",
-    tables: "4 Tables",
-    size: "2 big · 2 small",
-    detail: "From classic three-cushion to free game and cadre — Karambol is the discipline that built this club. Played on heated tables without pockets, it rewards angle, spin and patience over power. Our four tables — two large match-size, two smaller for training — see Bundesliga practice every Tuesday and Thursday.",
-    tags: ["Three-Cushion", "Cadre", "Free Game", "Heated Tables"],
+    desc: t("disc.karambol.desc"),
+    tables: t("disc.karambol.tables"),
+    size: t("disc.karambol.size"),
+    detail: t("disc.karambol.detail"),
+    tags: t("disc.karambol.tags").split(","),
     image: "https://bcfrankfurt.de/wp-content/uploads/2018/02/Karambolage.jpg",
   },
   {
     num: "03",
     name: "Snooker",
     nameItalic: "Snooker",
-    desc: "Twelve feet of felt. The longest, most cinematic game we offer.",
-    tables: "2 Tables",
-    size: "12-foot",
-    detail: "Two full-size 12-foot snooker tables, kept under match-grade conditions. We host the Hessen Snooker Cup every spring and run a development programme for juniors. Coaching available by appointment with our certified coaches.",
-    tags: ["12-Foot Match", "Hessen Cup", "Junior Programme", "Coaching"],
+    desc: t("disc.snooker.desc"),
+    tables: t("disc.snooker.tables"),
+    size: t("disc.snooker.size"),
+    detail: t("disc.snooker.detail"),
+    tags: t("disc.snooker.tags").split(","),
     image: "https://bcfrankfurt.de/wp-content/uploads/2018/02/atmo3.jpg",
   },
 ];
 
 const Disciplines = () => {
+  const { t, lang } = useTranslation();
   const [open, setOpen] = React.useState(0);
+  const DISCIPLINES = getDisciplines(t, lang);
   return (
     <section className="section disciplines felt-texture" id="disciplines">
       <div className="container">
@@ -605,15 +784,12 @@ const Disciplines = () => {
             <div className="section-eyebrow-row">
               <span className="section-num">02</span>
               <span className="section-divider" />
-              <span className="eyebrow">Three Disciplines</span>
+              <span className="eyebrow">{t("disciplines.eyebrow")}</span>
             </div>
-            <h2 className="section-title" style={{ marginTop: 24 }}>
-              Pick your <em>game</em>.
-            </h2>
+            <h2 className="section-title" style={{ marginTop: 24 }} dangerouslySetInnerHTML={{ __html: t("disciplines.pickGame") }} />
           </div>
           <p className="section-lede">
-            Few clubs in Germany maintain match-grade equipment for all three
-            major billiard disciplines. We do — and we play them all, year-round.
+            {t("disciplines.fewClubs")}
           </p>
         </div>
 
@@ -631,11 +807,11 @@ const Disciplines = () => {
               <div className="discipline-desc">{d.desc}</div>
               <div className="discipline-meta">
                 <div className="discipline-meta-row">
-                  <span className="discipline-meta-key">Tables</span>
+                  <span className="discipline-meta-key">{t("disc.tables")}</span>
                   <span className="discipline-meta-val">{d.tables}</span>
                 </div>
                 <div className="discipline-meta-row">
-                  <span className="discipline-meta-key">Size</span>
+                  <span className="discipline-meta-key">{t("disc.size")}</span>
                   <span className="discipline-meta-val">{d.size}</span>
                 </div>
               </div>
@@ -649,11 +825,11 @@ const Disciplines = () => {
                     <img src={d.image} alt={d.name} style={{ width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.9) contrast(1.05) saturate(0.85)" }} />
                   </div>
                   <div className="discipline-detail-text">
-                    <h4>About the game</h4>
+                    <h4>{t("disciplines.aboutGame")}</h4>
                     <p>{d.detail}</p>
                     <div className="discipline-tags">
-                      {d.tags.map(t => (
-                        <span key={t} className="discipline-tag">{t}</span>
+                      {d.tags.map(tag => (
+                        <span key={tag} className="discipline-tag">{tag}</span>
                       ))}
                     </div>
                   </div>
@@ -667,7 +843,9 @@ const Disciplines = () => {
   );
 };
 
-const Experience = () => (
+const Experience = () => {
+  const { t } = useTranslation();
+  return (
   <section className="section experience" id="experience">
     <div className="container">
       <div className="section-head reveal">
@@ -675,211 +853,35 @@ const Experience = () => (
           <div className="section-eyebrow-row">
             <span className="section-num">03</span>
             <span className="section-divider" />
-            <span className="eyebrow">Why Join</span>
+            <span className="eyebrow">{t("experience.whyJoin")}</span>
           </div>
-          <h2 className="section-title" style={{ marginTop: 24 }}>
-            More than <em>a room</em><br />with tables.
-          </h2>
+          <h2 className="section-title" style={{ marginTop: 24 }} dangerouslySetInnerHTML={{ __html: t("experience.moreThan") }} />
         </div>
         <p className="section-lede">
-          A working clubhouse with a lounge, a bar, and the kind of regulars
-          who'll stay for one more frame — and remember your name when you come back.
+          {t("experience.workingClubhouse")}
         </p>
       </div>
 
       <div className="experience-grid reveal">
-        <div className="exp-card exp-card-tables">
-          <div className="exp-card-num">10</div>
-          <h3>Match-grade tables</h3>
-          <p style={{ marginBottom: 32 }}>Two large carom, two small carom, four 9-foot pool, two 12-foot snooker.</p>
-
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: "8px",
-            marginTop: "auto",
-          }}>
-            {/* Row 1 */}
-            <div style={{
-              background: "var(--brass-700)",
-              border: "1px solid var(--brass-500)",
-              borderRadius: "6px",
-              padding: "16px 8px",
-              textAlign: "center",
-              fontSize: "10px",
-              fontFamily: "var(--font-mono)",
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              color: "var(--bone-100)",
-              aspectRatio: "1.7/1",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}>Big Karambol</div>
-            <div style={{
-              background: "var(--felt-700)",
-              border: "1px solid var(--felt-500)",
-              borderRadius: "6px",
-              padding: "16px 8px",
-              textAlign: "center",
-              fontSize: "10px",
-              fontFamily: "var(--font-mono)",
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              color: "var(--bone-100)",
-              aspectRatio: "1.7/1",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}>Pool</div>
-            <div style={{
-              background: "var(--felt-700)",
-              border: "1px solid var(--felt-500)",
-              borderRadius: "6px",
-              padding: "16px 8px",
-              textAlign: "center",
-              fontSize: "10px",
-              fontFamily: "var(--font-mono)",
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              color: "var(--bone-100)",
-              aspectRatio: "1.7/1",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}>Pool</div>
-
-            {/* Row 2 */}
-            <div style={{
-              background: "var(--brass-700)",
-              border: "1px solid var(--brass-500)",
-              borderRadius: "6px",
-              padding: "16px 8px",
-              textAlign: "center",
-              fontSize: "10px",
-              fontFamily: "var(--font-mono)",
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              color: "var(--bone-100)",
-              aspectRatio: "1.7/1",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}>Big Karambol</div>
-            <div style={{
-              gridColumn: "span 2",
-              background: "oklch(0.35 0.08 145)",
-              border: "1px solid oklch(0.45 0.10 145)",
-              borderRadius: "6px",
-              padding: "16px 8px",
-              textAlign: "center",
-              fontSize: "10px",
-              fontFamily: "var(--font-mono)",
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              color: "var(--bone-100)",
-              aspectRatio: "3.5/1",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}>Snooker 12ft</div>
-
-            {/* Row 3 */}
-            <div style={{
-              background: "var(--brass-900)",
-              border: "1px solid var(--brass-700)",
-              borderRadius: "6px",
-              padding: "16px 8px",
-              textAlign: "center",
-              fontSize: "10px",
-              fontFamily: "var(--font-mono)",
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              color: "var(--bone-100)",
-              aspectRatio: "1.7/1",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}>Small Karambol</div>
-            <div style={{
-              background: "var(--brass-900)",
-              border: "1px solid var(--brass-700)",
-              borderRadius: "6px",
-              padding: "16px 8px",
-              textAlign: "center",
-              fontSize: "10px",
-              fontFamily: "var(--font-mono)",
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              color: "var(--bone-100)",
-              aspectRatio: "1.7/1",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}>Small Karambol</div>
-            <div style={{
-              background: "var(--felt-700)",
-              border: "1px solid var(--felt-500)",
-              borderRadius: "6px",
-              padding: "16px 8px",
-              textAlign: "center",
-              fontSize: "10px",
-              fontFamily: "var(--font-mono)",
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              color: "var(--bone-100)",
-              aspectRatio: "1.7/1",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}>Pool</div>
-
-            {/* Row 4 */}
-            <div style={{
-              gridColumn: "span 2",
-              background: "oklch(0.35 0.08 145)",
-              border: "1px solid oklch(0.45 0.10 145)",
-              borderRadius: "6px",
-              padding: "16px 8px",
-              textAlign: "center",
-              fontSize: "10px",
-              fontFamily: "var(--font-mono)",
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              color: "var(--bone-100)",
-              aspectRatio: "3.5/1",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}>Snooker 12ft</div>
-            <div style={{
-              background: "var(--felt-700)",
-              border: "1px solid var(--felt-500)",
-              borderRadius: "6px",
-              padding: "16px 8px",
-              textAlign: "center",
-              fontSize: "10px",
-              fontFamily: "var(--font-mono)",
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              color: "var(--bone-100)",
-              aspectRatio: "1.7/1",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}>Pool</div>
-          </div>
+        <div className="exp-card exp-card-tables" style={{ padding: 0, overflow: "hidden" }}>
+          <img
+            src="assets/Images/floor-plan.png"
+            alt="Club floor plan with 10 match-grade tables"
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          />
         </div>
 
         <div className="exp-card exp-card-cloth">
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
             <div>
-              <div className="eyebrow" style={{ marginBottom: 12 }}>Annually renewed</div>
-              <h3 style={{ fontSize: 28, lineHeight: 1.2, marginBottom: 12 }}>
-                Tournament cloth, every <em style={{ fontStyle: "italic", color: "var(--brass-500)" }}>summer</em>.
-              </h3>
+              <div className="eyebrow" style={{ marginBottom: 12 }}>{t("experience.cloth.eyebrow")}</div>
+              <h3 style={{ fontSize: 28, lineHeight: 1.2, marginBottom: 12 }} dangerouslySetInnerHTML={{ __html: t("experience.cloth.title") }} />
               <p style={{ fontSize: 13, maxWidth: "36ch" }}>
-                Every July we re-cloth all ten tables with Simonis 860 / 300 Rapide — world championship standard.
+                {t("experience.cloth.short")}
               </p>
             </div>
             <div style={{
@@ -898,18 +900,18 @@ const Experience = () => (
           <svg className="exp-card-icon" viewBox="0 0 24 24" fill="none">
             <path d="M3 18h18M5 18V8a2 2 0 012-2h10a2 2 0 012 2v10M9 18v-6h6v6" stroke="currentColor" strokeWidth="1.5" />
           </svg>
-          <h3>The Lounge</h3>
-          <p>Leather, low light, and a dedicated space for spectating — or for the conversation between frames.</p>
+          <h3>{t("experience.lounge.title")}</h3>
+          <p>{t("experience.lounge.desc")}</p>
         </div>
 
         <div className="exp-card exp-card-trial">
-          <div className="eyebrow" style={{ marginBottom: 12, color: "var(--brass-300)" }}>First visit free</div>
-          <h3>Trial Membership</h3>
+          <div className="eyebrow" style={{ marginBottom: 12, color: "var(--brass-300)" }}>{t("experience.trial.eyebrow")}</div>
+          <h3>{t("experience.trial.title")}</h3>
           <p style={{ color: "var(--bone-200)" }}>
-            Two evenings on us. Bring a friend. We'll lend you a cue.
+            {t("experience.trial.desc")}
           </p>
           <a href="#membership" className="btn btn-brass" style={{ marginTop: 24, alignSelf: "flex-start", padding: "12px 20px", fontSize: 12 }}>
-            Reserve <Arrow size={12} />
+            {t("experience.trial.reserve")} <Arrow size={12} />
           </a>
         </div>
 
@@ -917,63 +919,67 @@ const Experience = () => (
           <svg className="exp-card-icon" viewBox="0 0 24 24" fill="none">
             <path d="M6 3v6a4 4 0 008 0V3M10 13v8M7 21h6" stroke="currentColor" strokeWidth="1.5" />
           </svg>
-          <h3>Bar & Kitchen</h3>
-          <p>Cold drinks, decent coffee, and a small menu of snacks — Apfelwein on Fridays, by tradition.</p>
+          <h3>{t("experience.snacks.title")}</h3>
+          <p>{t("experience.snacks.desc")}</p>
         </div>
       </div>
     </div>
   </section>
 );
+};
 
-const PLANS = [
+const getPlans = (t) => [
   {
-    tag: "Tier 01",
-    name: "Student",
+    tag: t("membership.student.tag"),
+    name: t("membership.student.name"),
     price: "20",
-    period: "/ month",
-    tagline: "Discounted rate for students with valid ID.",
+    period: t("membership.period"),
+    tagline: t("membership.student.tagline"),
     features: [
-      "Valid student ID required",
-      "Unlimited access during opening hours",
-      "All ten tables, all three disciplines",
-      "Eligibility for league teams",
+      t("membership.student.feat1"),
+      t("membership.student.feat2"),
+      t("membership.student.feat3"),
+      t("membership.student.feat4"),
     ],
-    cta: "Apply as student",
+    cta: t("membership.student.cta"),
     featured: false,
   },
   {
-    tag: "Tier 02 — recommended",
-    name: "Regular",
+    tag: t("membership.regular.tag"),
+    name: t("membership.regular.name"),
     price: "40",
-    period: "/ month",
-    tagline: "Unlimited play, all tables, all disciplines.",
+    period: t("membership.period"),
+    tagline: t("membership.regular.tagline"),
     features: [
-      "Unrestricted access · all opening hours",
-      "All ten tables, all three disciplines",
-      "Eligibility for league teams",
-      "Locker & cue storage",
+      t("membership.regular.feat1"),
+      t("membership.regular.feat2"),
+      t("membership.regular.feat3"),
+      t("membership.regular.feat4"),
     ],
-    cta: "Apply for membership",
+    cta: t("membership.regular.cta"),
     featured: true,
   },
   {
-    tag: "Tier 03",
-    name: "Family",
+    tag: t("membership.family.tag"),
+    name: t("membership.family.name"),
     price: "40",
-    period: "/ month",
-    tagline: "Register any family member under one membership.",
+    period: t("membership.period"),
+    tagline: t("membership.family.tagline"),
     features: [
-      "Same price as regular membership",
-      "Register spouse and children",
-      "Family members share access",
-      "All regular member benefits",
+      t("membership.family.feat1"),
+      t("membership.family.feat2"),
+      t("membership.family.feat3"),
+      t("membership.family.feat4"),
     ],
-    cta: "Register family",
+    cta: t("membership.family.cta"),
     featured: false,
   },
 ];
 
-const Membership = () => (
+const Membership = () => {
+  const { t } = useTranslation();
+  const PLANS = getPlans(t);
+  return (
   <section className="section membership" id="membership">
     <div className="container">
       <div className="section-head reveal">
@@ -981,15 +987,12 @@ const Membership = () => (
           <div className="section-eyebrow-row">
             <span className="section-num">04</span>
             <span className="section-divider" />
-            <span className="eyebrow">Membership</span>
+            <span className="eyebrow">{t("membership.eyebrow")}</span>
           </div>
-          <h2 className="section-title" style={{ marginTop: 24 }}>
-            Three ways to <em>belong</em>.
-          </h2>
+          <h2 className="section-title" style={{ marginTop: 24 }} dangerouslySetInnerHTML={{ __html: t("membership.threeWays") }} />
         </div>
         <p className="section-lede">
-          A flat, fair contribution structure. No initiation fee, no per-hour
-          billing — just an annual membership and the keys to the room.
+          {t("membership.flatFair")}
         </p>
       </div>
 
@@ -1016,6 +1019,7 @@ const Membership = () => (
     </div>
   </section>
 );
+};
 
 const GALLERY = [
   { cls: "g1", caption: "Main hall · Saturday evening", img: "https://bcfrankfurt.de/wp-content/uploads/2018/02/atmo1.jpg" },
@@ -1027,7 +1031,9 @@ const GALLERY = [
   { cls: "g7", caption: "Karambol training", img: "https://bcfrankfurt.de/wp-content/uploads/2018/02/05_Karambolage.jpg" },
 ];
 
-const Gallery = () => (
+const Gallery = () => {
+  const { t } = useTranslation();
+  return (
   <section className="section" id="gallery">
     <div className="container">
       <div className="section-head reveal">
@@ -1035,15 +1041,12 @@ const Gallery = () => (
           <div className="section-eyebrow-row">
             <span className="section-num">05</span>
             <span className="section-divider" />
-            <span className="eyebrow">Inside the Club</span>
+            <span className="eyebrow">{t("gallery.eyebrow")}</span>
           </div>
-          <h2 className="section-title" style={{ marginTop: 24 }}>
-            <em>Atmosphere</em><br />in still frames.
-          </h2>
+          <h2 className="section-title" style={{ marginTop: 24 }} dangerouslySetInnerHTML={{ __html: t("gallery.title") }} />
         </div>
         <p className="section-lede">
-          We let the light, the wood and the felt do the talking.
-          Photography by club member Andreas Becker.
+          {t("gallery.letLight")}
         </p>
       </div>
 
@@ -1069,6 +1072,7 @@ const Gallery = () => (
     </div>
   </section>
 );
+};
 
 const NEWS = [
   {
@@ -1101,22 +1105,22 @@ const NEWS = [
   },
 ];
 
-const News = () => (
+const News = () => {
+  const { t } = useTranslation();
+  return (
   <section className="section" id="news" style={{ background: "var(--ink-050)" }}>
     <div className="container">
       <div className="section-head reveal">
         <div>
           <div className="section-eyebrow-row">
-            <span className="section-num">06</span>
+            <span className="section-num">{t("news.num")}</span>
             <span className="section-divider" />
-            <span className="eyebrow">News & Updates</span>
+            <span className="eyebrow">{t("news.eyebrow")}</span>
           </div>
-          <h2 className="section-title" style={{ marginTop: 24 }}>
-            Tournaments,<br /><em>promotions</em> & events.
-          </h2>
+          <h2 className="section-title" style={{ marginTop: 24 }} dangerouslySetInnerHTML={{ __html: t("news.title") }} />
         </div>
         <p className="section-lede">
-          Stay up to date with league results, upcoming tournaments, and club achievements.
+          {t("news.lede")}
         </p>
       </div>
 
@@ -1215,24 +1219,24 @@ const News = () => (
     </div>
   </section>
 );
+};
 
-const Contact = () => (
+const Contact = () => {
+  const { t } = useTranslation();
+  return (
   <section className="section contact" id="contact">
     <div className="container">
       <div className="section-head reveal">
         <div>
           <div className="section-eyebrow-row">
-            <span className="section-num">07</span>
+            <span className="section-num">{t("contact.num")}</span>
             <span className="section-divider" />
-            <span className="eyebrow">Visit & Contact</span>
+            <span className="eyebrow">{t("contact.visitContact")}</span>
           </div>
-          <h2 className="section-title" style={{ marginTop: 24 }}>
-            Borsigallee 45,<br /><em>Frankfurt</em> am Main.
-          </h2>
+          <h2 className="section-title" style={{ marginTop: 24 }} dangerouslySetInnerHTML={{ __html: t("contact.borsigallee") }} />
         </div>
         <p className="section-lede">
-          Five minutes from Hessen-Center, four from the U7 stop, parking
-          on site. Drop in any evening from 18:00 — or send a note ahead.
+          {t("contact.fiveMinutes")}
         </p>
       </div>
 
@@ -1252,29 +1256,29 @@ const Contact = () => (
 
           <div style={{ display: "flex", gap: 12, marginBottom: 32 }}>
             <a href="https://www.google.com/maps/dir/?api=1&destination=Borsigallee+45+Frankfurt" target="_blank" rel="noopener" className="btn btn-brass" style={{ padding: "12px 20px", fontSize: 12 }}>
-              Get Directions <ArrowOut />
+              {t("contact.getDirections")} <ArrowOut />
             </a>
             <a href="https://www.google.com/maps/place/Borsigallee+45+Frankfurt" target="_blank" rel="noopener" className="btn btn-ghost" style={{ padding: "12px 20px", fontSize: 12 }}>
-              Open in Maps <ArrowOut />
+              {t("contact.openInMaps")} <ArrowOut />
             </a>
           </div>
 
           <div className="contact-info-block">
-            <h4>Address</h4>
+            <h4>{t("contact.address.title")}</h4>
             <p>Borsigallee 45<br />60388 Frankfurt am Main</p>
           </div>
 
           <div className="contact-info-block">
-            <h4>Opening Hours</h4>
+            <h4>{t("contact.hours.title")}</h4>
             <p style={{ fontSize: 14, color: "var(--bone-200)", fontFamily: "var(--font-sans)", lineHeight: 1.6 }}>
-              Tuesday–Friday: 18:00–23:00<br />
-              Saturday–Sunday: 14:00–23:00<br />
-              <span style={{ color: "var(--bone-400)", fontStyle: "italic" }}>Closed Mondays</span>
+              {t("contact.hours.weekdays")}: {t("contact.hours.weekdaysTimes")}<br />
+              {t("contact.hours.weekend")}: {t("contact.hours.weekendTimes")}<br />
+              <span style={{ color: "var(--bone-400)", fontStyle: "italic" }}>{t("contact.hours.closed")}</span>
             </p>
           </div>
 
           <div className="contact-info-block">
-            <h4>Contact</h4>
+            <h4>{t("contact.contact.title")}</h4>
             <p style={{ marginBottom: 8 }}>
               <a href="mailto:info@bcfrankfurt1912.de" style={{ color: "var(--brass-500)", textDecoration: "none" }}>
                 info@bcfrankfurt1912.de
@@ -1294,19 +1298,13 @@ const Contact = () => (
           borderRadius: "16px",
           padding: "48px",
         }}>
-          <div className="eyebrow" style={{ marginBottom: 24, color: "var(--brass-500)" }}>Members Only</div>
-          <h3 style={{ fontFamily: "var(--font-display)", fontSize: 36, fontWeight: 400, marginBottom: 16, lineHeight: 1.2, letterSpacing: "-0.02em" }}>
-            This is a <em style={{ fontStyle: "italic", color: "var(--brass-500)" }}>private club</em>,<br />
-            not a public bar.
-          </h3>
+          <div className="eyebrow" style={{ marginBottom: 24, color: "var(--brass-500)" }}>{t("contact.membersOnly")}</div>
+          <h3 style={{ fontFamily: "var(--font-display)", fontSize: 36, fontWeight: 400, marginBottom: 16, lineHeight: 1.2, letterSpacing: "-0.02em" }} dangerouslySetInnerHTML={{ __html: t("contact.privateClub") }} />
           <p style={{ color: "var(--bone-300)", fontSize: 15, marginBottom: 24, lineHeight: 1.6 }}>
-            BC Frankfurt 1912 is a registered members-only association. We do not operate
-            as a commercial establishment or walk-in venue. Access to our facilities is
-            restricted to active members and their guests.
+            {t("contact.privateClubDesc1")}
           </p>
           <p style={{ color: "var(--bone-300)", fontSize: 15, marginBottom: 32, lineHeight: 1.6 }}>
-            If you're interested in becoming a member, please review our membership tiers
-            and contact us via email to begin the application process.
+            {t("contact.privateClubDesc2")}
           </p>
 
           <div style={{
@@ -1323,7 +1321,7 @@ const Contact = () => (
               textTransform: "uppercase",
               color: "var(--bone-500)",
               marginBottom: 16,
-            }}>Membership Inquiries</h5>
+            }}>{t("contact.membershipInquiries")}</h5>
             <p style={{ marginBottom: 12 }}>
               <a href="mailto:info@bcfrankfurt1912.de" style={{
                 color: "var(--brass-500)",
@@ -1352,14 +1350,17 @@ const Contact = () => (
     </div>
   </section>
 );
+};
 
-const Footer = () => (
+const Footer = () => {
+  const { t } = useTranslation();
+  return (
   <footer className="footer">
     <div className="container">
       <div className="footer-grid">
         <div className="footer-brand">
           <h3>Billard Club<br /><em>Frankfurt</em> 1912 e.V.</h3>
-          <p>Frankfurt's home of Karambol, Pool and Snooker since 1912.</p>
+          <p>{t("footer.about.line1")}</p>
           <div style={{ display: "flex", gap: 12, marginTop: 32 }}>
             {["Instagram", "Facebook", "YouTube"].map(s => (
               <a key={s} href="#" style={{
@@ -1372,31 +1373,31 @@ const Footer = () => (
           </div>
         </div>
         <div className="footer-col">
-          <h5>The Club</h5>
+          <h5>{t("footer.about.title")}</h5>
           <ul>
-            <li><a href="#about">History</a></li>
-            <li><a href="#disciplines">Disciplines</a></li>
-            <li><a href="#experience">Facilities</a></li>
-            <li><a href="#">Board & Statutes</a></li>
+            <li><a href="#about">{t("footer.history")}</a></li>
+            <li><a href="#disciplines">{t("nav.disciplines")}</a></li>
+            <li><a href="#experience">{t("footer.facilities")}</a></li>
+            <li><a href="#">{t("footer.boardStatutes")}</a></li>
           </ul>
         </div>
         <div className="footer-col">
-          <h5>Get Involved</h5>
+          <h5>{t("footer.getInvolved")}</h5>
           <ul>
-            <li><a href="#membership">Membership</a></li>
-            <li><a href="#">Trial visit</a></li>
-            <li><a href="#">League teams</a></li>
-            <li><a href="#">Junior programme</a></li>
+            <li><a href="#membership">{t("nav.membership")}</a></li>
+            <li><a href="#">{t("footer.trialVisit")}</a></li>
+            <li><a href="#">{t("footer.leagueTeams")}</a></li>
+            <li><a href="#">{t("footer.juniorProgramme")}</a></li>
           </ul>
         </div>
         <div className="footer-col">
-          <h5>Visit</h5>
+          <h5>{t("footer.visit")}</h5>
           <ul>
             <li><a href="#contact">Borsigallee 45</a></li>
-            <li><a href="#contact">24/7 Open</a></li>
-            <li><a href="calendar.html">Calendar</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li><a href="#">Imprint · Datenschutz</a></li>
+            <li><a href="#contact">{t("contact.hours.title")}</a></li>
+            <li><a href="calendar.html">{t("footer.calendar")}</a></li>
+            <li><a href="#contact">{t("contact.contact.title")}</a></li>
+            <li><a href="#">{t("footer.imprintPrivacy")}</a></li>
           </ul>
         </div>
       </div>
@@ -1406,6 +1407,7 @@ const Footer = () => (
     </div>
   </footer>
 );
+};
 
 Object.assign(window, {
   Nav, Hero, Marquee, About, Disciplines, Experience, Membership, Gallery, Contact, Footer, LangPicker,
