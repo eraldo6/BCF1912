@@ -1,3 +1,7 @@
+"use client";
+
+import React from "react";
+
 /* Games Section — Display matches and standings with season selector */
 
 const AVAILABLE_SEASONS = [
@@ -6,7 +10,7 @@ const AVAILABLE_SEASONS = [
   { id: "3", name: "2022/2023" },
 ];
 
-const Games = () => {
+export const Games = () => {
   const [selectedSeason, setSelectedSeason] = React.useState("5"); // Current season
   const [data, setData] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
@@ -19,7 +23,7 @@ const Games = () => {
       setError(null);
 
       try {
-        const response = await fetch(`src/data/bcf_season_${selectedSeason}.json`);
+        const response = await fetch(`/data/bcf_season_${selectedSeason}.json`);
 
         if (!response.ok) {
           throw new Error(`Failed to load season data`);

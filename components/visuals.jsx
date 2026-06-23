@@ -1,6 +1,8 @@
+"use client";
+
 /* SVG visuals: pool table, balls, icons */
 
-const PoolTableHero = ({ tilt = -8 }) => (
+export const PoolTableHero = ({ tilt = -8 }) => (
   <svg
     viewBox="0 0 1400 700"
     width="100%"
@@ -100,7 +102,7 @@ const PoolTableHero = ({ tilt = -8 }) => (
   </svg>
 );
 
-const ScrollCue = () => (
+export const ScrollCue = () => (
   <div style={{
     position: "absolute",
     bottom: 40,
@@ -139,19 +141,19 @@ const ScrollCue = () => (
   </div>
 );
 
-const Arrow = ({ size = 14 }) => (
+export const Arrow = ({ size = 14 }) => (
   <svg width={size} height={size} viewBox="0 0 16 16" fill="none" className="btn-arrow">
     <path d="M2 8h12m0 0L9 3m5 5l-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
-const ArrowOut = ({ size = 14 }) => (
+export const ArrowOut = ({ size = 14 }) => (
   <svg width={size} height={size} viewBox="0 0 16 16" fill="none">
     <path d="M5 11L11 5M11 5H6M11 5V10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
 
-const TableIcon = ({ type = "pool", size = 60 }) => {
+export const TableIcon = ({ type = "pool", size = 60 }) => {
   if (type === "carom") {
     // No pockets
     return (
@@ -190,13 +192,13 @@ const TableIcon = ({ type = "pool", size = 60 }) => {
   );
 };
 
-const Placeholder = ({ label, ratio }) => (
+export const Placeholder = ({ label, ratio }) => (
   <div className="placeholder-img" style={ratio ? { aspectRatio: ratio } : null}>
     <div>{label}</div>
   </div>
 );
 
-const FeltSwatch = ({ color = "var(--felt-700)", style }) => (
+export const FeltSwatch = ({ color = "var(--felt-700)", style }) => (
   <div style={{
     background: color,
     width: "100%",
@@ -207,7 +209,3 @@ const FeltSwatch = ({ color = "var(--felt-700)", style }) => (
     ...style,
   }} />
 );
-
-Object.assign(window, {
-  PoolTableHero, ScrollCue, Arrow, ArrowOut, TableIcon, Placeholder, FeltSwatch,
-});
