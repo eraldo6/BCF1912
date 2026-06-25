@@ -24,91 +24,34 @@
 
 ---
 
-## Tailwind CSS v4 Setup
+## Styling Setup
 
-### Required Configuration
+This project uses **plain CSS**, not Tailwind. All styling lives in `app/globals.css`
+and is loaded once via `app/layout.jsx` — no utility-class framework, no PostCSS
+plugins beyond what Next.js ships with by default.
 
-**1. `postcss.config.mjs`**
-```javascript
-export default {
-  plugins: {
-    '@tailwindcss/postcss': {},
-  },
-};
-```
+### Conventions
 
-**2. `globals.css`**
-```css
-@import "tailwindcss";
+- **Color system**: CSS custom properties defined in `:root`:
+  - `--brass-*` — accent color (warm gold)
+  - `--felt-*` — green tones (billiard table)
+  - `--ink-*` — dark backgrounds
+  - `--bone-*` — light text
+- **Components**: named classes (e.g. `.btn-brass`, `.section-title`, `.discipline-row`)
+  defined once in `globals.css`, reused via `className` across components.
+- **No CSS-in-JS, no Tailwind utility classes.** Add new styles to `globals.css`
+  following the existing naming patterns rather than inline `style={{...}}` objects,
+  except where the existing code already does so (many components use inline styles
+  for one-off layout — match the surrounding code's style when editing it).
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-    /* Use HSL format for color variables */
-  }
-}
-```
+## Language
 
-**3. `tailwind.config.ts` (optional, required only for plugins)**
-```typescript
-import type { Config } from "tailwindcss";
-
-const config: Config = {
-  content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
-  // plugins: [require("tailwindcss-animate")], // Add if needed
-};
-export default config;
-```
-
-### Quick v4 Reference
-
-**Renamed utilities:**
-- `shadow-sm` → `shadow-xs`
-- `blur-sm` → `blur-xs` 
-- `rounded-sm` → `rounded-xs`
-- `outline-none` → `outline-hidden`
-
-**Removed utilities (use modern syntax):**
-- `bg-opacity-50` → `bg-black/50`
-- `flex-shrink-*` → `shrink-*`
-- `flex-grow-*` → `grow-*`
-
-**CSS variables:**
-```html
-<!-- v4 syntax -->
-<div class="bg-(--brand-color)"></div>
-```
-
----
-
-## Global CSS Guidelines
-
-Keep `globals.css` minimal. Use Tailwind utilities in components for most styling.
-
-**globals.css should only contain:**
-1. Base & reset styles
-2. Typography setup
-3. CSS variable definitions
-4. Global page styles (body background, etc.)
-5. Minimal reusable patterns via `@apply`
-6. Third-party/utility styles
-
-**Rule of thumb:**
-- One-off styles → Tailwind utilities in `.tsx` files
-- Global/brand-defining → `globals.css`
-
----
+Plain JavaScript (`.jsx`), not TypeScript. No `.tsx` files, no `tsconfig.json`.
 
 ## Verification Checklist
 
-After setup, verify:
-- ✅ `postcss.config.mjs` uses `@tailwindcss/postcss`
-- ✅ `globals.css` starts with `@import "tailwindcss"`
-- ✅ No `@tailwind base/components/utilities` directives (v3 syntax)
-- ✅ Color variables use HSL format
-- ✅ Using v4 utility names (shadow-xs, not shadow-sm)
+After styling changes, verify:
+- ✅ New classes/variables added to `app/globals.css`, not a new stylesheet
+- ✅ Reused existing CSS variables (`--brass-*`, `--felt-*`, `--ink-*`, `--bone-*`)
+  where applicable instead of introducing new color values
+- ✅ No Tailwind utility classes, no `.tsx` files

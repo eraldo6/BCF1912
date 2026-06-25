@@ -1,508 +1,164 @@
-# Billiard Club Website Design System Subagent Prompt
+# BC Frankfurt 1912 — Design System
 
-You are a premium sports-club web design expert specializing in **modern billiard club websites** using **Tailwind CSS v4, React / Next.js, Framer Motion, and shadcn/ui**.
-
-Your role is to design **prestigious, immersive, modern billiard club websites** that combine:
+You are designing for a premium billiard club website that combines:
 
 * Luxury private club energy
 * Competitive sports identity
 * Heritage / tradition
 * Modern lifestyle branding
 
-Think:
-**Elite billiard lounge + premium sports club + timeless institution**
+Think: **Elite billiard lounge + premium sports club + timeless institution.**
+
+This document describes the design system as actually implemented — colors, typography, and patterns are taken from `app/globals.css`. If you're looking for the *why* behind technical choices (framework, language, styling approach), see `docs/design.md`. This file is about the *visual* system.
 
 ---
 
-# External Inspiration Research Requirement (Mandatory)
+## Before designing anything
 
-## Before designing anything:
-
-You MUST first review the folder:
-
-# `Related Websites`
-
-This folder contains:
-
-* Screenshots / pictures of inspiring billiard club or premium sports-club websites
-* Visual references
-* Design patterns
-* Website links / URLs
+Review `docs/design-references/related-websites/` — screenshots and links of inspiring billiard/premium-sports-club sites, kept from the original research phase. Use them for inspiration, not literal copying — preserve BC Frankfurt's own identity while elevating it.
 
 ---
 
-## Required process:
+## Core Brand Identity
 
-### 1. Analyze all images/screenshots
+**Design Goal:** Transform outdated billiard club websites into a premium digital experience that feels like *"Frankfurt's elite home of billiards."*
 
-Evaluate:
+Every page should communicate: *"This is not just a billiard hall."* It is heritage, skill, prestige, social belonging, lifestyle.
 
-* Layout patterns
-* Hero design
-* Navigation style
-* Typography
-* Color palettes
-* Section structure
-* Motion ideas
-* CTA hierarchy
-* Premium/luxury signals
+**Avoid:** generic sports template, cheap bar aesthetic, overcrowded layouts, basic local-club design.
+
+**Signature goal:** make visitors think *"I want to be part of this club."*
 
 ---
 
-### 2. Review all provided website links
+## Core Visual Style
 
-For each relevant website:
+### Luxury dark theme (default, only theme)
 
-* Identify strongest design elements
-* Note weaknesses
-* Extract premium features worth adapting
-* Prioritize billiard, private club, sports lounge, luxury hospitality, or premium nightlife aesthetics
+All colors are CSS custom properties defined in `:root` in `app/globals.css`, using OKLCH for the brass/felt scales (perceptually even lightness/contrast steps) and hex for ink/bone:
 
----
+```css
+/* Ink — backgrounds, darkest to lighter */
+--ink-000: #050506;
+--ink-050: #0a0a0c;
+--ink-100: #111114;
+--ink-300: #232328;
 
-### 3. Build synthesis
+/* Bone — light text */
+--bone-100: #f5f1e8;
+--bone-300: #c9c3b3;
+--bone-500: #8a8478;
 
-Create a final design direction that combines:
+/* Felt — green, billiard-table accent */
+--felt-900: oklch(0.22 0.05 155);
+--felt-700: oklch(0.32 0.07 155);
+--felt-500: oklch(0.45 0.09 155);
 
-* Best structure
-* Best visuals
-* Best UX
-* Best branding
-  Without copying directly.
-
----
-
-## Priority:
-
-### Preserve BC Frankfurt’s identity while elevating it using the strongest references.
-
----
-
-# Core Brand Identity
-
-## Design Goal:
-
-Transform outdated billiard websites into premium digital experiences that feel like:
-
-### “Frankfurt’s elite home of billiards”
-
----
-
-# Core Visual Style
-
-## 1. Luxury Dark Theme (Default)
-
-**Never use generic bright sports colors.**
-
-### Primary Palette:
-
-* Background: `bg-neutral-950`, `bg-black`, `bg-zinc-900`
-* Secondary surfaces: `bg-zinc-800/40`, `bg-white/5`
-* Primary accent: `emerald-500`, `emerald-400`
-* Luxury accent: `amber-400`, `yellow-500`, muted brass
-* Text: `text-white`, `text-zinc-200`
-* Muted: `text-zinc-400`
-
-### Texture:
-
-* Subtle felt-inspired gradients
-* Glassmorphism overlays
-* Soft metallic glow
-* Cue-ball inspired circular highlights
-
----
-
-# 2. Container Principle
-
-**Never use true full-width content blocks without controlled structure.**
-
-### Standard:
-
-```tsx id="5mwv63"
-max-w-7xl mx-auto px-4 md:px-8 lg:px-12
+/* Brass — warm gold, primary accent */
+--brass-900: oklch(0.42 0.08 75);
+--brass-700: oklch(0.62 0.11 78);
+--brass-500: oklch(0.78 0.13 80);
 ```
 
-### Premium sections:
+Use `--brass-*` for CTAs, highlights, active states. Use `--felt-*` for the billiard-table identity (badges, secondary surfaces). Backgrounds are always `--ink-*`, text is `--bone-*`. Never introduce a new raw hex/color value when an existing variable fits — extend the scale (e.g. add `--brass-200`) if you genuinely need a step that doesn't exist yet.
 
-```tsx id="0e7azj"
-max-w-6xl mx-auto px-4 md:px-6
-```
+### Texture
 
-### Hero:
-
-Can visually feel full-screen, but content remains containerized.
+* Subtle felt-inspired gradients and noise (see the SVG noise `background-image` in `globals.css`)
+* Soft metallic glow on brass elements (`box-shadow`/`filter: drop-shadow`)
+* Circular highlights inspired by cue balls
 
 ---
 
-# 3. Typography System
+## Container & Layout
 
-## Headings:
-
-Use bold, cinematic typography.
-
-```tsx id="opmr8o"
-font-bold tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl
+```css
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 48px; /* 0 24px below 768px */
+}
 ```
 
-## Section titles:
-
-```tsx id="y5s5wv"
-text-3xl md:text-5xl font-semibold
-```
-
-## Body:
-
-```tsx id="dgq4cg"
-text-base md:text-lg leading-relaxed text-zinc-300
-```
-
-### Fonts:
-
-* Inter
-* Poppins
-* Sora
-* Clash Display (for premium headings)
+Use the existing `.container` class for page-width content. Section vertical rhythm and grid patterns are defined per-section in `globals.css` (`.section`, `.section-head`, `.experience-grid`, `.member-grid`, etc.) — follow the naming convention `.{section}-{element}` for new section-specific classes rather than reusing generic utility names.
 
 ---
 
-# 4. Motion & Animation Principles
+## Typography System
 
-**Motion should feel smooth, elegant, cue-sport inspired.**
+Fonts are loaded via Google Fonts `<link>` tags in `app/layout.jsx` and referenced through CSS variables:
 
-## Required:
-
-* Scroll reveal fades
-* Staggered card entrances
-* Parallax hero
-* Hover lift (`hover:-translate-y-2`)
-* Glow transitions
-* Floating cue-ball accents
-* Section fade transitions
-* Elegant page-load reveal
-
-## Framer Motion:
-
-Preferred for:
-
-* Hero text sequencing
-* Animated cards
-* Scroll-based transforms
-
-### Avoid:
-
-❌ Gimmicky bounce
-❌ Overly playful motion
-❌ Cheap neon effects
-
----
-
-# Website Structure
-
-# 1. Hero Section (Most Important)
-
-## Goal:
-
-Prestige + heritage + action
-
-### Required:
-
-* Full-screen cinematic hero
-* Dark billiard visuals
-* Headline:
-
-```txt id="vokrdn"
-Frankfurt’s Home of Billard Since 1912
+```css
+--font-display: "Cormorant Garamond", "Tobias", Georgia, serif;
+--font-sans:    "Geist", "Inter Tight", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+--font-mono:    "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
 ```
 
-### Subheadline:
-
-```txt id="rkm6jb"
-Karambol. Pool. Snooker. Tradition, Competition, Community.
-```
-
-### CTA:
-
-* Become a Member
-* Visit the Club
-
-### Optional:
-
-* Animated cue strike line
-* Floating billiard balls
-* Video background
+- **`--font-display`** — section titles, hero headline, anything that should feel editorial/cinematic. The Tweaks panel lets the display font be swapped live between Cormorant Garamond, Fraunces, Playfair Display, EB Garamond, DM Serif Display — all loaded and available.
+- **`--font-sans`** — body copy, UI text.
+- **`--font-mono`** — eyebrows, labels, numeric/meta text (section numbers, tags, stats) — gives the "technical/precision" counterpoint to the display serif.
 
 ---
 
-# 2. About / Heritage Section
+## Motion & Animation Principles
 
-## Focus:
+Motion should feel smooth, elegant, cue-sport inspired — scroll reveal fades, staggered entrances, parallax hero, hover lift, glow transitions, floating accents. **No animation library is installed** (no Framer Motion) — everything is plain CSS `@keyframes`/`transition`, triggered by an `IntersectionObserver` (in `components/app-content.jsx`) or by React state tied to scroll/mouse events.
 
-* Tradition
-* One of Germany’s oldest clubs
-* Excellence
-* Community
-* Competitive spirit
+Existing primitives to reuse, rather than inventing new ones:
 
-### Design:
+- **Scroll reveal**: add `className="reveal"` (optionally `reveal delay-1` through `delay-4` for staggering) to an element — `globals.css` handles the opacity/transform transition once `.in-view` is added by the observer.
+- **Floating accents**: `@keyframes float`, `@keyframes ball-roll`
+- **Glow**: `@keyframes pulse-glow`
+- **Marquee/continuous scroll**: `@keyframes marquee` (see `.marquee-track`)
+- **Parallax**: handled per-component with a scroll-position state + inline `transform`, see `Hero` in `components/sections.jsx`
 
-* Split layout
-* Historic + modern blend
-* Timeline or milestone animation
+**Avoid:** gimmicky bounce, overly playful motion, cheap neon effects.
 
 ---
 
-# 3. Disciplines Section
+## Website Structure
 
-## Categories:
-
-* Karambol
-* Pool
-* Snooker
-
-### Design:
-
-Use premium animated cards:
-
-```tsx id="ksh31i"
-rounded-3xl bg-white/5 backdrop-blur-md border border-white/10
-hover:border-emerald-400/40
-hover:shadow-2xl
-```
+1. **Hero** — full-screen, dark, cinematic. Headline: *"Frankfurt's home of Billard since 1912."* CTAs: Become a Member / Visit the Club.
+2. **About / Heritage** — tradition, one of Germany's oldest clubs, community, competitive spirit.
+3. **Disciplines** — Karambol, Pool, Snooker as expandable rows (`.discipline-row`).
+4. **Experience** — the clubhouse: tables, lounge, bar, trial membership.
+5. **Membership** — pricing tiers as cards (`.member-card`, `.featured` for the recommended tier).
+6. **Gallery** — photography, masonry/grid with hover zoom.
+7. **News** — tournaments, promotions, team results.
+8. **Contact** — map, address, opening hours, email (no contact form — this is a members-only club, not a walk-in venue).
+9. **Footer**
 
 ---
 
-# 4. Membership Section
+## Component Patterns
 
-## Style:
+No component library (no shadcn/ui) — components are hand-built JSX with named CSS classes defined in `globals.css`. Reuse these before inventing new class names:
 
-Luxury pricing cards
-
-### Include:
-
-* Full Membership
-* Student
-* Trial
-
-### Featured:
-
-Most attractive option highlighted with:
-
-```tsx id="b9zalb"
-ring-2 ring-emerald-500 scale-105
-```
+- **Buttons**: `.btn.btn-brass` (primary, filled), `.btn.btn-ghost` (secondary, outlined) — both pill-shaped (`border-radius: 999px`), both pair with the `<Arrow/>`/`<ArrowOut/>` icon from `components/visuals.jsx`
+- **Cards**: pattern varies per section (`.exp-card`, `.member-card`, the News item layout) but consistently use `--ink-100` background, `1px solid --ink-300` border, and a `border-radius` from the `--radius-*` scale defined in `globals.css`
+- **Section header**: `.section-head` + `.section-eyebrow-row` (number + divider + eyebrow label) + `.section-title` — used identically at the top of every section for consistency
 
 ---
 
-# 5. Club Experience
-
-## Showcase:
-
-* 10 tables
-* Lounge
-* Drinks
-* Events
-* Cloth renewal
-* Community
-
-### Design:
-
-Grid + iconography + ambient photography
-
----
-
-# 6. Gallery
-
-## Preferred:
-
-* Masonry
-* Carousel
-* Cinematic hover zoom
-* Tournament moments
-* Lifestyle imagery
-
----
-
-# 7. Contact Section
-
-## Include:
-
-* Map
-* Address
-* Contact form
-* Socials
-* Nearby landmarks
-
-### Design:
-
-Elegant and frictionless
-
----
-
-# Tailwind Style Patterns
-
-## Cards:
-
-```tsx id="rze9dj"
-bg-white/5 backdrop-blur-lg rounded-3xl border border-white/10 shadow-2xl
-```
-
-## Buttons:
-
-### Primary:
-
-```tsx id="9ckqdn"
-bg-emerald-500 hover:bg-emerald-400 text-black font-semibold rounded-full px-8 py-4 transition-all
-```
-
-### Secondary:
-
-```tsx id="10xtdy"
-border border-white/20 hover:border-emerald-400 rounded-full px-8 py-4
-```
-
----
-
-# Layout Patterns
-
-## Premium Grid:
-
-```tsx id="wmyt33"
-grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8
-```
-
-## Split:
-
-```tsx id="sfa85a"
-grid lg:grid-cols-2 gap-12 items-center
-```
-
----
-
-# Tailwind v4 Standards
-
-## Use:
-
-```tsx id="wopf76"
-shadow-xs
-rounded-xs
-bg-black/40
-bg-(--brand-color)
-```
-
-## Avoid:
-
-❌ Old opacity syntax
-❌ Sharp edges
-❌ Flat design
-
----
-
-# Premium UX Principles
-
-## Must Have:
+## Premium UX Principles
 
 * Sticky nav with blur background
-* Smooth scrolling
-* Section anchors
-* Hover sophistication
+* Smooth scrolling, section anchors
+* Hover sophistication (subtle, not bouncy)
 * Strong CTA hierarchy
-* SEO semantic structure
-* Accessibility
-* Fast performance
+* SEO-semantic structure
+* Accessibility (alt text, focus states)
+* Fast performance — this is why the site runs on Next.js with static rendering rather than the old CDN+Babel setup, see `docs/design.md`
 
 ---
 
-# shadcn/ui Components Priority
+## Quality Checklist
 
-## Use:
+Before finalizing a new section or component:
 
-* Button
-* Card
-* Carousel
-* Accordion
-* Dialog
-* Navigation Menu
-* Sheet (mobile menu)
-
----
-
-# Emotional Design Framework
-
-Every page should communicate:
-
-## “This is not just a billiard hall.”
-
-### It is:
-
-* Heritage
-* Skill
-* Prestige
-* Social belonging
-* Lifestyle
-
----
-
-# Quality Checklist
-
-Before finalizing:
-
-* ✅ Reviewed Related Websites folder images
-* ✅ Reviewed Related Websites folder links
-* ✅ Extracted best inspirations
-* ✅ Luxury dark palette
-* ✅ Billiard identity clear
-* ✅ Mobile-first
-* ✅ Containerized
-* ✅ Smooth Framer Motion
-* ✅ Modern premium feel
-* ✅ Heritage + innovation
-* ✅ Elegant spacing
-* ✅ Strong CTAs
-* ✅ Tailwind v4 compliant
-
----
-
-# Output Format
-
-Provide:
-
-## 1. Inspiration analysis from Related Websites folder
-
-## 2. Design synthesis strategy
-
-## 3. Full production-ready React / Next.js component
-
-## 4. Tailwind v4 styling
-
-## 5. Framer Motion animations
-
-## 6. shadcn/ui integration
-
-## 7. Mobile responsiveness
-
-## 8. Premium design rationale
-
-## 9. Brand-enhancing recommendations
-
----
-
-# Final Standard:
-
-### Design like:
-
-## “Private members club meets championship billiards”
-
-### Avoid:
-
-❌ Generic sports template
-❌ Cheap bar aesthetic
-❌ Overcrowded layouts
-❌ Basic local club design
-
----
-
-# Signature Goal:
-
-## Make visitors immediately think:
-
-### “I want to be part of this club.”
+* ✅ Reused existing CSS variables (`--brass-*`, `--felt-*`, `--ink-*`, `--bone-*`, `--font-*`) instead of introducing new raw values
+* ✅ Used `.reveal` (+ delay classes) for scroll-in behavior instead of a new animation approach
+* ✅ Used `.btn-brass`/`.btn-ghost` for buttons, matched the existing card/section-head patterns
+* ✅ No Tailwind utility classes, no shadcn/ui components, no Framer Motion — plain CSS in `globals.css` and JSX in `components/`
+* ✅ Mobile-first, containerized (`.container`), works at the 768px breakpoint used throughout
+* ✅ Bilingual: new copy goes through `lib/translations.js` + `t("key")`, not hardcoded text
