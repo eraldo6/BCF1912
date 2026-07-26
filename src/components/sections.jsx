@@ -13,7 +13,7 @@ const TRANSLATIONS = {
     "nav.membership": "Membership",
     "nav.gallery": "Gallery",
     "nav.games": "Games",
-    "nav.visit": "Visit",
+    "nav.visit": "Contact",
     "nav.becomeMember": "Become a Member",
 
     // Hero
@@ -200,7 +200,7 @@ const TRANSLATIONS = {
     "news.title": "Tournaments,<br /><em>promotions</em> & events.",
     "news.lede": "Stay up to date with league results, upcoming tournaments, and club achievements.",
     "contact.num": "07",
-    "contact.visitContact": "Visit & Contact",
+    "contact.visitContact": "Contact",
     "contact.borsigallee": "Borsigallee 45,<br /><em>Frankfurt</em> am Main.",
     "contact.fiveMinutes": "Five minutes from Hessen-Center, four from the U7 stop, parking on site. Drop in any evening from 18:00 — or send a note ahead.",
     "contact.getDirections": "Get Directions",
@@ -229,7 +229,7 @@ const TRANSLATIONS = {
     "nav.membership": "Mitgliedschaft",
     "nav.gallery": "Galerie",
     "nav.games": "Spiele",
-    "nav.visit": "Besuchen",
+    "nav.visit": "Kontakt",
     "nav.becomeMember": "Mitglied werden",
 
     // Hero
@@ -419,7 +419,7 @@ const TRANSLATIONS = {
     "news.title": "Turniere,<br /><em>Aufstiege</em> & Events.",
     "news.lede": "Bleiben Sie auf dem Laufenden über Ligaergebnisse, kommende Turniere und Vereinserfolge.",
     "contact.num": "07",
-    "contact.visitContact": "Besuch & Kontakt",
+    "contact.visitContact": "Kontakt",
     "contact.borsigallee": "Borsigallee 45,<br /><em>Frankfurt</em> am Main.",
     "contact.fiveMinutes": "Fünf Minuten vom Hessen-Center, vier von der U7-Haltestelle, Parkplätze vor Ort. Kommen Sie jeden Abend ab 18:00 vorbei — oder schreiben Sie uns vorher.",
     "contact.getDirections": "Route planen",
