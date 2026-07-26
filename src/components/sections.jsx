@@ -1700,13 +1700,21 @@ const Footer = () => {
           <h3>Billard Club<br /><em>Frankfurt</em> 1912 e.V.</h3>
           <p>{t("footer.about.line1")}</p>
           <div style={{ display: "flex", gap: 12, marginTop: 32 }}>
-            {["Instagram", "Facebook", "YouTube"].map(s => (
-              <a key={s} href="#" style={{
+            {[
+              { name: "CueScore", href: "https://cuescore.com/bcfrankfurt1912" },
+              { name: "Instagram", href: "#" },
+              { name: "Facebook", href: "#" },
+              { name: "YouTube", href: "#" },
+            ].map(({ name, href }) => (
+              <a key={name} href={href} aria-label={name}
+                target={href.startsWith("http") ? "_blank" : undefined}
+                rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+                style={{
                 width: 40, height: 40, border: "1px solid var(--ink-300)", borderRadius: "50%",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 color: "var(--bone-200)", textDecoration: "none", fontSize: 11,
                 fontFamily: "var(--font-mono)", letterSpacing: "0.06em",
-              }}>{s[0]}</a>
+              }}>{name[0]}</a>
             ))}
           </div>
         </div>
