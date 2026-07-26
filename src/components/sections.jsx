@@ -1035,7 +1035,10 @@ const GALLERY = [
 const Lightbox = ({ items, index, onClose, onNav }) => {
   const touchX = React.useRef(null);
 
+  const isOpen = index != null;
+
   React.useEffect(() => {
+    if (!isOpen) return;
     const onKey = (e) => {
       if (e.key === "Escape") onClose();
       else if (e.key === "ArrowRight") onNav(1);
@@ -1048,7 +1051,7 @@ const Lightbox = ({ items, index, onClose, onNav }) => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
     };
-  }, [onClose, onNav]);
+  }, [isOpen, onClose, onNav]);
 
   if (index == null) return null;
   const item = items[index];
