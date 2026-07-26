@@ -59,6 +59,7 @@ const App = () => {
         <Membership />
         <Gallery />
         <News />
+        <Tournaments />
         <Contact />
         <Footer />
       </window.TranslationContext.Provider>

@@ -12,6 +12,7 @@ const TRANSLATIONS = {
     "nav.experience": "Experience",
     "nav.membership": "Membership",
     "nav.gallery": "Gallery",
+    "nav.tournaments": "Tournaments",
     "nav.games": "Games",
     "nav.visit": "Contact",
     "nav.becomeMember": "Become a Member",
@@ -199,7 +200,20 @@ const TRANSLATIONS = {
     "news.eyebrow": "News & Updates",
     "news.title": "Tournaments,<br /><em>promotions</em> & events.",
     "news.lede": "Stay up to date with league results, upcoming tournaments, and club achievements.",
-    "contact.num": "07",
+    "tournaments.num": "07",
+    "tournaments.eyebrow": "Competition",
+    "tournaments.title": "Upcoming<br /><em>tournaments</em>.",
+    "tournaments.lede": "Pool events are pulled live from our CueScore page. Karambol and Snooker fixtures are listed alongside.",
+    "tournaments.pool": "Pool",
+    "tournaments.karambol": "Karambol",
+    "tournaments.snooker": "Snooker",
+    "tournaments.register": "View on CueScore",
+    "tournaments.details": "Details",
+    "tournaments.loading": "Loading tournaments from CueScore…",
+    "tournaments.empty": "No upcoming tournaments listed right now. Check back soon.",
+    "tournaments.allOnCuescore": "See all pool tournaments on CueScore",
+    "tournaments.tbd": "Date to be confirmed",
+    "contact.num": "08",
     "contact.visitContact": "Contact",
     "contact.borsigallee": "Borsigallee 45,<br /><em>Frankfurt</em> am Main.",
     "contact.fiveMinutes": "Five minutes from Hessen-Center, four from the U7 stop, parking on site. Drop in any evening from 18:00, or send a note ahead.",
@@ -228,6 +242,7 @@ const TRANSLATIONS = {
     "nav.experience": "Clubhaus",
     "nav.membership": "Mitgliedschaft",
     "nav.gallery": "Galerie",
+    "nav.tournaments": "Turniere",
     "nav.games": "Spiele",
     "nav.visit": "Kontakt",
     "nav.becomeMember": "Mitglied werden",
@@ -418,7 +433,20 @@ const TRANSLATIONS = {
     "news.eyebrow": "Neuigkeiten",
     "news.title": "Turniere,<br /><em>Aufstiege</em> & Events.",
     "news.lede": "Bleiben Sie auf dem Laufenden über Ligaergebnisse, kommende Turniere und Vereinserfolge.",
-    "contact.num": "07",
+    "tournaments.num": "07",
+    "tournaments.eyebrow": "Wettkampf",
+    "tournaments.title": "Kommende<br /><em>Turniere</em>.",
+    "tournaments.lede": "Pool-Turniere werden live von unserer CueScore-Seite geladen. Karambol- und Snooker-Termine stehen daneben.",
+    "tournaments.pool": "Pool",
+    "tournaments.karambol": "Karambol",
+    "tournaments.snooker": "Snooker",
+    "tournaments.register": "Auf CueScore ansehen",
+    "tournaments.details": "Details",
+    "tournaments.loading": "Turniere werden von CueScore geladen…",
+    "tournaments.empty": "Derzeit sind keine kommenden Turniere gelistet. Schauen Sie bald wieder vorbei.",
+    "tournaments.allOnCuescore": "Alle Pool-Turniere auf CueScore ansehen",
+    "tournaments.tbd": "Datum wird noch bestätigt",
+    "contact.num": "08",
     "contact.visitContact": "Kontakt",
     "contact.borsigallee": "Borsigallee 45,<br /><em>Frankfurt</em> am Main.",
     "contact.fiveMinutes": "Fünf Minuten vom Hessen-Center, vier von der U7-Haltestelle, Parkplätze vor Ort. Kommen Sie jeden Abend ab 18:00 vorbei, oder schreiben Sie uns vorher.",
@@ -471,6 +499,7 @@ const Nav = () => {
         <li><a href="#membership">{t("nav.membership")}</a></li>
         <li><a href="#gallery">{t("nav.gallery")}</a></li>
         <li><a href="#news">News</a></li>
+        <li><a href="#tournaments">{t("nav.tournaments")}</a></li>
         <li><a href="#contact">{t("nav.visit")}</a></li>
         <li><a href="assets/calendar.html">{t("nav.games")}</a></li>
       </ul>
@@ -1133,6 +1162,197 @@ const Gallery = () => {
 );
 };
 
+// ─── Tournaments ───────────────────────────────────────────────────────────
+// Pool events are fetched live from the club's CueScore page. Karambol and
+// Snooker fixtures aren't on CueScore yet, so they're listed statically here
+// and merged with the live pool feed.
+
+const CUESCORE_ORG_ID = 81469381; // cuescore.com/bcfrankfurt1912
+const CUESCORE_LIST_URL = `https://api.cuescore.com/organization/?id=${CUESCORE_ORG_ID}`;
+const CUESCORE_TOURNAMENT_URL = (id) => `https://api.cuescore.com/tournament/?id=${id}`;
+const CUESCORE_ALL_URL = "https://cuescore.com/bcfrankfurt1912/tournaments";
+
+// Map a CueScore discipline string onto one of our three card templates.
+const disciplineToType = (discipline) => {
+  const d = (discipline || "").toLowerCase();
+  if (/snooker/.test(d)) return "snooker";
+  if (/(carom|karambol|cushion|cadre|libre|balkline|billiard fran)/.test(d)) return "karambol";
+  // 8-ball, 9-ball, 10-ball, straight/14.1, blackball, one pocket, banks, etc.
+  return "pool";
+};
+
+// Non-CueScore fixtures (Karambol + Snooker), maintained by hand.
+const STATIC_TOURNAMENTS = [
+  {
+    id: "kar-sued-2026",
+    type: "karambol",
+    discipline: "3-Cushion",
+    name: "Süd Regional Karambol Championship",
+    date: "2026-09-08T09:00:00Z",
+    displayDate: "September 8–10, 2026",
+    venue: "BC Frankfurt 1912, Borsigallee 45",
+    url: null,
+  },
+  {
+    id: "snk-hessen-cup-2026",
+    type: "snooker",
+    discipline: "Snooker",
+    name: "Hessen Snooker Cup 2026",
+    date: "2026-10-04T10:00:00Z",
+    displayDate: "October 4, 2026",
+    venue: "BC Frankfurt 1912, Borsigallee 45",
+    url: null,
+  },
+];
+
+// Fetch + normalise the club's CueScore tournaments. Returns {items, loading,
+// error}. On any failure it falls back to the static list alone so the section
+// never renders empty because of a network hiccup.
+const useTournaments = () => {
+  const [state, setState] = React.useState({ items: null, loading: true, error: false });
+
+  React.useEffect(() => {
+    let cancelled = false;
+
+    const normalise = (raw) => ({
+      id: raw.tournamentId,
+      type: disciplineToType(raw.discipline),
+      discipline: raw.discipline || "Pool",
+      name: (raw.name || "").replace(/^.*?>\s*/, ""), // strip "BCFrankfurt1912 > " prefix
+      date: raw.starttime || null,
+      displayDate: raw.displayDate || null,
+      venue: (raw.venues && raw.venues[0] && raw.venues[0].name) || null,
+      status: raw.status || null,
+      url: raw.url || null,
+      live: true,
+    });
+
+    const load = async () => {
+      try {
+        const res = await fetch(CUESCORE_LIST_URL);
+        if (!res.ok) throw new Error("list");
+        const ids = await res.json();
+        const live = await Promise.all(
+          (Array.isArray(ids) ? ids : []).map(async (id) => {
+            try {
+              const r = await fetch(CUESCORE_TOURNAMENT_URL(id));
+              if (!r.ok) return null;
+              return normalise(await r.json());
+            } catch { return null; }
+          })
+        );
+        if (cancelled) return;
+        const merged = mergeTournaments(live.filter(Boolean), STATIC_TOURNAMENTS);
+        setState({ items: merged, loading: false, error: false });
+      } catch {
+        if (cancelled) return;
+        setState({ items: mergeTournaments([], STATIC_TOURNAMENTS), loading: false, error: true });
+      }
+    };
+
+    load();
+    return () => { cancelled = true; };
+  }, []);
+
+  return state;
+};
+
+// Merge live + static, sort by date (undated last), keep upcoming/current only.
+const mergeTournaments = (live, statics) => {
+  const now = Date.now();
+  const all = [...live, ...statics];
+  const upcoming = all.filter((t) => {
+    if (!t.date) return true; // keep undated (date TBC)
+    const end = new Date(t.date).getTime();
+    return isNaN(end) || end > now - 1000 * 60 * 60 * 24; // include events up to a day past start
+  });
+  return upcoming.sort((a, b) => {
+    const ta = a.date ? new Date(a.date).getTime() : Infinity;
+    const tb = b.date ? new Date(b.date).getTime() : Infinity;
+    return ta - tb;
+  });
+};
+
+const formatTournamentDate = (t, lang) => {
+  if (t.displayDate) return t.displayDate;
+  if (!t.date) return null;
+  const d = new Date(t.date);
+  if (isNaN(d.getTime())) return null;
+  return d.toLocaleDateString(lang === "DE" ? "de-DE" : "en-GB", {
+    day: "numeric", month: "long", year: "numeric",
+  });
+};
+
+const TYPE_ICON = { pool: "◉", karambol: "◆", snooker: "▦" };
+
+const TournamentCard = ({ item }) => {
+  const { t, lang } = useTranslation();
+  const label = t(`tournaments.${item.type}`);
+  const when = formatTournamentDate(item, lang) || t("tournaments.tbd");
+  return (
+    <article className={`tournament-card tc-${item.type}`}>
+      <div className="tc-accent" aria-hidden="true" />
+      <div className="tc-body">
+        <div className="tc-badge-row">
+          <span className="tc-badge">
+            <span className="tc-icon" aria-hidden="true">{TYPE_ICON[item.type]}</span>
+            {label}
+          </span>
+          <span className="tc-discipline">{item.discipline}</span>
+        </div>
+        <h3 className="tc-name">{item.name}</h3>
+        <div className="tc-meta">
+          <span className="tc-date">{when}</span>
+          {item.venue && <span className="tc-venue">{item.venue}</span>}
+        </div>
+      </div>
+      {item.url && (
+        <a className="tc-cta" href={item.url} target="_blank" rel="noopener noreferrer">
+          {t("tournaments.register")} <ArrowOut />
+        </a>
+      )}
+    </article>
+  );
+};
+
+const Tournaments = () => {
+  const { t } = useTranslation();
+  const { items, loading, error } = useTournaments();
+  return (
+    <section className="section" id="tournaments">
+      <div className="container">
+        <div className="section-head reveal">
+          <div>
+            <div className="section-eyebrow-row">
+              <span className="section-num">{t("tournaments.num")}</span>
+              <span className="section-divider" />
+              <span className="eyebrow">{t("tournaments.eyebrow")}</span>
+            </div>
+            <h2 className="section-title" style={{ marginTop: 24 }} dangerouslySetInnerHTML={{ __html: t("tournaments.title") }} />
+          </div>
+          <p className="section-lede">{t("tournaments.lede")}</p>
+        </div>
+
+        <div className="tournament-grid reveal">
+          {loading && <div className="tournament-status">{t("tournaments.loading")}</div>}
+          {!loading && items && items.length === 0 && (
+            <div className="tournament-status">{t("tournaments.empty")}</div>
+          )}
+          {!loading && items && items.map((item) => (
+            <TournamentCard key={item.id} item={item} />
+          ))}
+        </div>
+
+        <div className="tournament-footer reveal">
+          <a href={CUESCORE_ALL_URL} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
+            {t("tournaments.allOnCuescore")} <ArrowOut />
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const NEWS = [
   {
     date: "2026-05-20",
@@ -1469,5 +1689,5 @@ const Footer = () => {
 };
 
 Object.assign(window, {
-  Nav, Hero, Marquee, About, Disciplines, Experience, Membership, Gallery, Contact, Footer, LangPicker,
+  Nav, Hero, Marquee, About, Disciplines, Experience, Membership, Gallery, Tournaments, News, Contact, Footer, LangPicker,
 });

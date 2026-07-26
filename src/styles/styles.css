@@ -15,6 +15,7 @@
   --bone-100: #f5f1e8;
   --bone-200: #e8e3d6;
   --bone-300: #c9c3b3;
+  --bone-400: #a8a294;
   --bone-500: #8a8478;
 
   /* Felt emerald — deep, slightly desaturated */
@@ -1725,6 +1726,163 @@ section {
   .lightbox-next { right: 12px; }
   .lightbox-close { top: 14px; right: 14px; }
   .lightbox-img { max-height: 72vh; }
+}
+
+/* Tournaments */
+.tournament-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+  margin-top: 48px;
+}
+
+.tournament-status {
+  grid-column: 1 / -1;
+  padding: 40px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: var(--bone-400);
+  border: 1px dashed var(--ink-300);
+  border-radius: 14px;
+}
+
+.tournament-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--ink-100);
+  border: 1px solid var(--ink-300);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: transform 0.35s var(--ease-out), border-color 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out);
+}
+.tournament-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.6);
+}
+
+/* Left accent bar, color-coded per discipline */
+.tc-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 4px;
+}
+
+.tc-body { padding: 28px 28px 20px; flex: 1; }
+
+.tc-badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.tc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.tc-icon { font-size: 12px; }
+
+.tc-discipline {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone-400);
+}
+
+.tc-name {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--bone-100);
+  margin: 0 0 18px;
+}
+
+.tc-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tc-date {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--bone-200);
+}
+.tc-venue {
+  font-size: 13px;
+  color: var(--bone-400);
+}
+
+.tc-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 28px;
+  border-top: 1px solid var(--ink-300);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone-100);
+  transition: background 0.3s var(--ease-out), color 0.3s var(--ease-out);
+}
+.tc-cta:hover { background: var(--ink-050); }
+
+/* Pool — brass/gold */
+.tc-pool .tc-accent { background: var(--brass-500); }
+.tc-pool .tc-badge {
+  background: color-mix(in oklch, var(--brass-500) 16%, transparent);
+  color: var(--brass-300);
+  border: 1px solid color-mix(in oklch, var(--brass-500) 40%, transparent);
+}
+.tc-pool:hover { border-color: var(--brass-500); }
+.tc-pool .tc-cta:hover { color: var(--brass-300); }
+
+/* Karambol — felt green */
+.tc-karambol .tc-accent { background: var(--felt-300); }
+.tc-karambol .tc-badge {
+  background: color-mix(in oklch, var(--felt-300) 16%, transparent);
+  color: var(--felt-300);
+  border: 1px solid color-mix(in oklch, var(--felt-300) 40%, transparent);
+}
+.tc-karambol:hover { border-color: var(--felt-500); }
+.tc-karambol .tc-cta:hover { color: var(--felt-300); }
+
+/* Snooker — deep red */
+.tc-snooker .tc-accent { background: #c0392f; }
+.tc-snooker .tc-badge {
+  background: rgba(192, 57, 47, 0.16);
+  color: #e07a70;
+  border: 1px solid rgba(192, 57, 47, 0.4);
+}
+.tc-snooker:hover { border-color: #c0392f; }
+.tc-snooker .tc-cta:hover { color: #e07a70; }
+
+.tournament-footer {
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 640px) {
+  .tournament-grid { grid-template-columns: 1fr; }
 }
 
 /* Contact */
