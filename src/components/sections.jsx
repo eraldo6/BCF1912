@@ -171,20 +171,7 @@ const TRANSLATIONS = {
     "contact.contact.title": "Contact",
 
     // Footer
-    "footer.about.title": "The Club",
     "footer.about.line1": "Frankfurt's oldest billiard club.",
-    "footer.about.line2": "Founded 1912. Pool Bundesliga,",
-    "footer.about.line3": "Karambol, Snooker.",
-    "footer.info.title": "Quick Links",
-    "footer.info.membership": "Become a member",
-    "footer.info.visit": "Visit the club",
-    "footer.info.games": "Games & Results",
-    "footer.info.contact": "Contact & Hours",
-    "footer.legal.title": "Legal",
-    "footer.legal.imprint": "Imprint",
-    "footer.legal.privacy": "Privacy Policy",
-    "footer.legal.terms": "Terms of Use",
-    "footer.copyright": "BC Frankfurt 1912 e.V. All rights reserved.",
 
     // Additional sections
     "disciplines.pickGame": "Pick your <em>game</em>.",
@@ -224,8 +211,6 @@ const TRANSLATIONS = {
     "contact.privateClubDesc1": "BC Frankfurt 1912 is a registered members-only association. We do not operate as a commercial establishment or walk-in venue. Access to our facilities is restricted to active members and their guests.",
     "contact.privateClubDesc2": "If you're interested in becoming a member, please review our membership tiers and contact us via email to begin the application process.",
     "contact.membershipInquiries": "Membership Inquiries",
-    "footer.getInvolved": "Get Involved",
-    "footer.visit": "Visit",
   },
   DE: {
     // Nav
@@ -396,20 +381,7 @@ const TRANSLATIONS = {
     "contact.contact.title": "Kontakt",
 
     // Footer
-    "footer.about.title": "Der Verein",
     "footer.about.line1": "Frankfurts ältester Billardverein.",
-    "footer.about.line2": "Gegründet 1912. Pool Bundesliga,",
-    "footer.about.line3": "Karambol, Snooker.",
-    "footer.info.title": "Schnellzugriff",
-    "footer.info.membership": "Mitglied werden",
-    "footer.info.visit": "Verein besuchen",
-    "footer.info.games": "Spiele & Ergebnisse",
-    "footer.info.contact": "Kontakt & Öffnungszeiten",
-    "footer.legal.title": "Rechtliches",
-    "footer.legal.imprint": "Impressum",
-    "footer.legal.privacy": "Datenschutz",
-    "footer.legal.terms": "Nutzungsbedingungen",
-    "footer.copyright": "BC Frankfurt 1912 e.V. Alle Rechte vorbehalten.",
 
     // Additional sections
     "disciplines.pickGame": "Wähle dein <em>Spiel</em>.",
@@ -449,8 +421,6 @@ const TRANSLATIONS = {
     "contact.privateClubDesc1": "BC Frankfurt 1912 ist ein eingetragener Verein nur für Mitglieder. Wir betreiben keine kommerzielle Einrichtung oder Laufkundschaft. Der Zugang zu unseren Räumlichkeiten ist auf aktive Mitglieder und deren Gäste beschränkt.",
     "contact.privateClubDesc2": "Wenn Sie Mitglied werden möchten, lesen Sie bitte unsere Mitgliedschaftsstufen und kontaktieren Sie uns per E-Mail, um den Bewerbungsprozess zu starten.",
     "contact.membershipInquiries": "Mitgliedschaftsanfragen",
-    "footer.getInvolved": "Mitmachen",
-    "footer.visit": "Besuchen",
   }
 };
 
@@ -1676,7 +1646,7 @@ const Footer = () => {
           </div>
         </div>
         <div className="footer-col">
-          <h5>{t("footer.about.title")}</h5>
+          <h5>{t("nav.club")}</h5>
           <ul>
             <li><a href="#about">{t("nav.club")}</a></li>
             <li><a href="#disciplines">{t("nav.disciplines")}</a></li>
@@ -1684,7 +1654,7 @@ const Footer = () => {
           </ul>
         </div>
         <div className="footer-col">
-          <h5>{t("footer.getInvolved")}</h5>
+          <h5>{t("nav.membership")}</h5>
           <ul>
             <li><a href="#membership">{t("nav.membership")}</a></li>
             <li><a href="#gallery">{t("nav.gallery")}</a></li>
@@ -1692,7 +1662,7 @@ const Footer = () => {
           </ul>
         </div>
         <div className="footer-col">
-          <h5>{t("footer.visit")}</h5>
+          <h5>{t("nav.tournaments")}</h5>
           <ul>
             <li><a href="#tournaments">{t("nav.tournaments")}</a></li>
             <li><a href="#contact">{t("nav.visit")}</a></li>
