@@ -203,7 +203,7 @@ const TRANSLATIONS = {
     "tournaments.num": "07",
     "tournaments.eyebrow": "Competition",
     "tournaments.title": "Upcoming<br /><em>tournaments</em>.",
-    "tournaments.lede": "Pool events are pulled live from our CueScore page. Karambol and Snooker fixtures are listed alongside.",
+    "tournaments.lede": "Pulled live from our CueScore page and updated automatically as new events are announced.",
     "tournaments.pool": "Pool",
     "tournaments.karambol": "Karambol",
     "tournaments.snooker": "Snooker",
@@ -436,7 +436,7 @@ const TRANSLATIONS = {
     "tournaments.num": "07",
     "tournaments.eyebrow": "Wettkampf",
     "tournaments.title": "Kommende<br /><em>Turniere</em>.",
-    "tournaments.lede": "Pool-Turniere werden live von unserer CueScore-Seite geladen. Karambol- und Snooker-Termine stehen daneben.",
+    "tournaments.lede": "Live von unserer CueScore-Seite geladen und automatisch aktualisiert, sobald neue Events angekündigt werden.",
     "tournaments.pool": "Pool",
     "tournaments.karambol": "Karambol",
     "tournaments.snooker": "Snooker",
@@ -1195,9 +1195,10 @@ const Gallery = () => {
 };
 
 // ─── Tournaments ───────────────────────────────────────────────────────────
-// Pool events are fetched live from the club's CueScore page. Karambol and
-// Snooker fixtures aren't on CueScore yet, so they're listed statically here
-// and merged with the live pool feed.
+// All tournaments are fetched live from the club's CueScore page — nothing is
+// entered by hand. Each event is auto-classified (pool / karambol / snooker)
+// so the right card template is used; the karambol and snooker templates stay
+// ready for when those disciplines appear on CueScore.
 
 const CUESCORE_ORG_ID = 81469381; // cuescore.com/bcfrankfurt1912
 const CUESCORE_LIST_URL = `https://api.cuescore.com/organization/?id=${CUESCORE_ORG_ID}`;
@@ -1213,33 +1214,8 @@ const disciplineToType = (discipline) => {
   return "pool";
 };
 
-// Non-CueScore fixtures (Karambol + Snooker), maintained by hand.
-const STATIC_TOURNAMENTS = [
-  {
-    id: "kar-sued-2026",
-    type: "karambol",
-    discipline: "3-Cushion",
-    name: "Süd Regional Karambol Championship",
-    date: "2026-09-08T09:00:00Z",
-    displayDate: "September 8–10, 2026",
-    venue: "BC Frankfurt 1912, Borsigallee 45",
-    url: null,
-  },
-  {
-    id: "snk-hessen-cup-2026",
-    type: "snooker",
-    discipline: "Snooker",
-    name: "Hessen Snooker Cup 2026",
-    date: "2026-10-04T10:00:00Z",
-    displayDate: "October 4, 2026",
-    venue: "BC Frankfurt 1912, Borsigallee 45",
-    url: null,
-  },
-];
-
 // Fetch + normalise the club's CueScore tournaments. Returns {items, loading,
-// error}. On any failure it falls back to the static list alone so the section
-// never renders empty because of a network hiccup.
+// error}. items is [] when CueScore lists none or the request fails.
 const useTournaments = () => {
   const [state, setState] = React.useState({ items: null, loading: true, error: false });
 
@@ -1256,7 +1232,6 @@ const useTournaments = () => {
       venue: (raw.venues && raw.venues[0] && raw.venues[0].name) || null,
       status: raw.status || null,
       url: raw.url || null,
-      live: true,
     });
 
     const load = async () => {
@@ -1274,11 +1249,10 @@ const useTournaments = () => {
           })
         );
         if (cancelled) return;
-        const merged = mergeTournaments(live.filter(Boolean), STATIC_TOURNAMENTS);
-        setState({ items: merged, loading: false, error: false });
+        setState({ items: filterUpcoming(live.filter(Boolean)), loading: false, error: false });
       } catch {
         if (cancelled) return;
-        setState({ items: mergeTournaments([], STATIC_TOURNAMENTS), loading: false, error: true });
+        setState({ items: [], loading: false, error: true });
       }
     };
 
@@ -1289,11 +1263,10 @@ const useTournaments = () => {
   return state;
 };
 
-// Merge live + static, sort by date (undated last), keep upcoming/current only.
-const mergeTournaments = (live, statics) => {
+// Keep upcoming/current events only, sorted by date (undated last).
+const filterUpcoming = (list) => {
   const now = Date.now();
-  const all = [...live, ...statics];
-  const upcoming = all.filter((t) => {
+  const upcoming = list.filter((t) => {
     if (!t.date) return true; // keep undated (date TBC)
     const end = new Date(t.date).getTime();
     return isNaN(end) || end > now - 1000 * 60 * 60 * 24; // include events up to a day past start
