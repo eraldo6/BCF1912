@@ -495,8 +495,10 @@ const Nav2 = () => {
         <li><a href="../index.html#experience">Experience</a></li>
         <li><a href="../index.html#membership">Membership</a></li>
         <li><a href="../index.html#gallery">Gallery</a></li>
-        <li><a href="calendar.html" style={{ color: "var(--brass-500)" }}>Calendar</a></li>
-        <li><a href="../index.html#contact">Visit</a></li>
+        <li><a href="../index.html#news">News</a></li>
+        <li><a href="../index.html#tournaments">Tournaments</a></li>
+        <li><a href="../index.html#contact">Contact</a></li>
+        <li><a href="calendar.html" style={{ color: "var(--brass-500)" }}>Games</a></li>
       </ul>
       <div className="nav-cta">
         <a href="../index.html#membership" className="btn btn-brass" style={{ padding: "10px 20px", fontSize: 12 }}>
@@ -577,7 +579,7 @@ const PageHeader = () => (
   }}>
     <div className="container" style={{ position: "relative", zIndex: 2 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 32 }}>
-        <a href="BC Frankfurt 1912.html" style={{ color: "var(--bone-300)", textDecoration: "none", fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase" }}>← Back</a>
+        <a href="../index.html" style={{ color: "var(--bone-300)", textDecoration: "none", fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase" }}>← Back</a>
         <span style={{ color: "var(--ink-500)" }}>/</span>
         <span className="eyebrow">Calendar &amp; Standings</span>
       </div>
