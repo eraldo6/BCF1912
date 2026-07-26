@@ -2082,7 +2082,7 @@ section {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
+  grid-template-columns: 2fr 1fr;
   gap: 48px;
   margin-bottom: 80px;
 }
@@ -2129,6 +2129,13 @@ section {
 }
 .footer-col a:hover { color: var(--brass-500); }
 
+/* Footer nav mirrors the header toolbar — flow its items into two columns */
+.footer-nav ul {
+  column-count: 2;
+  column-gap: 48px;
+}
+.footer-nav li { break-inside: avoid; }
+
 .footer-bottom {
   display: flex;
   justify-content: space-between;
@@ -2143,7 +2150,7 @@ section {
 }
 
 @media (max-width: 900px) {
-  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
   .footer-bottom { flex-direction: column; gap: 16px; }
 }
 

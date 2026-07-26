@@ -1699,25 +1699,14 @@ const Footer = () => {
             ))}
           </div>
         </div>
-        <div className="footer-col">
-          <h5>{t("nav.club")}</h5>
+        <div className="footer-col footer-nav">
           <ul>
             <li><a href="#about">{t("nav.club")}</a></li>
             <li><a href="#disciplines">{t("nav.disciplines")}</a></li>
             <li><a href="#experience">{t("nav.experience")}</a></li>
-          </ul>
-        </div>
-        <div className="footer-col">
-          <h5>{t("nav.membership")}</h5>
-          <ul>
             <li><a href="#membership">{t("nav.membership")}</a></li>
             <li><a href="#gallery">{t("nav.gallery")}</a></li>
             <li><a href="#news">News</a></li>
-          </ul>
-        </div>
-        <div className="footer-col">
-          <h5>{t("nav.tournaments")}</h5>
-          <ul>
             <li><a href="#tournaments">{t("nav.tournaments")}</a></li>
             <li><a href="#contact">{t("nav.visit")}</a></li>
             <li><a href="assets/calendar.html">{t("nav.games")}</a></li>
