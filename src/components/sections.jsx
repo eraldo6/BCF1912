@@ -1642,6 +1642,13 @@ const CueScoreIcon = ({ size = 18 }) => (
   </svg>
 );
 
+const YouTubeIcon = ({ size = 18 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <rect x="2.5" y="6" width="19" height="12" rx="3.5" stroke="currentColor" strokeWidth="1.6" />
+    <path d="M10.5 9.2v5.6l4.8-2.8-4.8-2.8z" fill="currentColor" />
+  </svg>
+);
+
 const Footer = () => {
   const { t } = useTranslation();
   return (
@@ -1655,6 +1662,7 @@ const Footer = () => {
             {[
               { label: "Instagram", href: "#", icon: <InstagramIcon /> },
               { label: "Facebook", href: "#", icon: <FacebookIcon /> },
+              { label: "YouTube", href: "#", icon: <YouTubeIcon /> },
               { label: "CueScore", href: "https://cuescore.com/bcfrankfurt1912", icon: <CueScoreIcon /> },
             ].map(({ label, href, icon }) => (
               <a key={label} href={href} aria-label={label}
