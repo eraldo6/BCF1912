@@ -474,19 +474,27 @@ window.TRANSLATIONS = TRANSLATIONS;
 
 const useTranslation = () => React.useContext(TranslationContext);
 
-// Reliable in-page anchor scroll. Native #hash / smooth-scroll can land short
-// on long pages whose height is still settling (e.g. the Tournaments section
-// grows after its async CueScore fetch). This scrolls, then re-corrects on the
-// next frames once layout is final so the target always ends up under the nav.
+// Reliable in-page anchor scroll. The page has `scroll-behavior: smooth`
+// globally, and the Tournaments section grows after its async CueScore fetch,
+// so the target's position moves while scrolling. We compute an absolute Y
+// (offset for the fixed nav) and do ONE smooth scroll, then a SINGLE instant
+// re-correction once layout has settled — never competing smooth animations.
+const NAV_OFFSET = 80;
+
+const targetY = (el) => {
+  const rect = el.getBoundingClientRect();
+  return Math.max(0, window.scrollY + rect.top - NAV_OFFSET);
+};
+
 const scrollToHash = (hash) => {
   const el = document.getElementById(hash.replace(/^#/, ""));
   if (!el) return;
-  const go = () => el.scrollIntoView({ behavior: "smooth", block: "start" });
-  go();
-  // Re-correct after layout settles (fonts, reveal animations, late fetches).
-  requestAnimationFrame(() => requestAnimationFrame(go));
-  setTimeout(go, 350);
-  setTimeout(go, 800);
+  window.scrollTo({ top: targetY(el), behavior: "smooth" });
+  // After the smooth scroll + any late layout changes settle, snap to the
+  // final position instantly (no animation, so nothing to fight with).
+  const settle = () => window.scrollTo({ top: targetY(el), behavior: "auto" });
+  setTimeout(settle, 700);
+  setTimeout(settle, 1200);
   if (history.replaceState) history.replaceState(null, "", hash);
 };
 
