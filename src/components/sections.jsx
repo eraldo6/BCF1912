@@ -230,10 +230,7 @@ const TRANSLATIONS = {
     "contact.privateClubDesc2": "If you're interested in becoming a member, please review our membership tiers and contact us via email to begin the application process.",
     "contact.membershipInquiries": "Membership Inquiries",
     "footer.getInvolved": "Get Involved",
-    "footer.history": "History",
-    "footer.facilities": "Facilities",
     "footer.visit": "Visit",
-    "footer.calendar": "Calendar",
   },
   DE: {
     // Nav
@@ -463,10 +460,7 @@ const TRANSLATIONS = {
     "contact.privateClubDesc2": "Wenn Sie Mitglied werden möchten, lesen Sie bitte unsere Mitgliedschaftsstufen und kontaktieren Sie uns per E-Mail, um den Bewerbungsprozess zu starten.",
     "contact.membershipInquiries": "Mitgliedschaftsanfragen",
     "footer.getInvolved": "Mitmachen",
-    "footer.history": "Geschichte",
-    "footer.facilities": "Einrichtungen",
     "footer.visit": "Besuchen",
-    "footer.calendar": "Kalender",
   }
 };
 
@@ -1703,9 +1697,9 @@ const Footer = () => {
         <div className="footer-col">
           <h5>{t("footer.about.title")}</h5>
           <ul>
-            <li><a href="#about">{t("footer.history")}</a></li>
+            <li><a href="#about">{t("nav.club")}</a></li>
             <li><a href="#disciplines">{t("nav.disciplines")}</a></li>
-            <li><a href="#experience">{t("footer.facilities")}</a></li>
+            <li><a href="#experience">{t("nav.experience")}</a></li>
           </ul>
         </div>
         <div className="footer-col">
@@ -1714,16 +1708,14 @@ const Footer = () => {
             <li><a href="#membership">{t("nav.membership")}</a></li>
             <li><a href="#gallery">{t("nav.gallery")}</a></li>
             <li><a href="#news">News</a></li>
-            <li><a href="#tournaments">{t("nav.tournaments")}</a></li>
           </ul>
         </div>
         <div className="footer-col">
           <h5>{t("footer.visit")}</h5>
           <ul>
-            <li><a href="#contact">Borsigallee 45</a></li>
-            <li><a href="#contact">{t("contact.hours.title")}</a></li>
-            <li><a href="assets/calendar.html">{t("footer.calendar")}</a></li>
-            <li><a href="#contact">{t("contact.contact.title")}</a></li>
+            <li><a href="#tournaments">{t("nav.tournaments")}</a></li>
+            <li><a href="#contact">{t("nav.visit")}</a></li>
+            <li><a href="assets/calendar.html">{t("nav.games")}</a></li>
           </ul>
         </div>
       </div>
