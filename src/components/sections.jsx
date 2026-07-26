@@ -17,9 +17,9 @@ const TRANSLATIONS = {
     "nav.becomeMember": "Become a Member",
 
     // Hero
-    "hero.eyebrow": "Est. 1912 — Frankfurt am Main",
+    "hero.eyebrow": "Est. 1912 · Frankfurt am Main",
     "hero.title": "Frankfurt's home<br />of <em>Billard</em><br />since 1912.",
-    "hero.subtitle": "Karambol. Pool. Snooker. A century of tradition, competition and community — under one roof on the eastern edge of the city.",
+    "hero.subtitle": "Karambol. Pool. Snooker. A century of tradition, competition and community, all under one roof on the eastern edge of the city.",
     "hero.becomeMember": "Become a Member",
     "hero.visitClub": "Visit the Club",
 
@@ -27,29 +27,29 @@ const TRANSLATIONS = {
     "about.num": "01",
     "about.eyebrow": "Founded 1912",
     "about.title": "More than a<br /><em>century</em> of play.",
-    "about.p1": "BC Frankfurt is a working clubhouse — not a museum. Match-grade tables are in daily use, not roped off. The brass lamps over the carom tables date to 1968, refurbished twice but never replaced.",
+    "about.p1": "BC Frankfurt is a working clubhouse, not a museum. Match-grade tables are in daily use, not roped off. The brass lamps over the carom tables date to 1968, refurbished twice but never replaced.",
     "about.p2": "Founded as Billard Club Frankfurt 1912 e.V., we're one of the oldest dedicated billiard clubs in Germany. Members have ranged from city councillors to shift workers, united by the game.",
-    "about.p3": "We compete in the Pool Bundesliga, the 2. Bundesliga, and the Hessen regional leagues — but the heart of the club is the Tuesday and Thursday open play, where regulars teach newcomers the old way: by example, then by correction.",
+    "about.p3": "We compete in the Pool Bundesliga, the 2. Bundesliga, and the Hessen regional leagues, but the heart of the club is the Tuesday and Thursday open play, where regulars teach newcomers the old way: by example, then by correction.",
 
     // Disciplines
     "disciplines.num": "02",
     "disciplines.eyebrow": "Three disciplines",
     "disciplines.title": "Karambol,<br />Pool, <em>Snooker</em>.",
-    "disciplines.lede": "Few clubs in Germany maintain match-grade equipment for all three cue sports under one roof. We do — and we've been doing it since before most of our competitors existed.",
+    "disciplines.lede": "Few clubs in Germany maintain match-grade equipment for all three cue sports under one roof. We do, and we've been doing it since before most of our competitors existed.",
     "disciplines.pickGame": "Pick your <em>game</em>.",
-    "disciplines.fewClubs": "Few clubs in Germany maintain match-grade equipment for all three major billiard disciplines. We do — and we play them all, year-round.",
+    "disciplines.fewClubs": "Few clubs in Germany maintain match-grade equipment for all three major billiard disciplines. We do, and we play them all, year-round.",
     "disciplines.aboutGame": "About the game",
 
     // Discipline details
     "disc.pool.desc": "Fast, expressive, social. Open daily for members and guests alike.",
     "disc.pool.tables": "4 Tables",
     "disc.pool.size": "9-foot",
-    "disc.pool.detail": "Our four 9-foot tournament tables host everything from casual evenings to Bundesliga 2 matches. 8-Ball, 9-Ball, 10-Ball, Straight Pool — all played here, all night long. Open table on most weekdays; matchroom hire by reservation.",
+    "disc.pool.detail": "Our four 9-foot tournament tables host everything from casual evenings to Bundesliga 2 matches. 8-Ball, 9-Ball, 10-Ball, Straight Pool, all played here, all night long. Open table on most weekdays; matchroom hire by reservation.",
     "disc.pool.tags": "8-Ball,9-Ball,10-Ball,Straight Pool,Open Daily",
     "disc.karambol.desc": "Three balls, no pockets, pure geometry. The historical heart of the club.",
     "disc.karambol.tables": "4 Tables",
     "disc.karambol.size": "2 big · 2 small",
-    "disc.karambol.detail": "From classic three-cushion to free game and cadre — Karambol is the discipline that built this club. Played on heated tables without pockets, it rewards angle, spin and patience over power. Our four tables — two large match-size, two smaller for training — see Bundesliga practice every Tuesday and Thursday.",
+    "disc.karambol.detail": "From classic three-cushion to free game and cadre, Karambol is the discipline that built this club. Played on heated tables without pockets, it rewards angle, spin and patience over power. Our four tables (two large match-size, two smaller for training) see Bundesliga practice every Tuesday and Thursday.",
     "disc.karambol.tags": "Three-Cushion,Cadre,Free Game,Heated Tables",
     "disc.snooker.desc": "Twelve feet of felt. The longest, most cinematic game we offer.",
     "disc.snooker.tables": "2 Tables",
@@ -60,10 +60,10 @@ const TRANSLATIONS = {
     "disc.size": "Size",
     "disciplines.karambol.title": "Karambol",
     "disciplines.karambol.subtitle": "The oldest discipline",
-    "disciplines.karambol.detail": "Four tables — two large (2.84m), two small (2.10m) — all Müller carom tables with heated slate. We play Libre, Cadre, and 3-cushion. Training on Tuesdays, league matches most Fridays. The club was founded for carom, and it remains the first discipline taught to new members.",
+    "disciplines.karambol.detail": "Four tables (two large at 2.84m, two small at 2.10m), all Müller carom tables with heated slate. We play Libre, Cadre, and 3-cushion. Training on Tuesdays, league matches most Fridays. The club was founded for carom, and it remains the first discipline taught to new members.",
     "disciplines.pool.title": "Pool",
     "disciplines.pool.subtitle": "Bundesliga standard",
-    "disciplines.pool.detail": "Four Brunswick Gold Crown tables kept to tournament specification. 8-Ball, 9-Ball, 10-Ball, 14.1 Continuous — we play them all. BCF I competes in the Pool Bundesliga, BCF II in the 2. Bundesliga Süd. Home matches draw 60+ spectators. The tables are re-clothed every July with Simonis 860.",
+    "disciplines.pool.detail": "Four Brunswick Gold Crown tables kept to tournament specification. 8-Ball, 9-Ball, 10-Ball, 14.1 Continuous, we play them all. BCF I competes in the Pool Bundesliga, BCF II in the 2. Bundesliga Süd. Home matches draw 60+ spectators. The tables are re-clothed every July with Simonis 860.",
     "disciplines.snooker.title": "Snooker",
     "disciplines.snooker.subtitle": "Full-size championship tables",
     "disciplines.snooker.detail": "Two full-size 12-foot snooker tables, kept under match-grade conditions. We host the Hessen Snooker Cup every spring and run a development programme for juniors. Coaching available by appointment with our certified coaches.",
@@ -76,11 +76,11 @@ const TRANSLATIONS = {
     "experience.tables.desc": "Two large carom, two small carom, four 9-foot pool, two 12-foot snooker.",
     "experience.cloth.eyebrow": "Annually renewed",
     "experience.cloth.title": "Tournament cloth, every <em>summer</em>.",
-    "experience.cloth.desc": "Every July we close for one week and re-cloth all ten tables with Simonis 860 / 300 Rapide — the same cloth used at world championship play.",
+    "experience.cloth.desc": "Every July we close for one week and re-cloth all ten tables with Simonis 860 / 300 Rapide, the same cloth used at world championship play.",
     "experience.lounge.title": "The Lounge",
-    "experience.lounge.desc": "Leather, low light, and a dedicated space for spectating — or for the conversation between frames.",
+    "experience.lounge.desc": "Leather, low light, and a dedicated space for spectating, or for the conversation between frames.",
     "experience.snacks.title": "Bar & Kitchen",
-    "experience.snacks.desc": "Cold drinks, decent coffee, and a small menu of snacks — Apfelwein on Fridays, by tradition.",
+    "experience.snacks.desc": "Cold drinks, decent coffee, and a small menu of snacks. Apfelwein on Fridays, by tradition.",
     "experience.trial.eyebrow": "First visit free",
     "experience.trial.title": "Trial Membership",
     "experience.trial.desc": "Two evenings on us. Bring a friend. We'll lend you a cue.",
@@ -110,7 +110,7 @@ const TRANSLATIONS = {
     "membership.student.feat4": "Eligibility for league teams",
     "membership.student.cta": "Apply as student",
 
-    "membership.regular.tag": "Tier 02 — recommended",
+    "membership.regular.tag": "Tier 02 · recommended",
     "membership.regular.name": "Regular",
     "membership.regular.tagline": "Unlimited play, all tables, all disciplines.",
     "membership.regular.feat1": "Unrestricted access · all opening hours",
@@ -187,13 +187,13 @@ const TRANSLATIONS = {
 
     // Additional sections
     "disciplines.pickGame": "Pick your <em>game</em>.",
-    "disciplines.fewClubs": "Few clubs in Germany maintain match-grade equipment for all three major billiard disciplines. We do — and we play them all, year-round.",
+    "disciplines.fewClubs": "Few clubs in Germany maintain match-grade equipment for all three major billiard disciplines. We do, and we play them all, year-round.",
     "experience.whyJoin": "Why Join",
     "experience.moreThan": "More than <em>a room</em><br />with tables.",
-    "experience.workingClubhouse": "A working clubhouse with a lounge, a bar, and the kind of regulars who'll stay for one more frame — and remember your name when you come back.",
-    "experience.cloth.short": "Every July we re-cloth all ten tables with Simonis 860 / 300 Rapide — world championship standard.",
+    "experience.workingClubhouse": "A working clubhouse with a lounge, a bar, and the kind of regulars who'll stay for one more frame and remember your name when you come back.",
+    "experience.cloth.short": "Every July we re-cloth all ten tables with Simonis 860 / 300 Rapide, world championship standard.",
     "membership.threeWays": "Three ways to <em>belong</em>.",
-    "membership.flatFair": "A flat, fair contribution structure. No initiation fee, no per-hour billing — just an annual membership and the keys to the room.",
+    "membership.flatFair": "A flat, fair contribution structure. No initiation fee, no per-hour billing, just an annual membership and the keys to the room.",
     "gallery.letLight": "We let the light, the wood and the felt do the talking. Photography by club member Andreas Becker.",
     "news.num": "06",
     "news.eyebrow": "News & Updates",
@@ -202,7 +202,7 @@ const TRANSLATIONS = {
     "contact.num": "07",
     "contact.visitContact": "Contact",
     "contact.borsigallee": "Borsigallee 45,<br /><em>Frankfurt</em> am Main.",
-    "contact.fiveMinutes": "Five minutes from Hessen-Center, four from the U7 stop, parking on site. Drop in any evening from 18:00 — or send a note ahead.",
+    "contact.fiveMinutes": "Five minutes from Hessen-Center, four from the U7 stop, parking on site. Drop in any evening from 18:00, or send a note ahead.",
     "contact.getDirections": "Get Directions",
     "contact.openInMaps": "Open in Maps",
     "contact.membersOnly": "Members Only",
@@ -233,9 +233,9 @@ const TRANSLATIONS = {
     "nav.becomeMember": "Mitglied werden",
 
     // Hero
-    "hero.eyebrow": "Gegr. 1912 — Frankfurt am Main",
+    "hero.eyebrow": "Gegr. 1912 · Frankfurt am Main",
     "hero.title": "Frankfurts Heimat<br />des <em>Billards</em><br />seit 1912.",
-    "hero.subtitle": "Karambol. Pool. Snooker. Ein Jahrhundert Tradition, Wettkampf und Gemeinschaft — unter einem Dach am östlichen Stadtrand.",
+    "hero.subtitle": "Karambol. Pool. Snooker. Ein Jahrhundert Tradition, Wettkampf und Gemeinschaft, unter einem Dach am östlichen Stadtrand.",
     "hero.becomeMember": "Mitglied werden",
     "hero.visitClub": "Club besuchen",
 
@@ -243,24 +243,24 @@ const TRANSLATIONS = {
     "about.num": "01",
     "about.eyebrow": "Gegründet 1912",
     "about.title": "Mehr als ein<br /><em>Jahrhundert</em> Spiel.",
-    "about.p1": "Der BC Frankfurt ist ein aktives Vereinshaus — kein Museum. Wettkampftische werden täglich bespielt, nicht abgesperrt. Die Messinglampen über den Karambol-Tischen stammen aus dem Jahr 1968, zweimal restauriert, aber nie ersetzt.",
+    "about.p1": "Der BC Frankfurt ist ein aktives Vereinshaus, kein Museum. Wettkampftische werden täglich bespielt, nicht abgesperrt. Die Messinglampen über den Karambol-Tischen stammen aus dem Jahr 1968, zweimal restauriert, aber nie ersetzt.",
     "about.p2": "Gegründet als Billard Club Frankfurt 1912 e.V., sind wir einer der ältesten Billardvereine Deutschlands. Unsere Mitglieder reichten von Stadträten bis zu Schichtarbeitern, vereint durch das Spiel.",
-    "about.p3": "Wir spielen in der Pool Bundesliga, der 2. Bundesliga und den hessischen Regionalligen — aber das Herzstück des Vereins ist das offene Spiel dienstags und donnerstags, wo Stammgäste Neulingen auf die alte Art beibringen: durch Vorbild, dann durch Korrektur.",
+    "about.p3": "Wir spielen in der Pool Bundesliga, der 2. Bundesliga und den hessischen Regionalligen, aber das Herzstück des Vereins ist das offene Spiel dienstags und donnerstags, wo Stammgäste Neulingen auf die alte Art beibringen: durch Vorbild, dann durch Korrektur.",
 
     // Disciplines
     "disciplines.num": "02",
     "disciplines.eyebrow": "Drei Disziplinen",
     "disciplines.title": "Karambol,<br />Pool, <em>Snooker</em>.",
-    "disciplines.lede": "Nur wenige Vereine in Deutschland unterhalten wettkampftaugliche Ausrüstung für alle drei Billardarten unter einem Dach. Wir tun es — und das schon seit vor den meisten unserer Konkurrenten.",
+    "disciplines.lede": "Nur wenige Vereine in Deutschland unterhalten wettkampftaugliche Ausrüstung für alle drei Billardarten unter einem Dach. Wir tun es, und das schon seit vor den meisten unserer Konkurrenten.",
     "disciplines.pickGame": "Wähle dein <em>Spiel</em>.",
-    "disciplines.fewClubs": "Nur wenige Vereine in Deutschland unterhalten wettkampftaugliche Ausrüstung für alle drei Billardarten unter einem Dach. Wir tun es — das ganze Jahr über.",
+    "disciplines.fewClubs": "Nur wenige Vereine in Deutschland unterhalten wettkampftaugliche Ausrüstung für alle drei Billardarten unter einem Dach. Wir tun es, das ganze Jahr über.",
     "disciplines.aboutGame": "Über das Spiel",
     "disciplines.karambol.title": "Karambol",
     "disciplines.karambol.subtitle": "Die älteste Disziplin",
-    "disciplines.karambol.detail": "Vier Tische — zwei große (2,84m), zwei kleine (2,10m) — alles Müller-Karambol-Tische mit beheizter Schieferplatte. Wir spielen Libre, Cadre und Dreiband. Training dienstags, Ligaspiele meist freitags. Der Verein wurde für Karambol gegründet und es bleibt die erste Disziplin, die neuen Mitgliedern beigebracht wird.",
+    "disciplines.karambol.detail": "Vier Tische, zwei große (2,84m) und zwei kleine (2,10m), alles Müller-Karambol-Tische mit beheizter Schieferplatte. Wir spielen Libre, Cadre und Dreiband. Training dienstags, Ligaspiele meist freitags. Der Verein wurde für Karambol gegründet und es bleibt die erste Disziplin, die neuen Mitgliedern beigebracht wird.",
     "disciplines.pool.title": "Pool",
     "disciplines.pool.subtitle": "Bundesliga-Standard",
-    "disciplines.pool.detail": "Vier Brunswick Gold Crown Tische nach Turnierstandard. 8-Ball, 9-Ball, 10-Ball, 14.1 Endlos — wir spielen alles. BCF I spielt in der Pool Bundesliga, BCF II in der 2. Bundesliga Süd. Heimspiele ziehen über 60 Zuschauer an. Die Tische werden jeden Juli mit Simonis 860 neu bezogen.",
+    "disciplines.pool.detail": "Vier Brunswick Gold Crown Tische nach Turnierstandard. 8-Ball, 9-Ball, 10-Ball, 14.1 Endlos, wir spielen alles. BCF I spielt in der Pool Bundesliga, BCF II in der 2. Bundesliga Süd. Heimspiele ziehen über 60 Zuschauer an. Die Tische werden jeden Juli mit Simonis 860 neu bezogen.",
     "disciplines.snooker.title": "Snooker",
     "disciplines.snooker.subtitle": "Meisterschaftstische in voller Größe",
     "disciplines.snooker.detail": "Zwei 12-Fuß-Snookertische in voller Größe, gehalten unter Wettkampfbedingungen. Wir veranstalten jeden Frühling den Hessen Snooker Cup und führen ein Entwicklungsprogramm für Junioren durch. Training nach Vereinbarung mit unseren zertifizierten Trainern.",
@@ -269,12 +269,12 @@ const TRANSLATIONS = {
     "disc.pool.desc": "Schnell, ausdrucksstark, gesellig. Täglich geöffnet für Mitglieder und Gäste.",
     "disc.pool.tables": "4 Tische",
     "disc.pool.size": "9-Fuß",
-    "disc.pool.detail": "Unsere vier 9-Fuß-Turniertische bieten alles von gemütlichen Abenden bis zu Bundesliga-2-Spielen. 8-Ball, 9-Ball, 10-Ball, 14.1 Endlos — alles wird hier gespielt, die ganze Nacht. Offener Tisch an den meisten Wochentagen; Spielraum-Miete auf Reservierung.",
+    "disc.pool.detail": "Unsere vier 9-Fuß-Turniertische bieten alles von gemütlichen Abenden bis zu Bundesliga-2-Spielen. 8-Ball, 9-Ball, 10-Ball, 14.1 Endlos, alles wird hier gespielt, die ganze Nacht. Offener Tisch an den meisten Wochentagen; Spielraum-Miete auf Reservierung.",
     "disc.pool.tags": "8-Ball,9-Ball,10-Ball,14.1 Endlos,Täglich geöffnet",
     "disc.karambol.desc": "Drei Kugeln, keine Taschen, reine Geometrie. Das historische Herz des Vereins.",
     "disc.karambol.tables": "4 Tische",
     "disc.karambol.size": "2 groß · 2 klein",
-    "disc.karambol.detail": "Vom klassischen Dreiband bis zu Freiem Spiel und Cadre — Karambol ist die Disziplin, die diesen Verein aufgebaut hat. Gespielt auf beheizten Tischen ohne Taschen, belohnt es Winkel, Effet und Geduld statt Kraft. Unsere vier Tische — zwei große Wettkampf-Tische, zwei kleinere für Training — sehen jeden Dienstag und Donnerstag Bundesliga-Training.",
+    "disc.karambol.detail": "Vom klassischen Dreiband bis zu Freiem Spiel und Cadre, Karambol ist die Disziplin, die diesen Verein aufgebaut hat. Gespielt auf beheizten Tischen ohne Taschen, belohnt es Winkel, Effet und Geduld statt Kraft. Unsere vier Tische, zwei große Wettkampf-Tische und zwei kleinere für Training, sehen jeden Dienstag und Donnerstag Bundesliga-Training.",
     "disc.karambol.tags": "Dreiband,Cadre,Freies Spiel,Beheizte Tische",
     "disc.snooker.desc": "Zwölf Fuß Tuch. Das längste, filmreifste Spiel, das wir anbieten.",
     "disc.snooker.tables": "2 Tische",
@@ -292,11 +292,11 @@ const TRANSLATIONS = {
     "experience.tables.desc": "Zwei große Karambol, zwei kleine Karambol, vier 9-Fuß Pool, zwei 12-Fuß Snooker.",
     "experience.cloth.eyebrow": "Jährlich erneuert",
     "experience.cloth.title": "Turniertuch, jeden <em>Sommer</em>.",
-    "experience.cloth.desc": "Jeden Juli schließen wir für eine Woche und beziehen alle zehn Tische neu mit Simonis 860 / 300 Rapide — dasselbe Tuch, das bei Weltmeisterschaften verwendet wird.",
+    "experience.cloth.desc": "Jeden Juli schließen wir für eine Woche und beziehen alle zehn Tische neu mit Simonis 860 / 300 Rapide, dasselbe Tuch, das bei Weltmeisterschaften verwendet wird.",
     "experience.lounge.title": "Die Lounge",
-    "experience.lounge.desc": "Leder, gedämpftes Licht und ein eigener Raum zum Zuschauen — oder für Gespräche zwischen den Frames.",
+    "experience.lounge.desc": "Leder, gedämpftes Licht und ein eigener Raum zum Zuschauen, oder für Gespräche zwischen den Frames.",
     "experience.snacks.title": "Bar & Küche",
-    "experience.snacks.desc": "Kalte Getränke, guter Kaffee und eine kleine Speisekarte — Apfelwein freitags, aus Tradition.",
+    "experience.snacks.desc": "Kalte Getränke, guter Kaffee und eine kleine Speisekarte. Apfelwein freitags, aus Tradition.",
     "experience.trial.eyebrow": "Erster Besuch kostenlos",
     "experience.trial.title": "Probemitgliedschaft",
     "experience.trial.desc": "Zwei Abende auf unsere Kosten. Bringen Sie einen Freund mit. Wir leihen Ihnen ein Queue.",
@@ -307,7 +307,7 @@ const TRANSLATIONS = {
     "membership.eyebrow": "Dem Verein beitreten",
     "membership.title": "Mitgliedschafts<em>stufen</em>.",
     "membership.threeWays": "Drei Wege <em>dazuzugehören</em>.",
-    "membership.flatFair": "Eine faire, transparente Beitragsstruktur. Keine Aufnahmegebühr, keine Stundenabrechnung — nur eine Mitgliedschaft und Zugang zum Vereinsheim.",
+    "membership.flatFair": "Eine faire, transparente Beitragsstruktur. Keine Aufnahmegebühr, keine Stundenabrechnung, nur eine Mitgliedschaft und Zugang zum Vereinsheim.",
 
     // Membership plans
     "membership.period": "/ Monat",
@@ -320,7 +320,7 @@ const TRANSLATIONS = {
     "membership.student.feat4": "Berechtigung für Ligateams",
     "membership.student.cta": "Als Student bewerben",
 
-    "membership.regular.tag": "Stufe 02 — empfohlen",
+    "membership.regular.tag": "Stufe 02 · empfohlen",
     "membership.regular.name": "Regulär",
     "membership.regular.tagline": "Unbegrenztes Spielen, alle Tische, alle Disziplinen.",
     "membership.regular.feat1": "Uneingeschränkter Zugang · alle Öffnungszeiten",
@@ -406,13 +406,13 @@ const TRANSLATIONS = {
 
     // Additional sections
     "disciplines.pickGame": "Wähle dein <em>Spiel</em>.",
-    "disciplines.fewClubs": "Nur wenige Vereine in Deutschland unterhalten wettkampftaugliche Ausrüstung für alle drei Billardarten unter einem Dach. Wir tun es — das ganze Jahr über.",
+    "disciplines.fewClubs": "Nur wenige Vereine in Deutschland unterhalten wettkampftaugliche Ausrüstung für alle drei Billardarten unter einem Dach. Wir tun es, das ganze Jahr über.",
     "experience.whyJoin": "Warum beitreten",
     "experience.moreThan": "Mehr als <em>ein Raum</em><br />mit Tischen.",
-    "experience.workingClubhouse": "Ein aktives Vereinshaus mit Lounge, Bar und Stammgästen, die gerne noch ein Spiel bleiben — und sich an deinen Namen erinnern.",
-    "experience.cloth.short": "Jeden Juli beziehen wir alle zehn Tische neu mit Simonis 860 / 300 Rapide — Weltmeisterschaftsstandard.",
+    "experience.workingClubhouse": "Ein aktives Vereinshaus mit Lounge, Bar und Stammgästen, die gerne noch ein Spiel bleiben und sich an deinen Namen erinnern.",
+    "experience.cloth.short": "Jeden Juli beziehen wir alle zehn Tische neu mit Simonis 860 / 300 Rapide, Weltmeisterschaftsstandard.",
     "membership.threeWays": "Drei Wege <em>dazuzugehören</em>.",
-    "membership.flatFair": "Eine faire, transparente Beitragsstruktur. Keine Aufnahmegebühr, keine Stundenabrechnung — nur eine Mitgliedschaft und Zugang zum Vereinsheim.",
+    "membership.flatFair": "Eine faire, transparente Beitragsstruktur. Keine Aufnahmegebühr, keine Stundenabrechnung, nur eine Mitgliedschaft und Zugang zum Vereinsheim.",
     "gallery.letLight": "Wir lassen Licht, Holz und Tuch für sich sprechen. Fotografie von Vereinsmitglied Andreas Becker.",
     "news.num": "06",
     "news.eyebrow": "Neuigkeiten",
@@ -421,7 +421,7 @@ const TRANSLATIONS = {
     "contact.num": "07",
     "contact.visitContact": "Kontakt",
     "contact.borsigallee": "Borsigallee 45,<br /><em>Frankfurt</em> am Main.",
-    "contact.fiveMinutes": "Fünf Minuten vom Hessen-Center, vier von der U7-Haltestelle, Parkplätze vor Ort. Kommen Sie jeden Abend ab 18:00 vorbei — oder schreiben Sie uns vorher.",
+    "contact.fiveMinutes": "Fünf Minuten vom Hessen-Center, vier von der U7-Haltestelle, Parkplätze vor Ort. Kommen Sie jeden Abend ab 18:00 vorbei, oder schreiben Sie uns vorher.",
     "contact.getDirections": "Route planen",
     "contact.openInMaps": "In Maps öffnen",
     "contact.membersOnly": "Nur für Mitglieder",
@@ -800,7 +800,7 @@ const Disciplines = () => {
               className={`discipline-row ${open === i ? "open" : ""}`}
               onClick={() => setOpen(open === i ? -1 : i)}
             >
-              <div className="discipline-num">— {d.num}</div>
+              <div className="discipline-num">· {d.num}</div>
               <div className="discipline-name">
                 <em>{d.nameItalic}</em>
               </div>
@@ -1461,7 +1461,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="footer-bottom">
-        <span>© 1912 — 2026 · Billard Club Frankfurt e.V.</span>
+        <span>© 1912–2026 · Billard Club Frankfurt e.V.</span>
       </div>
     </div>
   </footer>
