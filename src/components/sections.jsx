@@ -726,7 +726,7 @@ const About = () => {
 
         <div className="about-feature-image reveal delay-2">
           <img
-            src="https://bcfrankfurt.de/wp-content/uploads/2018/02/vereinsheim1.jpg"
+            src="assets/Images/Gallery/20260415_065214.jpg"
             alt="BC Frankfurt clubhouse interior"
             style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", filter: "brightness(0.85) contrast(1.05) saturate(0.85)" }}
           />
