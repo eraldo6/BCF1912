@@ -1701,20 +1701,52 @@ const Footer = () => {
           <p>{t("footer.about.line1")}</p>
           <div style={{ display: "flex", gap: 12, marginTop: 32 }}>
             {[
-              { name: "CueScore", href: "https://cuescore.com/bcfrankfurt1912" },
-              { name: "Instagram", href: "#" },
-              { name: "Facebook", href: "#" },
-              { name: "YouTube", href: "#" },
-            ].map(({ name, href }) => (
+              {
+                name: "CueScore", href: "https://cuescore.com/bcfrankfurt1912",
+                // Billiard cue-ball mark (CueScore has no standard glyph)
+                icon: (
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
+                    <circle cx="12" cy="12" r="4" fill="currentColor" />
+                  </svg>
+                ),
+              },
+              {
+                name: "Instagram", href: "#",
+                icon: (
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="1.6" />
+                    <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1.6" />
+                    <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" />
+                  </svg>
+                ),
+              },
+              {
+                name: "Facebook", href: "#",
+                icon: (
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M13.5 21v-7h2.3l.4-2.8h-2.7V9.3c0-.8.2-1.4 1.4-1.4h1.4V5.4c-.7-.1-1.5-.1-2.2-.1-2.2 0-3.7 1.3-3.7 3.8v2.1H8v2.8h2.3V21h3.2z" />
+                  </svg>
+                ),
+              },
+              {
+                name: "YouTube", href: "#",
+                icon: (
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <rect x="2.5" y="6" width="19" height="12" rx="3.5" stroke="currentColor" strokeWidth="1.6" />
+                    <path d="M10.5 9.3l4.2 2.7-4.2 2.7V9.3z" fill="currentColor" />
+                  </svg>
+                ),
+              },
+            ].map(({ name, href, icon }) => (
               <a key={name} href={href} aria-label={name}
                 target={href.startsWith("http") ? "_blank" : undefined}
                 rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                 style={{
                 width: 40, height: 40, border: "1px solid var(--ink-300)", borderRadius: "50%",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                color: "var(--bone-200)", textDecoration: "none", fontSize: 11,
-                fontFamily: "var(--font-mono)", letterSpacing: "0.06em",
-              }}>{name[0]}</a>
+                color: "var(--bone-200)", textDecoration: "none",
+              }}>{icon}</a>
             ))}
           </div>
         </div>
