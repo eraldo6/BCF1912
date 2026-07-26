@@ -1022,17 +1022,72 @@ const Membership = () => {
 };
 
 const GALLERY = [
-  { cls: "g1", caption: "Main hall · Saturday evening", img: "https://bcfrankfurt.de/wp-content/uploads/2018/02/atmo1.jpg" },
-  { cls: "g2", caption: "Karambol · cadre frame", img: "https://bcfrankfurt.de/wp-content/uploads/2018/02/atmo2.jpg" },
-  { cls: "g3", caption: "Brass lamps over the table", img: "https://bcfrankfurt.de/wp-content/uploads/2018/02/atmo4.jpg" },
-  { cls: "g4", caption: "Snooker · 12-foot match", img: "https://bcfrankfurt.de/wp-content/uploads/2018/02/atmo5.jpg" },
-  { cls: "g5", caption: "The Lounge", img: "https://bcfrankfurt.de/wp-content/uploads/2018/02/03_Raum.jpg" },
-  { cls: "g6", caption: "Pool Bundesliga", img: "https://bcfrankfurt.de/wp-content/uploads/2018/02/kugeln2_s.jpg" },
-  { cls: "g7", caption: "Karambol training", img: "https://bcfrankfurt.de/wp-content/uploads/2018/02/05_Karambolage.jpg" },
+  { cls: "g1", caption: "Main hall · Saturday evening", img: "assets/Images/Gallery/20260415_065214.jpg" },
+  { cls: "g2", caption: "Karambol · cadre frame", img: "assets/Images/Gallery/20260415_064711.jpg" },
+  { cls: "g3", caption: "Brass lamps over the table", img: "assets/Images/Gallery/20260415_064907.jpg" },
+  { cls: "g4", caption: "Snooker · 12-foot match", img: "assets/Images/Gallery/20260415_065329.jpg" },
+  { cls: "g5", caption: "The Lounge", img: "assets/Images/Gallery/20260415_065144.jpg" },
+  { cls: "g6", caption: "Pool Bundesliga", img: "assets/Images/Gallery/20260415_065737.jpg" },
+  { cls: "g7", caption: "Karambol training", img: "assets/Images/Gallery/20260415_065858.jpg" },
 ];
+
+// Fullscreen lightbox with arrow navigation, keyboard controls, and swipe.
+const Lightbox = ({ items, index, onClose, onNav }) => {
+  const touchX = React.useRef(null);
+
+  React.useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "Escape") onClose();
+      else if (e.key === "ArrowRight") onNav(1);
+      else if (e.key === "ArrowLeft") onNav(-1);
+    };
+    document.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [onClose, onNav]);
+
+  if (index == null) return null;
+  const item = items[index];
+
+  const onTouchStart = (e) => { touchX.current = e.touches[0].clientX; };
+  const onTouchEnd = (e) => {
+    if (touchX.current == null) return;
+    const dx = e.changedTouches[0].clientX - touchX.current;
+    if (Math.abs(dx) > 50) onNav(dx < 0 ? 1 : -1);
+    touchX.current = null;
+  };
+
+  return (
+    <div className="lightbox" role="dialog" aria-modal="true" onClick={onClose}
+         onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+      <button className="lightbox-close" aria-label="Close" onClick={onClose}>&times;</button>
+      <button className="lightbox-arrow lightbox-prev" aria-label="Previous"
+              onClick={(e) => { e.stopPropagation(); onNav(-1); }}>&#8249;</button>
+      <figure className="lightbox-figure" onClick={(e) => e.stopPropagation()}>
+        <img className="lightbox-img" src={item.img} alt={item.caption} />
+        <figcaption className="lightbox-caption">
+          <span>{item.caption}</span>
+          <span className="lightbox-count">{index + 1} / {items.length}</span>
+        </figcaption>
+      </figure>
+      <button className="lightbox-arrow lightbox-next" aria-label="Next"
+              onClick={(e) => { e.stopPropagation(); onNav(1); }}>&#8250;</button>
+    </div>
+  );
+};
 
 const Gallery = () => {
   const { t } = useTranslation();
+  const [active, setActive] = React.useState(null);
+
+  const nav = React.useCallback((dir) => {
+    setActive((cur) => (cur == null ? cur : (cur + dir + GALLERY.length) % GALLERY.length));
+  }, []);
+
   return (
   <section className="section" id="gallery">
     <div className="container">
@@ -1052,24 +1107,30 @@ const Gallery = () => {
 
       <div className="gallery-grid reveal">
         {GALLERY.map((g, i) => (
-          <div key={i} className={`gallery-item ${g.cls}`}>
+          <div key={i} className={`gallery-item ${g.cls}`} onClick={() => setActive(i)}
+               role="button" tabIndex={0} aria-label={`Open image: ${g.caption}`}
+               onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setActive(i); } }}>
             <img
               src={g.img}
               alt={g.caption}
+              loading="lazy"
               style={{
                 position: "absolute", inset: 0,
                 width: "100%", height: "100%",
                 objectFit: "cover",
-                filter: "brightness(0.78) contrast(1.08) saturate(0.85)",
+                filter: "brightness(0.72) contrast(1.06) saturate(0.82) sepia(0.12)",
                 transition: "filter 0.5s var(--ease-out), transform 0.6s var(--ease-out)",
               }}
               className="gallery-img"
             />
+            <div className="gallery-zoom-hint" aria-hidden="true">⤢</div>
             <div className="gallery-caption">{g.caption}</div>
           </div>
         ))}
       </div>
     </div>
+
+    <Lightbox items={GALLERY} index={active} onClose={() => setActive(null)} onNav={nav} />
   </section>
 );
 };
