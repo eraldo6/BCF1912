@@ -211,8 +211,13 @@ const TRANSLATIONS = {
     "tournaments.details": "Details",
     "tournaments.loading": "Loading tournaments from CueScore…",
     "tournaments.empty": "No upcoming tournaments listed right now. Check back soon.",
-    "tournaments.allOnCuescore": "See all pool tournaments on CueScore",
+    "tournaments.allOnCuescore": "See all tournaments on CueScore",
     "tournaments.tbd": "Date to be confirmed",
+    "tournaments.past": "Past",
+    "tournaments.viewResults": "View results",
+    "tournaments.prev": "Previous",
+    "tournaments.next": "Next",
+    "tournaments.page": "Page",
     "contact.num": "08",
     "contact.visitContact": "Contact",
     "contact.borsigallee": "Borsigallee 45,<br /><em>Frankfurt</em> am Main.",
@@ -444,8 +449,13 @@ const TRANSLATIONS = {
     "tournaments.details": "Details",
     "tournaments.loading": "Turniere werden von CueScore geladen…",
     "tournaments.empty": "Derzeit sind keine kommenden Turniere gelistet. Schauen Sie bald wieder vorbei.",
-    "tournaments.allOnCuescore": "Alle Pool-Turniere auf CueScore ansehen",
+    "tournaments.allOnCuescore": "Alle Turniere auf CueScore ansehen",
     "tournaments.tbd": "Datum wird noch bestätigt",
+    "tournaments.past": "Vorbei",
+    "tournaments.viewResults": "Ergebnisse ansehen",
+    "tournaments.prev": "Zurück",
+    "tournaments.next": "Weiter",
+    "tournaments.page": "Seite",
     "contact.num": "08",
     "contact.visitContact": "Kontakt",
     "contact.borsigallee": "Borsigallee 45,<br /><em>Frankfurt</em> am Main.",
@@ -1249,7 +1259,7 @@ const useTournaments = () => {
           })
         );
         if (cancelled) return;
-        setState({ items: filterUpcoming(live.filter(Boolean)), loading: false, error: false });
+        setState({ items: sortTournaments(live.filter(Boolean)), loading: false, error: false });
       } catch {
         if (cancelled) return;
         setState({ items: [], loading: false, error: true });
@@ -1263,18 +1273,20 @@ const useTournaments = () => {
   return state;
 };
 
-// Keep upcoming/current events only, sorted by date (undated last).
-const filterUpcoming = (list) => {
+// Keep ALL events, tag each as past/upcoming, and order them: upcoming first
+// (soonest first), then past events (most recent first). Undated events are
+// treated as upcoming and sorted last within that group.
+const sortTournaments = (list) => {
   const now = Date.now();
-  const upcoming = list.filter((t) => {
-    if (!t.date) return true; // keep undated (date TBC)
-    const end = new Date(t.date).getTime();
-    return isNaN(end) || end > now - 1000 * 60 * 60 * 24; // include events up to a day past start
+  const withMeta = list.map((t) => {
+    const time = t.date ? new Date(t.date).getTime() : NaN;
+    // "Past" once the start date is more than a day behind us.
+    const past = !isNaN(time) && time < now - 1000 * 60 * 60 * 24;
+    return { ...t, past, _time: isNaN(time) ? Infinity : time };
   });
-  return upcoming.sort((a, b) => {
-    const ta = a.date ? new Date(a.date).getTime() : Infinity;
-    const tb = b.date ? new Date(b.date).getTime() : Infinity;
-    return ta - tb;
+  return withMeta.sort((a, b) => {
+    if (a.past !== b.past) return a.past ? 1 : -1;      // upcoming before past
+    return a.past ? b._time - a._time : a._time - b._time; // past: newest first; upcoming: soonest first
   });
 };
 
@@ -1295,8 +1307,9 @@ const TournamentCard = ({ item }) => {
   const label = t(`tournaments.${item.type}`);
   const when = formatTournamentDate(item, lang) || t("tournaments.tbd");
   return (
-    <article className={`tournament-card tc-${item.type}`}>
+    <article className={`tournament-card tc-${item.type}${item.past ? " tc-past" : ""}`}>
       <div className="tc-accent" aria-hidden="true" />
+      {item.past && <span className="tc-past-tag">{t("tournaments.past")}</span>}
       <div className="tc-body">
         <div className="tc-badge-row">
           <span className="tc-badge">
@@ -1313,16 +1326,33 @@ const TournamentCard = ({ item }) => {
       </div>
       {item.url && (
         <a className="tc-cta" href={item.url} target="_blank" rel="noopener noreferrer">
-          {t("tournaments.register")} <ArrowOut />
+          {item.past ? t("tournaments.viewResults") : t("tournaments.register")} <ArrowOut />
         </a>
       )}
     </article>
   );
 };
 
+const TOURNAMENTS_PER_PAGE = 3;
+
 const Tournaments = () => {
   const { t } = useTranslation();
   const { items, loading, error } = useTournaments();
+  const [page, setPage] = React.useState(0);
+
+  const total = items ? items.length : 0;
+  const pageCount = Math.max(1, Math.ceil(total / TOURNAMENTS_PER_PAGE));
+  // Clamp page if the list shrinks (e.g. after a re-fetch).
+  const current = Math.min(page, pageCount - 1);
+  const start = current * TOURNAMENTS_PER_PAGE;
+  const visible = items ? items.slice(start, start + TOURNAMENTS_PER_PAGE) : [];
+
+  const goTo = (next) => {
+    setPage(next);
+    const sec = document.getElementById("tournaments");
+    if (sec) window.scrollTo({ top: Math.max(0, window.scrollY + sec.getBoundingClientRect().top - NAV_OFFSET), behavior: "smooth" });
+  };
+
   return (
     <section className="section" id="tournaments">
       <div className="container">
@@ -1340,13 +1370,37 @@ const Tournaments = () => {
 
         <div className="tournament-grid reveal">
           {loading && <div className="tournament-status">{t("tournaments.loading")}</div>}
-          {!loading && items && items.length === 0 && (
+          {!loading && total === 0 && (
             <div className="tournament-status">{t("tournaments.empty")}</div>
           )}
-          {!loading && items && items.map((item) => (
+          {!loading && visible.map((item) => (
             <TournamentCard key={item.id} item={item} />
           ))}
         </div>
+
+        {!loading && pageCount > 1 && (
+          <div className="tournament-pagination reveal">
+            <button
+              className="tp-btn"
+              onClick={() => goTo(current - 1)}
+              disabled={current === 0}
+              aria-label={t("tournaments.prev")}
+            >
+              ‹ {t("tournaments.prev")}
+            </button>
+            <span className="tp-status">
+              {t("tournaments.page")} {current + 1} / {pageCount}
+            </span>
+            <button
+              className="tp-btn"
+              onClick={() => goTo(current + 1)}
+              disabled={current >= pageCount - 1}
+              aria-label={t("tournaments.next")}
+            >
+              {t("tournaments.next")} ›
+            </button>
+          </div>
+        )}
 
         <div className="tournament-footer reveal">
           <a href={CUESCORE_ALL_URL} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">

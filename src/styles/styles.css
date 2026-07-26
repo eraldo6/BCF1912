@@ -1879,6 +1879,76 @@ section {
 .tc-snooker:hover { border-color: #c0392f; }
 .tc-snooker .tc-cta:hover { color: #e07a70; }
 
+/* Past events — dimmed, with a clear tag */
+.tournament-card.tc-past {
+  opacity: 0.55;
+  filter: grayscale(0.35);
+}
+.tournament-card.tc-past:hover {
+  opacity: 0.9;
+  filter: grayscale(0);
+  transform: translateY(-4px);
+}
+.tc-past .tc-accent { opacity: 0.5; }
+.tc-past-tag {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(245, 241, 232, 0.1);
+  border: 1px solid rgba(245, 241, 232, 0.25);
+  color: var(--bone-300);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* Pagination */
+.tournament-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 40px;
+}
+.tp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  background: var(--ink-100);
+  border: 1px solid var(--ink-300);
+  border-radius: 999px;
+  color: var(--bone-100);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.3s var(--ease-out), color 0.3s var(--ease-out), background 0.3s var(--ease-out);
+}
+.tp-btn:hover:not(:disabled) {
+  border-color: var(--brass-500);
+  color: var(--brass-300);
+}
+.tp-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.tp-status {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bone-400);
+  min-width: 90px;
+  text-align: center;
+}
+
 .tournament-footer {
   margin-top: 32px;
   display: flex;
