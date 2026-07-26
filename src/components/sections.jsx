@@ -474,6 +474,30 @@ window.TRANSLATIONS = TRANSLATIONS;
 
 const useTranslation = () => React.useContext(TranslationContext);
 
+// Reliable in-page anchor scroll. Native #hash / smooth-scroll can land short
+// on long pages whose height is still settling (e.g. the Tournaments section
+// grows after its async CueScore fetch). This scrolls, then re-corrects on the
+// next frames once layout is final so the target always ends up under the nav.
+const scrollToHash = (hash) => {
+  const el = document.getElementById(hash.replace(/^#/, ""));
+  if (!el) return;
+  const go = () => el.scrollIntoView({ behavior: "smooth", block: "start" });
+  go();
+  // Re-correct after layout settles (fonts, reveal animations, late fetches).
+  requestAnimationFrame(() => requestAnimationFrame(go));
+  setTimeout(go, 350);
+  setTimeout(go, 800);
+  if (history.replaceState) history.replaceState(null, "", hash);
+};
+
+const handleNavClick = (e) => {
+  const href = e.currentTarget.getAttribute("href") || "";
+  if (href.startsWith("#") && href.length > 1) {
+    e.preventDefault();
+    scrollToHash(href);
+  }
+};
+
 const Nav = () => {
   const { t } = useTranslation();
   const [scrolled, setScrolled] = React.useState(false);
@@ -493,14 +517,14 @@ const Nav = () => {
         <span>BC Frankfurt <em style={{ fontStyle: "italic", color: "var(--brass-500)", fontWeight: 400 }}>1912</em></span>
       </a>
       <ul className="nav-links">
-        <li><a href="#about">{t("nav.club")}</a></li>
-        <li><a href="#disciplines">{t("nav.disciplines")}</a></li>
-        <li><a href="#experience">{t("nav.experience")}</a></li>
-        <li><a href="#membership">{t("nav.membership")}</a></li>
-        <li><a href="#gallery">{t("nav.gallery")}</a></li>
-        <li><a href="#news">News</a></li>
-        <li><a href="#tournaments">{t("nav.tournaments")}</a></li>
-        <li><a href="#contact">{t("nav.visit")}</a></li>
+        <li><a href="#about" onClick={handleNavClick}>{t("nav.club")}</a></li>
+        <li><a href="#disciplines" onClick={handleNavClick}>{t("nav.disciplines")}</a></li>
+        <li><a href="#experience" onClick={handleNavClick}>{t("nav.experience")}</a></li>
+        <li><a href="#membership" onClick={handleNavClick}>{t("nav.membership")}</a></li>
+        <li><a href="#gallery" onClick={handleNavClick}>{t("nav.gallery")}</a></li>
+        <li><a href="#news" onClick={handleNavClick}>News</a></li>
+        <li><a href="#tournaments" onClick={handleNavClick}>{t("nav.tournaments")}</a></li>
+        <li><a href="#contact" onClick={handleNavClick}>{t("nav.visit")}</a></li>
         <li><a href="assets/calendar.html">{t("nav.games")}</a></li>
       </ul>
       <div className="nav-cta">
