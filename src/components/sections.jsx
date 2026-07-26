@@ -230,15 +230,10 @@ const TRANSLATIONS = {
     "contact.privateClubDesc2": "If you're interested in becoming a member, please review our membership tiers and contact us via email to begin the application process.",
     "contact.membershipInquiries": "Membership Inquiries",
     "footer.getInvolved": "Get Involved",
-    "footer.trialVisit": "Trial visit",
-    "footer.leagueTeams": "League teams",
-    "footer.juniorProgramme": "Junior programme",
     "footer.history": "History",
     "footer.facilities": "Facilities",
-    "footer.boardStatutes": "Board & Statutes",
     "footer.visit": "Visit",
     "footer.calendar": "Calendar",
-    "footer.imprintPrivacy": "Imprint · Datenschutz",
   },
   DE: {
     // Nav
@@ -468,15 +463,10 @@ const TRANSLATIONS = {
     "contact.privateClubDesc2": "Wenn Sie Mitglied werden möchten, lesen Sie bitte unsere Mitgliedschaftsstufen und kontaktieren Sie uns per E-Mail, um den Bewerbungsprozess zu starten.",
     "contact.membershipInquiries": "Mitgliedschaftsanfragen",
     "footer.getInvolved": "Mitmachen",
-    "footer.trialVisit": "Probebesuch",
-    "footer.leagueTeams": "Ligateams",
-    "footer.juniorProgramme": "Jugendprogramm",
     "footer.history": "Geschichte",
     "footer.facilities": "Einrichtungen",
-    "footer.boardStatutes": "Vorstand & Satzung",
     "footer.visit": "Besuchen",
     "footer.calendar": "Kalender",
-    "footer.imprintPrivacy": "Impressum · Datenschutz",
   }
 };
 
@@ -1716,16 +1706,15 @@ const Footer = () => {
             <li><a href="#about">{t("footer.history")}</a></li>
             <li><a href="#disciplines">{t("nav.disciplines")}</a></li>
             <li><a href="#experience">{t("footer.facilities")}</a></li>
-            <li><a href="#">{t("footer.boardStatutes")}</a></li>
           </ul>
         </div>
         <div className="footer-col">
           <h5>{t("footer.getInvolved")}</h5>
           <ul>
             <li><a href="#membership">{t("nav.membership")}</a></li>
-            <li><a href="#">{t("footer.trialVisit")}</a></li>
-            <li><a href="#">{t("footer.leagueTeams")}</a></li>
-            <li><a href="#">{t("footer.juniorProgramme")}</a></li>
+            <li><a href="#gallery">{t("nav.gallery")}</a></li>
+            <li><a href="#news">News</a></li>
+            <li><a href="#tournaments">{t("nav.tournaments")}</a></li>
           </ul>
         </div>
         <div className="footer-col">
@@ -1733,9 +1722,8 @@ const Footer = () => {
           <ul>
             <li><a href="#contact">Borsigallee 45</a></li>
             <li><a href="#contact">{t("contact.hours.title")}</a></li>
-            <li><a href="calendar.html">{t("footer.calendar")}</a></li>
+            <li><a href="assets/calendar.html">{t("footer.calendar")}</a></li>
             <li><a href="#contact">{t("contact.contact.title")}</a></li>
-            <li><a href="#">{t("footer.imprintPrivacy")}</a></li>
           </ul>
         </div>
       </div>
