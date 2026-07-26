@@ -1620,6 +1620,28 @@ const Contact = () => {
 );
 };
 
+const InstagramIcon = ({ size = 18 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="1.6" />
+    <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1.6" />
+    <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" />
+  </svg>
+);
+
+const FacebookIcon = ({ size = 18 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M14 8.5V6.9c0-.7.2-1.1 1.2-1.1H16.5V3.1C16.1 3 15.2 3 14.3 3c-2 0-3.4 1.2-3.4 3.5v2H8.5V11h2.4v9h2.9v-9h2.2l.4-2.5H14z" />
+  </svg>
+);
+
+const CueScoreIcon = ({ size = 18 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
+    <text x="12" y="16" textAnchor="middle" fontSize="11" fontWeight="700"
+      fontFamily="var(--font-mono), monospace" fill="currentColor">C</text>
+  </svg>
+);
+
 const Footer = () => {
   const { t } = useTranslation();
   return (
@@ -1629,14 +1651,19 @@ const Footer = () => {
         <div className="footer-brand">
           <h3>Billard Club<br /><em>Frankfurt</em> 1912 e.V.</h3>
           <p>{t("footer.about.line1")}</p>
-          <div style={{ display: "flex", gap: 12, marginTop: 32 }}>
-            {["Instagram", "Facebook", "YouTube"].map(s => (
-              <a key={s} href="#" style={{
-                width: 40, height: 40, border: "1px solid var(--ink-300)", borderRadius: "50%",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                color: "var(--bone-200)", textDecoration: "none", fontSize: 11,
-                fontFamily: "var(--font-mono)", letterSpacing: "0.06em",
-              }}>{s[0]}</a>
+          <div style={{ display: "flex", justifyContent: "center", gap: 12, marginTop: 32 }}>
+            {[
+              { label: "Instagram", href: "#", icon: <InstagramIcon /> },
+              { label: "Facebook", href: "#", icon: <FacebookIcon /> },
+              { label: "CueScore", href: "https://cuescore.com/bcfrankfurt1912", icon: <CueScoreIcon /> },
+            ].map(({ label, href, icon }) => (
+              <a key={label} href={href} aria-label={label}
+                {...(href !== "#" ? { target: "_blank", rel: "noopener" } : {})}
+                style={{
+                  width: 40, height: 40, border: "1px solid var(--ink-300)", borderRadius: "50%",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  color: "var(--bone-200)", textDecoration: "none",
+                }}>{icon}</a>
             ))}
           </div>
         </div>
@@ -1666,7 +1693,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="footer-bottom">
-        <span>© 1912–2026 · Billard Club Frankfurt e.V.</span>
+        <span>© 1912–{new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Berlin", year: "numeric" }).format(new Date())} · Billard Club Frankfurt e.V.</span>
       </div>
     </div>
   </footer>
