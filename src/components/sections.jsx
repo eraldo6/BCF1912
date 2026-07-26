@@ -1072,10 +1072,6 @@ const Lightbox = ({ items, index, onClose, onNav }) => {
               onClick={(e) => { e.stopPropagation(); onNav(-1); }}>&#8249;</button>
       <figure className="lightbox-figure" onClick={(e) => e.stopPropagation()}>
         <img className="lightbox-img" src={item.img} alt={item.caption} />
-        <figcaption className="lightbox-caption">
-          <span>{item.caption}</span>
-          <span className="lightbox-count">{index + 1} / {items.length}</span>
-        </figcaption>
       </figure>
       <button className="lightbox-arrow lightbox-next" aria-label="Next"
               onClick={(e) => { e.stopPropagation(); onNav(1); }}>&#8250;</button>
@@ -1127,7 +1123,6 @@ const Gallery = () => {
               className="gallery-img"
             />
             <div className="gallery-zoom-hint" aria-hidden="true">⤢</div>
-            <div className="gallery-caption">{g.caption}</div>
           </div>
         ))}
       </div>
