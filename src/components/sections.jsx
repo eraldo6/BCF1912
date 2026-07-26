@@ -1203,7 +1203,7 @@ const Gallery = () => {
 const CUESCORE_ORG_ID = 81469381; // cuescore.com/bcfrankfurt1912
 const CUESCORE_LIST_URL = `https://api.cuescore.com/organization/?id=${CUESCORE_ORG_ID}`;
 const CUESCORE_TOURNAMENT_URL = (id) => `https://api.cuescore.com/tournament/?id=${id}`;
-const CUESCORE_ALL_URL = "https://cuescore.com/bcfrankfurt1912/tournaments";
+const CUESCORE_ALL_URL = "https://cuescore.com/bcfrankfurt1912/tournaments?q=&d=0&season=0&s=0";
 
 // Map a CueScore discipline string onto one of our three card templates.
 const disciplineToType = (discipline) => {
