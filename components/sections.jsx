@@ -961,6 +961,7 @@ export const Footer = () => {
       </div>
       <div className="footer-bottom">
         <span>© 1912 — 2026 · Billard Club Frankfurt e.V.</span>
+        <a href="/admin/login" style={{ color: 'var(--bone-500)', fontSize: '0.75rem', opacity: 0.5 }}>Vorstand</a>
       </div>
     </div>
   </footer>

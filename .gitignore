@@ -20,3 +20,6 @@ node_modules/
 
 # Next.js
 .next/
+
+# Environment variables — never commit these
+.env*.local
