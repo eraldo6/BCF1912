@@ -13,6 +13,7 @@ import {
   Experience,
   Membership,
   Gallery,
+  Tournaments,
   News,
   Contact,
   Footer,
@@ -78,6 +79,7 @@ export const AppContent = () => {
         <Experience />
         <Membership />
         <Gallery />
+        <Tournaments />
         <News />
         <Contact />
         <Footer />

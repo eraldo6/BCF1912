@@ -32,6 +32,7 @@ export const Nav = () => {
         <li><a href="#gallery">{t("nav.gallery")}</a></li>
         <li><a href="#news">News</a></li>
         <li><a href="#contact">{t("nav.visit")}</a></li>
+        <li><a href="/calendar">{t("nav.games")}</a></li>
       </ul>
       <div className="nav-cta">
         <LangPicker />
@@ -581,17 +582,69 @@ export const Membership = () => {
 };
 
 const GALLERY = [
-  { cls: "g1", caption: "Main hall · Saturday evening", img: "https://bcfrankfurt.de/wp-content/uploads/2018/02/atmo1.jpg" },
-  { cls: "g2", caption: "Karambol · cadre frame", img: "https://bcfrankfurt.de/wp-content/uploads/2018/02/atmo2.jpg" },
-  { cls: "g3", caption: "Brass lamps over the table", img: "https://bcfrankfurt.de/wp-content/uploads/2018/02/atmo4.jpg" },
-  { cls: "g4", caption: "Snooker · 12-foot match", img: "https://bcfrankfurt.de/wp-content/uploads/2018/02/atmo5.jpg" },
-  { cls: "g5", caption: "The Lounge", img: "https://bcfrankfurt.de/wp-content/uploads/2018/02/03_Raum.jpg" },
-  { cls: "g6", caption: "Pool Bundesliga", img: "https://bcfrankfurt.de/wp-content/uploads/2018/02/kugeln2_s.jpg" },
-  { cls: "g7", caption: "Karambol training", img: "https://bcfrankfurt.de/wp-content/uploads/2018/02/05_Karambolage.jpg" },
+  { cls: "g1", caption: "Main hall · Saturday evening", img: "/images/gallery/20260415_065214.jpg" },
+  { cls: "g2", caption: "Karambol · cadre frame", img: "/images/gallery/20260415_064711.jpg" },
+  { cls: "g3", caption: "Brass lamps over the table", img: "/images/gallery/20260415_064907.jpg" },
+  { cls: "g4", caption: "Snooker · 12-foot match", img: "/images/gallery/20260415_065329.jpg" },
+  { cls: "g5", caption: "The Lounge", img: "/images/gallery/20260415_065144.jpg" },
+  { cls: "g6", caption: "Pool Bundesliga", img: "/images/gallery/20260415_065737.jpg" },
+  { cls: "g7", caption: "Karambol training", img: "/images/gallery/20260415_065858.jpg" },
 ];
+
+const Lightbox = ({ items, index, onClose, onNav }) => {
+  const touchX = React.useRef(null);
+  const isOpen = index != null;
+
+  React.useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") onClose();
+      else if (e.key === "ArrowRight") onNav(1);
+      else if (e.key === "ArrowLeft") onNav(-1);
+    };
+    document.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [isOpen, onClose, onNav]);
+
+  if (index == null) return null;
+  const item = items[index];
+
+  const onTouchStart = (e) => { touchX.current = e.touches[0].clientX; };
+  const onTouchEnd = (e) => {
+    if (touchX.current == null) return;
+    const dx = e.changedTouches[0].clientX - touchX.current;
+    if (Math.abs(dx) > 50) onNav(dx < 0 ? 1 : -1);
+    touchX.current = null;
+  };
+
+  return (
+    <div className="lightbox" role="dialog" aria-modal="true" onClick={onClose}
+         onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+      <button className="lightbox-close" aria-label="Close" onClick={onClose}>&times;</button>
+      <button className="lightbox-arrow lightbox-prev" aria-label="Previous"
+              onClick={(e) => { e.stopPropagation(); onNav(-1); }}>&#8249;</button>
+      <figure className="lightbox-figure" onClick={(e) => e.stopPropagation()}>
+        <img className="lightbox-img" src={item.img} alt={item.caption} />
+      </figure>
+      <button className="lightbox-arrow lightbox-next" aria-label="Next"
+              onClick={(e) => { e.stopPropagation(); onNav(1); }}>&#8250;</button>
+    </div>
+  );
+};
 
 export const Gallery = () => {
   const { t } = useTranslation();
+  const [active, setActive] = React.useState(null);
+
+  const nav = React.useCallback((dir) => {
+    setActive((cur) => (cur == null ? cur : (cur + dir + GALLERY.length) % GALLERY.length));
+  }, []);
+
   return (
   <section className="section" id="gallery">
     <div className="container">
@@ -611,27 +664,219 @@ export const Gallery = () => {
 
       <div className="gallery-grid reveal">
         {GALLERY.map((g, i) => (
-          <div key={i} className={`gallery-item ${g.cls}`}>
+          <div key={i} className={`gallery-item ${g.cls}`} onClick={() => setActive(i)}
+               role="button" tabIndex={0} aria-label={`Open image: ${g.caption}`}
+               onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setActive(i); } }}>
             <img
               src={g.img}
               alt={g.caption}
+              loading="lazy"
               style={{
                 position: "absolute", inset: 0,
                 width: "100%", height: "100%",
                 objectFit: "cover",
-                filter: "brightness(0.78) contrast(1.08) saturate(0.85)",
+                filter: "brightness(0.72) contrast(1.06) saturate(0.82) sepia(0.12)",
                 transition: "filter 0.5s var(--ease-out), transform 0.6s var(--ease-out)",
               }}
               className="gallery-img"
             />
-            <div className="gallery-caption">{g.caption}</div>
+            <div className="gallery-zoom-hint" aria-hidden="true">⤢</div>
           </div>
         ))}
       </div>
     </div>
+
+    <Lightbox items={GALLERY} index={active} onClose={() => setActive(null)} onNav={nav} />
   </section>
 );
 };
+
+// ─── Tournaments ─────────────────────────────────────────────────────────────
+
+const NAV_OFFSET = 80;
+const CUESCORE_ORG_ID = 81469381;
+const CUESCORE_LIST_URL = `https://api.cuescore.com/organization/?id=${CUESCORE_ORG_ID}`;
+const CUESCORE_TOURNAMENT_URL = (id) => `https://api.cuescore.com/tournament/?id=${id}`;
+const CUESCORE_ALL_URL = "https://cuescore.com/bcfrankfurt1912/tournaments?q=&d=0&season=0&s=0";
+
+const disciplineToType = (discipline) => {
+  const d = (discipline || "").toLowerCase();
+  if (/snooker/.test(d)) return "snooker";
+  if (/(carom|karambol|cushion|cadre|libre|balkline|billiard fran)/.test(d)) return "karambol";
+  return "pool";
+};
+
+const sortTournaments = (list) => {
+  const now = Date.now();
+  const withMeta = list.map((t) => {
+    const time = t.date ? new Date(t.date).getTime() : NaN;
+    const past = !isNaN(time) && time < now - 1000 * 60 * 60 * 24;
+    return { ...t, past, _time: isNaN(time) ? Infinity : time };
+  });
+  return withMeta.sort((a, b) => {
+    if (a.past !== b.past) return a.past ? 1 : -1;
+    return a.past ? b._time - a._time : a._time - b._time;
+  });
+};
+
+const useTournaments = () => {
+  const [state, setState] = React.useState({ items: null, loading: true, error: false });
+
+  React.useEffect(() => {
+    let cancelled = false;
+    const normalise = (raw) => ({
+      id: raw.tournamentId,
+      type: disciplineToType(raw.discipline),
+      discipline: raw.discipline || "Pool",
+      name: (raw.name || "").replace(/^.*?>\s*/, ""),
+      date: raw.starttime || null,
+      displayDate: raw.displayDate || null,
+      venue: (raw.venues && raw.venues[0] && raw.venues[0].name) || null,
+      status: raw.status || null,
+      url: raw.url || null,
+    });
+
+    const load = async () => {
+      try {
+        const res = await fetch(CUESCORE_LIST_URL);
+        if (!res.ok) throw new Error("list");
+        const ids = await res.json();
+        const live = await Promise.all(
+          (Array.isArray(ids) ? ids : []).map(async (id) => {
+            try {
+              const r = await fetch(CUESCORE_TOURNAMENT_URL(id));
+              if (!r.ok) return null;
+              return normalise(await r.json());
+            } catch { return null; }
+          })
+        );
+        if (cancelled) return;
+        setState({ items: sortTournaments(live.filter(Boolean)), loading: false, error: false });
+      } catch {
+        if (cancelled) return;
+        setState({ items: [], loading: false, error: true });
+      }
+    };
+
+    load();
+    return () => { cancelled = true; };
+  }, []);
+
+  return state;
+};
+
+const formatTournamentDate = (t, lang) => {
+  if (t.displayDate) return t.displayDate;
+  if (!t.date) return null;
+  const d = new Date(t.date);
+  if (isNaN(d.getTime())) return null;
+  return d.toLocaleDateString(lang === "DE" ? "de-DE" : "en-GB", {
+    day: "numeric", month: "long", year: "numeric",
+  });
+};
+
+const TYPE_ICON = { pool: "◉", karambol: "◆", snooker: "▦" };
+
+const TournamentCard = ({ item }) => {
+  const { t, lang } = useTranslation();
+  const label = t(`tournaments.${item.type}`);
+  const when = formatTournamentDate(item, lang) || t("tournaments.tbd");
+  return (
+    <article className={`tournament-card tc-${item.type}${item.past ? " tc-past" : ""}`}>
+      <div className="tc-accent" aria-hidden="true" />
+      {item.past && <span className="tc-past-tag">{t("tournaments.past")}</span>}
+      <div className="tc-body">
+        <div className="tc-badge-row">
+          <span className="tc-badge">
+            <span className="tc-icon" aria-hidden="true">{TYPE_ICON[item.type]}</span>
+            {label}
+          </span>
+          <span className="tc-discipline">{item.discipline}</span>
+        </div>
+        <h3 className="tc-name">{item.name}</h3>
+        <div className="tc-meta">
+          <span className="tc-date">{when}</span>
+          {item.venue && <span className="tc-venue">{item.venue}</span>}
+        </div>
+      </div>
+      {item.url && (
+        <a className="tc-cta" href={item.url} target="_blank" rel="noopener noreferrer">
+          {item.past ? t("tournaments.viewResults") : t("tournaments.register")} <ArrowOut />
+        </a>
+      )}
+    </article>
+  );
+};
+
+const TOURNAMENTS_PER_PAGE = 3;
+
+export const Tournaments = () => {
+  const { t } = useTranslation();
+  const { items, loading } = useTournaments();
+  const [page, setPage] = React.useState(0);
+
+  const total = items ? items.length : 0;
+  const pageCount = Math.max(1, Math.ceil(total / TOURNAMENTS_PER_PAGE));
+  const current = Math.min(page, pageCount - 1);
+  const start = current * TOURNAMENTS_PER_PAGE;
+  const visible = items ? items.slice(start, start + TOURNAMENTS_PER_PAGE) : [];
+
+  const goTo = (next) => {
+    setPage(next);
+    const sec = document.getElementById("tournaments");
+    if (sec) window.scrollTo({ top: Math.max(0, window.scrollY + sec.getBoundingClientRect().top - NAV_OFFSET), behavior: "smooth" });
+  };
+
+  return (
+    <section className="section" id="tournaments">
+      <div className="container">
+        <div className="section-head reveal">
+          <div>
+            <div className="section-eyebrow-row">
+              <span className="section-num">{t("tournaments.num")}</span>
+              <span className="section-divider" />
+              <span className="eyebrow">{t("tournaments.eyebrow")}</span>
+            </div>
+            <h2 className="section-title" style={{ marginTop: 24 }} dangerouslySetInnerHTML={{ __html: t("tournaments.title") }} />
+          </div>
+          <p className="section-lede">{t("tournaments.lede")}</p>
+        </div>
+
+        <div className="tournament-grid reveal">
+          {loading && <div className="tournament-status">{t("tournaments.loading")}</div>}
+          {!loading && total === 0 && (
+            <div className="tournament-status">{t("tournaments.empty")}</div>
+          )}
+          {!loading && visible.map((item) => (
+            <TournamentCard key={item.id} item={item} />
+          ))}
+        </div>
+
+        {!loading && pageCount > 1 && (
+          <div className="tournament-pagination reveal">
+            <button className="tp-btn" onClick={() => goTo(current - 1)} disabled={current === 0}>
+              ‹ {t("tournaments.prev")}
+            </button>
+            <span className="tp-status">
+              {t("tournaments.page")} {current + 1} / {pageCount}
+            </span>
+            <button className="tp-btn" onClick={() => goTo(current + 1)} disabled={current >= pageCount - 1}>
+              {t("tournaments.next")} ›
+            </button>
+          </div>
+        )}
+
+        <div className="tournament-footer reveal">
+          <a href={CUESCORE_ALL_URL} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
+            {t("tournaments.allOnCuescore")} <ArrowOut />
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// ─── News ─────────────────────────────────────────────────────────────────────
 
 const NEWS = [
   {
@@ -911,8 +1156,43 @@ export const Contact = () => {
 );
 };
 
+const InstagramIcon = ({ size = 18 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" strokeWidth="1.6" />
+    <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1.6" />
+    <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" />
+  </svg>
+);
+
+const FacebookIcon = ({ size = 18 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M14 8.5V6.9c0-.7.2-1.1 1.2-1.1H16.5V3.1C16.1 3 15.2 3 14.3 3c-2 0-3.4 1.2-3.4 3.5v2H8.5V11h2.4v9h2.9v-9h2.2l.4-2.5H14z" />
+  </svg>
+);
+
+const CueScoreIcon = ({ size = 18 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6" />
+    <text x="12" y="16" textAnchor="middle" fontSize="11" fontWeight="700"
+      fontFamily="var(--font-mono), monospace" fill="currentColor">C</text>
+  </svg>
+);
+
+const YouTubeIcon = ({ size = 18 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <rect x="2.5" y="6" width="19" height="12" rx="3.5" stroke="currentColor" strokeWidth="1.6" />
+    <path d="M10.5 9.2v5.6l4.8-2.8-4.8-2.8z" fill="currentColor" />
+  </svg>
+);
+
 export const Footer = () => {
   const { t } = useTranslation();
+  const socialLinks = [
+    { label: "Instagram", href: "#", icon: <InstagramIcon /> },
+    { label: "Facebook", href: "#", icon: <FacebookIcon /> },
+    { label: "YouTube", href: "#", icon: <YouTubeIcon /> },
+    { label: "CueScore", href: "https://cuescore.com/bcfrankfurt1912", icon: <CueScoreIcon /> },
+  ];
   return (
   <footer className="footer">
     <div className="container">
@@ -920,47 +1200,32 @@ export const Footer = () => {
         <div className="footer-brand">
           <h3>Billard Club<br /><em>Frankfurt</em> 1912 e.V.</h3>
           <p>{t("footer.about.line1")}</p>
-          <div style={{ display: "flex", gap: 12, marginTop: 32 }}>
-            {["Instagram", "Facebook", "YouTube"].map(s => (
-              <a key={s} href="#" style={{
-                width: 40, height: 40, border: "1px solid var(--ink-300)", borderRadius: "50%",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                color: "var(--bone-200)", textDecoration: "none", fontSize: 11,
-                fontFamily: "var(--font-mono)", letterSpacing: "0.06em",
-              }}>{s[0]}</a>
+          <div style={{ display: "flex", justifyContent: "center", gap: 12, marginTop: 32 }}>
+            {socialLinks.map(({ label, href, icon }) => (
+              <a key={label} href={href} aria-label={label}
+                {...(href !== "#" ? { target: "_blank", rel: "noopener" } : {})}
+                style={{
+                  width: 40, height: 40, border: "1px solid var(--ink-300)", borderRadius: "50%",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  color: "var(--bone-200)", textDecoration: "none",
+                }}>{icon}</a>
             ))}
           </div>
         </div>
-        <div className="footer-col">
-          <h5>{t("footer.about.title")}</h5>
+        <div className="footer-col footer-nav">
           <ul>
-            <li><a href="#about">{t("footer.history")}</a></li>
+            <li><a href="#about">{t("nav.club")}</a></li>
             <li><a href="#disciplines">{t("nav.disciplines")}</a></li>
-            <li><a href="#experience">{t("footer.facilities")}</a></li>
-            <li><a href="#">{t("footer.boardStatutes")}</a></li>
-          </ul>
-        </div>
-        <div className="footer-col">
-          <h5>{t("footer.getInvolved")}</h5>
-          <ul>
+            <li><a href="#experience">{t("nav.experience")}</a></li>
             <li><a href="#membership">{t("nav.membership")}</a></li>
-            <li><a href="#">{t("footer.trialVisit")}</a></li>
-            <li><a href="#">{t("footer.leagueTeams")}</a></li>
-            <li><a href="#">{t("footer.juniorProgramme")}</a></li>
-          </ul>
-        </div>
-        <div className="footer-col">
-          <h5>{t("footer.visit")}</h5>
-          <ul>
-            <li><a href="#contact">Borsigallee 45</a></li>
-            <li><a href="#contact">{t("contact.hours.title")}</a></li>
-            <li><a href="#contact">{t("contact.contact.title")}</a></li>
-            <li><a href="#">{t("footer.imprintPrivacy")}</a></li>
+            <li><a href="#gallery">{t("nav.gallery")}</a></li>
+            <li><a href="#contact">{t("nav.visit")}</a></li>
+            <li><a href="/calendar">{t("nav.games")}</a></li>
           </ul>
         </div>
       </div>
       <div className="footer-bottom">
-        <span>© 1912 — 2026 · Billard Club Frankfurt e.V.</span>
+        <span>© 1912–{new Date().getFullYear()} · Billard Club Frankfurt e.V.</span>
         <a href="/admin/login" style={{ color: 'var(--bone-500)', fontSize: '0.75rem', opacity: 0.5 }}>Vorstand</a>
       </div>
     </div>
