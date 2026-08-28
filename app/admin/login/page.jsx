@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { signIn } from '../actions'
 
 export default async function LoginPage({ searchParams }) {
@@ -12,6 +13,19 @@ export default async function LoginPage({ searchParams }) {
       justifyContent: 'center',
       background: 'var(--ink-050)',
     }}>
+      <Link href="/" style={{
+        position: 'fixed',
+        top: '24px',
+        left: '24px',
+        color: 'var(--bone-500)',
+        fontFamily: 'var(--font-mono)',
+        fontSize: '0.7rem',
+        letterSpacing: '0.12em',
+        textTransform: 'uppercase',
+        textDecoration: 'none',
+      }}>
+        ← Zurück zur Startseite
+      </Link>
       <div style={{
         background: 'var(--ink-100)',
         border: '1px solid var(--ink-300)',

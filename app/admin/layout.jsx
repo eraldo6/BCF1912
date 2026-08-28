@@ -1,9 +1,13 @@
+import { createClient } from '../../lib/supabase/server'
 import { SessionTimeout } from './session-timeout'
 
-export default function AdminLayout({ children }) {
+export default async function AdminLayout({ children }) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
   return (
     <>
-      <SessionTimeout />
+      {user && <SessionTimeout />}
       {children}
     </>
   )

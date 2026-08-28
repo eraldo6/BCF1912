@@ -14,19 +14,29 @@ export function SessionTimeout() {
 
   useEffect(() => {
     const supabase = createClient()
+    let loggedOut = false
+
+    const doLogout = async () => {
+      if (loggedOut) return
+      loggedOut = true
+      clearTimeout(timerRef.current)
+      await supabase.auth.signOut()
+      router.refresh()
+      router.push('/admin/login?error=' + encodeURIComponent('Sitzung abgelaufen'))
+    }
 
     const resetTimer = () => {
       lastActivityRef.current = Date.now()
       clearTimeout(timerRef.current)
-      timerRef.current = setTimeout(async () => {
-        await supabase.auth.signOut()
-        router.push('/admin/login?error=' + encodeURIComponent('Sitzung abgelaufen'))
-      }, TIMEOUT_MS)
+      timerRef.current = setTimeout(doLogout, TIMEOUT_MS)
     }
 
     const interval = setInterval(() => {
       const elapsed = Date.now() - lastActivityRef.current
-      setRemaining(Math.max(0, TIMEOUT_MS - elapsed))
+      const rem = Math.max(0, TIMEOUT_MS - elapsed)
+      setRemaining(rem)
+      // Fängt Sleep/Hibernate ab: setTimeout pausiert, aber Date.now() zählt weiter
+      if (elapsed >= TIMEOUT_MS) doLogout()
     }, 1000)
 
     const events = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart']
@@ -42,8 +52,8 @@ export function SessionTimeout() {
 
   const minutes = Math.floor(remaining / 60000)
   const seconds = Math.floor((remaining % 60000) / 1000)
-  const isCountdown = remaining < 4 * 60 * 1000
-  const isWarning = remaining < 60 * 1000
+  const isCountdown = remaining < 30 * 1000
+  const isWarning = remaining < 10 * 1000
 
   return (
     <div style={{
@@ -52,13 +62,16 @@ export function SessionTimeout() {
       left: '16px',
       fontFamily: 'var(--font-mono)',
       fontSize: '0.75rem',
-      color: isCountdown ? (isWarning ? '#ef4444' : 'var(--bone-300)') : '#22c55e',
-      opacity: 0.8,
       userSelect: 'none',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 4,
     }}>
-      {isCountdown
-        ? `Sitzung: ${minutes}:${seconds.toString().padStart(2, '0')}`
-        : 'Sitzung aktiv'}
+      <span style={{ color: isCountdown ? (isWarning ? '#ef4444' : 'var(--bone-300)') : '#22c55e', opacity: 0.8 }}>
+        {isCountdown
+          ? `Sitzung: ${minutes}:${seconds.toString().padStart(2, '0')}`
+          : 'Sitzung aktiv'}
+      </span>
     </div>
   )
 }

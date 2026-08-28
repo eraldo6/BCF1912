@@ -1,4 +1,5 @@
 import "./globals.css";
+import { AuthHashRouter } from "./components/auth-hash-router";
 
 export const metadata = {
   title: "BC Frankfurt 1912 — Frankfurt's Home of Billard Since 1912",
@@ -21,7 +22,10 @@ export default function RootLayout({ children }) {
         />
         <style>{`@import url("https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap");`}</style>
       </head>
-      <body>{children}</body>
+      <body>
+        <AuthHashRouter />
+        {children}
+      </body>
     </html>
   );
 }
