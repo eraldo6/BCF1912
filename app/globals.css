@@ -2156,3 +2156,9 @@ section {
   .league-item:nth-child(2) { border-right: none; }
   .league-item:nth-child(1), .league-item:nth-child(2) { border-bottom: 1px solid var(--ink-300); }
 }
+
+/* Admin-Scrollbar */
+.admin-scroll::-webkit-scrollbar        { height: 6px; }
+.admin-scroll::-webkit-scrollbar-track  { background: var(--ink-300); border-radius: 3px; }
+.admin-scroll::-webkit-scrollbar-thumb  { background: #555049; border-radius: 3px; }
+.admin-scroll::-webkit-scrollbar-thumb:hover { background: var(--bone-200); }
