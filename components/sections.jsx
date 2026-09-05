@@ -581,15 +581,6 @@ export const Membership = () => {
 );
 };
 
-const GALLERY = [
-  { cls: "g1", caption: "Main hall · Saturday evening", img: "/images/gallery/20260415_065214.jpg" },
-  { cls: "g2", caption: "Karambol · cadre frame", img: "/images/gallery/20260415_064711.jpg" },
-  { cls: "g3", caption: "Brass lamps over the table", img: "/images/gallery/20260415_064907.jpg" },
-  { cls: "g4", caption: "Snooker · 12-foot match", img: "/images/gallery/20260415_065329.jpg" },
-  { cls: "g5", caption: "The Lounge", img: "/images/gallery/20260415_065144.jpg" },
-  { cls: "g6", caption: "Pool Bundesliga", img: "/images/gallery/20260415_065737.jpg" },
-  { cls: "g7", caption: "Karambol training", img: "/images/gallery/20260415_065858.jpg" },
-];
 
 const Lightbox = ({ items, index, onClose, onNav }) => {
   const touchX = React.useRef(null);
@@ -637,13 +628,19 @@ const Lightbox = ({ items, index, onClose, onNav }) => {
   );
 };
 
-export const Gallery = () => {
+export const Gallery = ({ images = [] }) => {
   const { t } = useTranslation();
   const [active, setActive] = React.useState(null);
 
+  const items = images.map((row, i) => ({
+    cls: `g${(i % 7) + 1}`,
+    caption: row.titel ?? '',
+    img: row.bild_url,
+  }));
+
   const nav = React.useCallback((dir) => {
-    setActive((cur) => (cur == null ? cur : (cur + dir + GALLERY.length) % GALLERY.length));
-  }, []);
+    setActive((cur) => (cur == null ? cur : (cur + dir + items.length) % items.length));
+  }, [items.length]);
 
   return (
   <section className="section" id="gallery">
@@ -662,31 +659,33 @@ export const Gallery = () => {
         </p>
       </div>
 
-      <div className="gallery-grid reveal">
-        {GALLERY.map((g, i) => (
-          <div key={i} className={`gallery-item ${g.cls}`} onClick={() => setActive(i)}
-               role="button" tabIndex={0} aria-label={`Open image: ${g.caption}`}
-               onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setActive(i); } }}>
-            <img
-              src={g.img}
-              alt={g.caption}
-              loading="lazy"
-              style={{
-                position: "absolute", inset: 0,
-                width: "100%", height: "100%",
-                objectFit: "cover",
-                filter: "brightness(0.72) contrast(1.06) saturate(0.82) sepia(0.12)",
-                transition: "filter 0.5s var(--ease-out), transform 0.6s var(--ease-out)",
-              }}
-              className="gallery-img"
-            />
-            <div className="gallery-zoom-hint" aria-hidden="true">⤢</div>
-          </div>
-        ))}
-      </div>
+      {items.length > 0 && (
+        <div className="gallery-grid reveal">
+          {items.map((g, i) => (
+            <div key={i} className={`gallery-item ${g.cls}`} onClick={() => setActive(i)}
+                 role="button" tabIndex={0} aria-label={`Open image: ${g.caption}`}
+                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setActive(i); } }}>
+              <img
+                src={g.img}
+                alt={g.caption}
+                loading="lazy"
+                style={{
+                  position: "absolute", inset: 0,
+                  width: "100%", height: "100%",
+                  objectFit: "cover",
+                  filter: "brightness(0.72) contrast(1.06) saturate(0.82) sepia(0.12)",
+                  transition: "filter 0.5s var(--ease-out), transform 0.6s var(--ease-out)",
+                }}
+                className="gallery-img"
+              />
+              <div className="gallery-zoom-hint" aria-hidden="true">⤢</div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
 
-    <Lightbox items={GALLERY} index={active} onClose={() => setActive(null)} onNav={nav} />
+    <Lightbox items={items} index={active} onClose={() => setActive(null)} onNav={nav} />
   </section>
 );
 };

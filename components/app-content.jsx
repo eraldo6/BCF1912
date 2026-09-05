@@ -27,7 +27,7 @@ const TWEAKS_DEFAULTS = /*EDITMODE-BEGIN*/{
   "displayFont": "Cormorant Garamond"
 }/*EDITMODE-END*/;
 
-export const AppContent = () => {
+export const AppContent = ({ galleryImages = [] }) => {
   const [tweaks, setTweak] = useTweaks(TWEAKS_DEFAULTS);
   const [lang, setLangState] = React.useState("DE");
 
@@ -78,7 +78,7 @@ export const AppContent = () => {
         <Disciplines />
         <Experience />
         <Membership />
-        <Gallery />
+        <Gallery images={galleryImages} />
         <Tournaments />
         <News />
         <Contact />

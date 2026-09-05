@@ -1,7 +1,10 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '../../lib/supabase/server'
+import { createClient as createServiceClient } from '@supabase/supabase-js'
 import { signOut } from './actions'
-import { AdminTable } from './admin-table'
+import { VeranstaltungenTable } from './veranstaltungen-table'
+import { BeitraegeTable } from './beitraege-table'
+import { GalerieTable } from './galerie-table'
 
 export default async function AdminPage() {
   const supabase = await createClient()
@@ -9,7 +12,29 @@ export default async function AdminPage() {
 
   if (!user) redirect('/admin/login')
 
-  const { data: rows, error } = await supabase.from('auto').select('*').order('id')
+  const serviceClient = createServiceClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+  )
+  const { data: { users } } = await serviceClient.auth.admin.listUsers()
+  const userMap = Object.fromEntries((users ?? []).map(u => [u.id, u.email]))
+
+  const { data: galerie, error: galerieError } = await supabase
+    .from('galerie')
+    .select('id, titel, bild_url, storage_path, file_size, width, height, veroeffentlicht, erstellt_von, created_at')
+    .order('created_at', { ascending: false })
+
+  const { data: beitraege, error: beitraegeError } = await supabase
+    .from('beitraege')
+    .select('id, titel, subtitel, inhalt, bild_url, veroeffentlicht, erstellt_von, aktualisiert_von, created_at, updated_at')
+    .eq('geloescht', false)
+    .order('created_at', { ascending: false })
+
+  const { data: rows, error } = await supabase
+    .from('veranstaltungen')
+    .select('id, titel, kategorie, spielart, staffel, spieltag, heimmannschaft, gastmannschaft, austragungsort, termin, quelle, veroeffentlicht, erstellt_von, aktualisiert_von, created_at, updated_at, veveto_id')
+    .eq('geloescht', false)
+    .order('termin', { ascending: true })
 
   return (
     <main style={{
@@ -17,12 +42,11 @@ export default async function AdminPage() {
       background: 'var(--ink-050)',
       padding: '48px 24px',
     }}>
-      <div style={{ maxWidth: '960px', margin: '0 auto' }}>
+      <div style={{ maxWidth: '960px', margin: '0 auto', marginBottom: '48px' }}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'flex-start',
-          marginBottom: '48px',
         }}>
           <div>
             <h1 style={{
@@ -31,7 +55,7 @@ export default async function AdminPage() {
               fontSize: '2rem',
               marginBottom: '4px',
             }}>
-              Admin
+              Admin Dashboard
             </h1>
             <p style={{ color: 'var(--bone-500)', fontSize: '0.875rem' }}>
               Eingeloggt als {user.email}
@@ -43,36 +67,41 @@ export default async function AdminPage() {
             </button>
           </form>
         </div>
+      </div>
 
-        <div style={{
-          background: 'var(--ink-100)',
-          border: '1px solid var(--ink-300)',
-          borderRadius: '12px',
-          padding: '32px',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '16px', marginBottom: '24px' }}>
-            <h2 style={{
-              fontFamily: 'var(--font-display)',
-              color: 'var(--bone-200)',
-              fontSize: '1.125rem',
-            }}>
-              Tabelle: auto
-            </h2>
-            {rows && rows.length > 0 && (
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--bone-500)' }}>
-                {rows.length} {rows.length === 1 ? 'Datensatz' : 'Datensätze'} · {Object.keys(rows[0]).length} Attribute
-              </span>
-            )}
-          </div>
+      <div style={{ background: 'var(--ink-100)', border: '1px solid var(--ink-300)', borderRadius: '12px', padding: '32px', marginBottom: '32px' }}>
+        {galerieError ? (
+          <p style={{ color: '#ef4444', fontFamily: 'var(--font-mono)', fontSize: '0.875rem' }}>Fehler: {galerieError.message}</p>
+        ) : (
+          <GalerieTable rows={galerie ?? []} userMap={userMap} />
+        )}
+      </div>
 
+      <div style={{ background: 'var(--ink-100)', border: '1px solid var(--ink-300)', borderRadius: '12px', padding: '32px', marginBottom: '32px' }}>
+        {beitraegeError ? (
+          <p style={{ color: '#ef4444', fontFamily: 'var(--font-mono)', fontSize: '0.875rem' }}>Fehler: {beitraegeError.message}</p>
+        ) : (
+          <BeitraegeTable rows={beitraege ?? []} userMap={userMap} />
+        )}
+      </div>
+
+      <div style={{
+        background: 'var(--ink-100)',
+        border: '1px solid var(--ink-300)',
+        borderRadius: '12px',
+        padding: '32px',
+      }}>
           {error ? (
             <p style={{ color: '#ef4444', fontFamily: 'var(--font-mono)', fontSize: '0.875rem' }}>
               Fehler: {error.message}
             </p>
           ) : (
-            <AdminTable rows={rows} />
+            <VeranstaltungenTable
+              rows={rows ?? []}
+              userMap={userMap}
+              attributeCount={rows?.[0] ? Object.keys(rows[0]).length : 0}
+            />
           )}
-        </div>
       </div>
     </main>
   )
