@@ -11,6 +11,9 @@ const COLUMNS = [
   { key: 'aktualisiert_von', label: 'Bearbeitet von' },
   { key: 'updated_at',       label: 'Aktualisiert am' },
   { key: 'termin',         label: 'Termin' },
+  { key: 'termin_ende',   label: 'Terminende ⊘' },
+  { key: 'ganztaegig',    label: 'Ganztägig' },
+  { key: 'dauer_stunden', label: 'Dauer (h)' },
   { key: 'titel',          label: 'Titel' },
   { key: 'spielart',       label: 'Spielart' },
   { key: 'kategorie',      label: 'Kategorie' },
@@ -114,6 +117,14 @@ const labelStyle = {
 function VeranstaltungModal({ row, onClose, onSuccess, onError, isPending, startTransition }) {
   const isEdit = row != null
   const [saveError, setSaveError] = useState(null)
+  const [ganztaegig, setGanztaegig] = useState(row?.ganztaegig ?? false)
+  const [terminValue, setTerminValue] = useState(toDatetimeLocal(row?.termin) ?? '')
+
+  const maxDauer = terminValue ? (() => {
+    const d = new Date(terminValue)
+    const totalMinutes = 24 * 60 - (d.getHours() * 60 + d.getMinutes())
+    return Math.floor((totalMinutes / 60) * 2) / 2
+  })() : 23.5
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -181,6 +192,9 @@ function VeranstaltungModal({ row, onClose, onSuccess, onError, isPending, start
                 <option value="Internes Turnier">Internes Turnier</option>
                 <option value="Externes Turnier">Externes Turnier</option>
                 <option value="Mitgliederversammlung">Mitgliederversammlung</option>
+                <option value="Mannschaftstraining">Mannschaftstraining</option>
+                <option value="Training Anfänger">Training Anfänger</option>
+                <option value="Training Fortgeschritten">Training Fortgeschritten</option>
                 <option value="Sonstiges">Sonstiges</option>
               </select>
             </div>
@@ -188,7 +202,39 @@ function VeranstaltungModal({ row, onClose, onSuccess, onError, isPending, start
             <div style={{ gridColumn: '1 / -1' }}>
               <label style={labelStyle}>Termin *</label>
               <input name="termin" type="datetime-local" required style={inputStyle}
-                defaultValue={toDatetimeLocal(row?.termin)} />
+                value={terminValue}
+                onChange={e => setTerminValue(e.target.value)} />
+            </div>
+
+            <div>
+              <label style={{ ...labelStyle, color: ganztaegig ? 'var(--bone-600)' : 'var(--bone-300)' }}>
+                Dauer (Stunden) {!ganztaegig && '*'}
+              </label>
+              <input
+                name="dauer_stunden"
+                type="number"
+                min="0.5"
+                max={maxDauer}
+                step="0.5"
+                required={!ganztaegig}
+                disabled={ganztaegig}
+                style={{ ...inputStyle, opacity: ganztaegig ? 0.4 : 1, cursor: ganztaegig ? 'not-allowed' : 'auto' }}
+                defaultValue={row?.dauer_stunden ?? ''}
+              />
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', paddingTop: '20px' }}>
+              <input
+                type="checkbox"
+                id="ganztaegig-cb"
+                name="ganztaegig"
+                checked={ganztaegig}
+                onChange={e => setGanztaegig(e.target.checked)}
+                style={{ width: '16px', height: '16px', cursor: 'pointer', accentColor: 'var(--brass-500)' }}
+              />
+              <label htmlFor="ganztaegig-cb" style={{ ...labelStyle, marginBottom: 0, cursor: 'pointer', color: 'var(--bone-200)' }}>
+                Ganztägig
+              </label>
             </div>
 
             <div>
@@ -512,6 +558,10 @@ export function VeranstaltungenTable({ rows: initialRows, userMap = {}, attribut
                         >
                           {row.veroeffentlicht ? 'Veröffentlicht' : 'Entwurf'}
                         </button>
+                      : key === 'termin_ende'
+                        ? row[key]
+                          ? <span style={{ color: 'var(--bone-500)', fontStyle: 'italic' }}>{formatTermin(row[key])}</span>
+                          : <span style={{ color: 'var(--bone-600)' }}>—</span>
                       : key === 'termin' || key === 'created_at' || key === 'updated_at'
                       ? key === 'updated_at' && row.updated_at !== row.created_at
                         ? <span style={{
@@ -529,6 +579,14 @@ export function VeranstaltungenTable({ rows: initialRows, userMap = {}, attribut
                             : <span style={{ color: 'var(--bone-400)' }}>{userMap[row.aktualisiert_von] ?? row.aktualisiert_von}</span>
                       : key === 'erstellt_von'
                         ? <span>{userMap[row[key]] ?? row[key] ?? <span style={{ color: 'var(--bone-600)' }}>—</span>}</span>
+                      : key === 'ganztaegig'
+                        ? row[key]
+                          ? <span style={{ color: '#4ade80', fontSize: '0.9rem' }}>✓</span>
+                          : <span style={{ color: '#f87171', fontSize: '0.9rem' }}>✕</span>
+                      : key === 'dauer_stunden'
+                        ? row[key] != null
+                          ? <span style={{ fontFamily: 'var(--font-mono)' }}>{row[key]} h</span>
+                          : <span style={{ color: 'var(--bone-600)' }}>—</span>
                       : key === 'spielart' && row[key]
                         ? <span style={{
                             display: 'inline-block',

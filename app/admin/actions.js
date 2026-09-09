@@ -53,13 +53,21 @@ export async function softDeleteVeranstaltung(id) {
 }
 
 const ALLOWED_SPIELART  = new Set(['Pool', 'Snooker', 'Karambol'])
-const ALLOWED_KATEGORIE = new Set(['Heimspiel', 'Internes Turnier', 'Externes Turnier', 'Mitgliederversammlung', 'Sonstiges'])
+const ALLOWED_KATEGORIE = new Set(['Heimspiel', 'Internes Turnier', 'Externes Turnier', 'Mitgliederversammlung', 'Mannschaftstraining', 'Training Anfänger', 'Training Fortgeschritten', 'Sonstiges'])
 const ALLOWED_STAFFEL   = new Set(['LL', 'BL', 'VL', 'OL'])
 
 function str(formData, key, maxLen = 500) {
   const val = formData.get(key)?.trim()
   if (!val) return null
   return val.slice(0, maxLen)
+}
+
+function germanDatetime(formData, key) {
+  const val = formData.get(key)?.trim()
+  if (!val) return null
+  const month = parseInt(val.slice(5, 7))
+  const offset = (month >= 4 && month <= 10) ? '+02:00' : '+01:00'
+  return val + ':00' + offset
 }
 
 function validateVeranstaltung(formData) {
@@ -89,12 +97,16 @@ export async function updateVeranstaltung(id, formData) {
 
   const spieltag = formData.get('spieltag')
   const staffel_nr = formData.get('staffel_nr')
+  const ganztaegig = formData.get('ganztaegig') === 'on'
+  const dauerRaw = formData.get('dauer_stunden')
+  const dauer_stunden = (!ganztaegig && dauerRaw) ? parseFloat(dauerRaw) : null
+  if (!ganztaegig && !dauer_stunden) return { error: 'Dauer ist erforderlich wenn nicht ganztägig' }
 
   const { error } = await supabase.from('veranstaltungen').update({
     titel:          str(formData, 'titel'),
     spielart:       str(formData, 'spielart'),
     kategorie:      str(formData, 'kategorie'),
-    termin:         str(formData, 'termin'),
+    termin:         germanDatetime(formData, 'termin'),
     spieltag:       spieltag ? parseInt(spieltag) : null,
     staffel:        str(formData, 'staffel'),
     staffel_nr:     staffel_nr ? parseInt(staffel_nr) : null,
@@ -102,6 +114,8 @@ export async function updateVeranstaltung(id, formData) {
     gastmannschaft:   str(formData, 'gastmannschaft'),
     austragungsort:   str(formData, 'austragungsort'),
     veroeffentlicht:  formData.get('veroeffentlicht') !== 'false',
+    ganztaegig,
+    dauer_stunden,
     aktualisiert_von: user.id,
   }).eq('id', id)
 
@@ -120,12 +134,16 @@ export async function createVeranstaltung(formData) {
 
   const spieltag = formData.get('spieltag')
   const staffel_nr = formData.get('staffel_nr')
+  const ganztaegig = formData.get('ganztaegig') === 'on'
+  const dauerRaw = formData.get('dauer_stunden')
+  const dauer_stunden = (!ganztaegig && dauerRaw) ? parseFloat(dauerRaw) : null
+  if (!ganztaegig && !dauer_stunden) return { error: 'Dauer ist erforderlich wenn nicht ganztägig' }
 
   const { error } = await supabase.from('veranstaltungen').insert({
     titel:          str(formData, 'titel'),
     spielart:       str(formData, 'spielart'),
     kategorie:      str(formData, 'kategorie'),
-    termin:         str(formData, 'termin'),
+    termin:         germanDatetime(formData, 'termin'),
     spieltag:       spieltag ? parseInt(spieltag) : null,
     staffel:        str(formData, 'staffel'),
     staffel_nr:     staffel_nr ? parseInt(staffel_nr) : null,
@@ -133,6 +151,8 @@ export async function createVeranstaltung(formData) {
     gastmannschaft:  str(formData, 'gastmannschaft'),
     austragungsort:  str(formData, 'austragungsort'),
     veroeffentlicht: formData.get('veroeffentlicht') !== 'false',
+    ganztaegig,
+    dauer_stunden,
     quelle:          'Manuell',
     erstellt_von:    user.id,
   })

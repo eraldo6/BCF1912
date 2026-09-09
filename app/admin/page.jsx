@@ -32,7 +32,7 @@ export default async function AdminPage() {
 
   const { data: rows, error } = await supabase
     .from('veranstaltungen')
-    .select('id, titel, kategorie, spielart, staffel, spieltag, heimmannschaft, gastmannschaft, austragungsort, termin, quelle, veroeffentlicht, erstellt_von, aktualisiert_von, created_at, updated_at, veveto_id')
+    .select('id, titel, kategorie, spielart, staffel, spieltag, heimmannschaft, gastmannschaft, austragungsort, termin, termin_ende, ganztaegig, dauer_stunden, quelle, veroeffentlicht, erstellt_von, aktualisiert_von, created_at, updated_at, veveto_id')
     .eq('geloescht', false)
     .order('termin', { ascending: true })
 

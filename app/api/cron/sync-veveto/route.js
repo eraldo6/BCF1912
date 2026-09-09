@@ -51,6 +51,7 @@ function mapGames(games, spielart) {
     heimmannschaft: game.homeTeamName,
     gastmannschaft: game.guestTeamName,
     austragungsort: game.venue_1_club_name,
+    dauer_stunden:  3,
     quelle:         'VeVeTo Import',
     erstellt_von:   null,
   }))
@@ -60,6 +61,10 @@ export async function GET(request) {
   // CRON_SECRET prüfen — Vercel setzt es in Production automatisch
   // In Entwicklung ohne CRON_SECRET in .env.local wird der Endpunkt ohne Auth akzeptiert
   const cronSecret = process.env.CRON_SECRET
+  const isProd = process.env.NODE_ENV === 'production'
+  if (isProd && !cronSecret) {
+    return NextResponse.json({ error: 'CRON_SECRET not configured' }, { status: 500 })
+  }
   if (cronSecret) {
     const authHeader = request.headers.get('authorization')
     if (authHeader !== `Bearer ${cronSecret}`) {
