@@ -21,7 +21,7 @@ export default async function AdminPage() {
 
   const { data: galerie, error: galerieError } = await supabase
     .from('galerie')
-    .select('id, titel, bild_url, storage_path, file_size, width, height, veroeffentlicht, erstellt_von, created_at')
+    .select('id, titel, bild_url, storage_path, file_size, width, height, veroeffentlicht, is_hero, erstellt_von, created_at')
     .order('created_at', { ascending: false })
 
   const { data: beitraege, error: beitraegeError } = await supabase

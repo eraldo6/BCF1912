@@ -2,7 +2,7 @@
 
 import { useState, useTransition, useEffect } from 'react'
 import { createClient } from '../../lib/supabase/client'
-import { createGalerieBild, deleteGalerieBild, toggleGalerieVeroeffentlicht } from './galerie-actions'
+import { createGalerieBild, deleteGalerieBild, toggleGalerieVeroeffentlicht, setHeroImage } from './galerie-actions'
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL
 
@@ -183,6 +183,18 @@ export function GalerieTable({ rows: initialRows, userMap = {} }) {
     return () => clearTimeout(t)
   }, [toast])
 
+  const handleSetHero = (id) => {
+    startTransition(async () => {
+      const result = await setHeroImage(id)
+      if (result?.error) {
+        setToast({ type: 'error', text: 'Fehler beim Setzen des Hero-Bilds' })
+      } else {
+        setRows(prev => prev.map(r => ({ ...r, is_hero: r.id === id })))
+        setToast({ type: 'success', text: 'Hero-Bild gesetzt' })
+      }
+    })
+  }
+
   const handleConfirmDelete = () => {
     startTransition(async () => {
       const result = await deleteGalerieBild(deleteRow.id, deleteRow.storage_path)
@@ -253,10 +265,26 @@ export function GalerieTable({ rows: initialRows, userMap = {} }) {
       {rows.length === 0 ? (
         <p style={{ color: 'var(--bone-500)', fontFamily: 'var(--font-mono)', fontSize: '0.875rem' }}>Noch keine Bilder in der Galerie.</p>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '16px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '16px', marginTop: '32px' }}>
           {rows.map(row => (
-            <div key={row.id} style={{ position: 'relative', borderRadius: '8px', overflow: 'hidden', border: '1px solid var(--ink-300)', background: 'var(--ink-200)' }}>
-              <img src={row.bild_url} alt={row.titel ?? ''} onClick={() => setLightbox(row)} style={{ width: '100%', height: '140px', objectFit: 'cover', display: 'block', cursor: 'zoom-in' }} />
+            <div key={row.id} style={{ position: 'relative', borderRadius: '8px', overflow: 'visible', border: row.is_hero ? '2px solid #a16207' : '1px solid var(--ink-300)', background: 'var(--ink-200)', boxShadow: row.is_hero ? '0 0 0 1px #78350f' : 'none' }}>
+              {/* Kronen-Reiter */}
+              {row.is_hero && (
+                <div style={{ position: 'absolute', top: -22, left: 8, background: '#78350f', color: '#fde68a', borderRadius: '4px 4px 0 0', padding: '2px 8px', fontSize: '0.65rem', fontFamily: 'var(--font-mono)', fontWeight: 700, letterSpacing: '0.06em', display: 'flex', alignItems: 'center', gap: 4, zIndex: 1 }}>
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 6.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.963.735H5.816a1 1 0 0 1-.963-.735L2.02 7.02a.5.5 0 0 1 .798-.519l4.276 2.664a1 1 0 0 0 1.516-.294z"/><path d="M5 21h14"/></svg>
+                  Hero-Bild
+                </div>
+              )}
+              {/* Kleine graue Krone über dem Bild für nicht-Hero */}
+              {!row.is_hero && row.veroeffentlicht && (
+                <button onClick={() => handleSetHero(row.id)} disabled={isPending} title="Als Hero-Bild setzen" style={{ position: 'absolute', top: -20, left: 8, zIndex: 1, background: 'transparent', border: 'none', borderRadius: '4px 4px 0 0', padding: '3px 7px', cursor: 'pointer', color: 'var(--bone-500)', lineHeight: 1, transition: 'background 0.15s, color 0.15s', display: 'flex', alignItems: 'center' }}
+                  onMouseEnter={e => { e.currentTarget.style.background = '#78350f'; e.currentTarget.style.color = '#fde68a' }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--bone-500)' }}
+                >
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 6.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.963.735H5.816a1 1 0 0 1-.963-.735L2.02 7.02a.5.5 0 0 1 .798-.519l4.276 2.664a1 1 0 0 0 1.516-.294z"/><path d="M5 21h14"/></svg>
+                </button>
+              )}
+              <img src={row.bild_url} alt={row.titel ?? ''} onClick={() => setLightbox(row)} style={{ width: '100%', height: '140px', objectFit: 'cover', display: 'block', cursor: 'zoom-in', borderRadius: row.is_hero ? '6px 6px 0 0' : '0' }} />
               <div style={{ padding: '8px 10px' }}>
                 {row.titel && (
                   <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--bone-300)', margin: 0, marginBottom: '6px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>

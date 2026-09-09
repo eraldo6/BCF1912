@@ -68,6 +68,20 @@ export async function updateGalerieDimensions(id, width, height) {
   return { success: true }
 }
 
+export async function setHeroImage(id) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return { error: 'Nicht eingeloggt' }
+
+  await supabase.from('galerie').update({ is_hero: false }).neq('id', id)
+  const { error } = await supabase.from('galerie').update({ is_hero: true }).eq('id', id)
+
+  if (error) return { error: error.message }
+  revalidatePath('/admin')
+  revalidatePath('/')
+  return { success: true }
+}
+
 export async function deleteGalerieBild(id, storage_path) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
