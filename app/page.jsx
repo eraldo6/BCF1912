@@ -9,5 +9,6 @@ export default async function Page() {
     .eq('veroeffentlicht', true)
     .order('created_at', { ascending: false })
 
-  return <AppContent galleryImages={galleryImages ?? []} />;
+  const images = galleryImages ?? []
+  return <AppContent galleryImages={images} heroBg={images[0]?.bild_url ?? null} />;
 }

@@ -22,12 +22,12 @@ import {
 /* App entry — orchestrates sections + Tweaks */
 
 const TWEAKS_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "accentHue": 80,
+  "accentHue": 220,
   "feltHue": 155,
-  "displayFont": "Cormorant Garamond"
+  "displayFont": "Space Grotesk"
 }/*EDITMODE-END*/;
 
-export const AppContent = ({ galleryImages = [] }) => {
+export const AppContent = ({ galleryImages = [], heroBg = null }) => {
   const [tweaks, setTweak] = useTweaks(TWEAKS_DEFAULTS);
   const [lang, setLangState] = React.useState("DE");
 
@@ -39,6 +39,8 @@ export const AppContent = ({ galleryImages = [] }) => {
   const setLang = (newLang) => {
     setLangState(newLang);
     localStorage.setItem('bcf_lang', newLang);
+    document.documentElement.classList.add('lang-changing');
+    setTimeout(() => document.documentElement.classList.remove('lang-changing'), 2000);
   };
 
   const t = (key) => TRANSLATIONS[lang]?.[key] || key;
@@ -55,7 +57,8 @@ export const AppContent = ({ galleryImages = [] }) => {
     r.style.setProperty("--felt-900", `oklch(0.22 0.05 ${tweaks.feltHue})`);
     r.style.setProperty("--felt-300", `oklch(0.62 0.10 ${tweaks.feltHue})`);
 
-    r.style.setProperty("--font-display", `"${tweaks.displayFont}", Georgia, serif`);
+    const fallback = tweaks.displayFont === "Space Grotesk" ? "system-ui, sans-serif" : "Georgia, serif";
+    r.style.setProperty("--font-display", `"${tweaks.displayFont}", ${fallback}`);
   }, [tweaks]);
 
   React.useEffect(() => {
@@ -72,7 +75,7 @@ export const AppContent = ({ galleryImages = [] }) => {
     <>
       <TranslationContext.Provider value={{ lang, setLang, t }}>
         <Nav />
-        <Hero />
+        <Hero heroBg={heroBg} />
         <Marquee />
         <About />
         <Disciplines />
@@ -95,6 +98,7 @@ export const AppContent = ({ galleryImages = [] }) => {
         <TweakSection title="Typography">
           <TweakSelect label="Display font" value={tweaks.displayFont}
             options={[
+              { value: "Space Grotesk", label: "Space Grotesk" },
               { value: "Cormorant Garamond", label: "Cormorant Garamond" },
               { value: "Fraunces", label: "Fraunces" },
               { value: "Playfair Display", label: "Playfair" },

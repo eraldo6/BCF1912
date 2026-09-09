@@ -22,7 +22,7 @@ export const Nav = () => {
           alt="BC Frankfurt 1912"
           style={{ width: 40, height: 40, objectFit: "contain", filter: "drop-shadow(0 0 12px rgba(218,178,96,0.25))" }}
         />
-        <span>BC Frankfurt <em style={{ fontStyle: "italic", color: "var(--brass-500)", fontWeight: 400 }}>1912</em></span>
+        <span>BC Frankfurt <em style={{ fontStyle: "italic", color: "var(--brass-500)", fontWeight: 400 }}>1912</em> e.V.</span>
       </a>
       <ul className="nav-links">
         <li><a href="#about">{t("nav.club")}</a></li>
@@ -46,106 +46,34 @@ export const Nav = () => {
 
 export const LangPicker = () => {
   const { lang, setLang } = useTranslation();
-  const [open, setOpen] = React.useState(false);
-  const [isMobile, setIsMobile] = React.useState(false);
 
-  React.useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
+  const toggle = () => setLang(lang === "DE" ? "EN" : "DE");
 
-  const flags = {
-    EN: "🇬🇧",
-    DE: "🇩🇪"
-  };
-
-  const langNames = {
-    EN: "English",
-    DE: "Deutsch"
-  };
-
-  const langs = ["DE", "EN"];
-
-  // Desktop: Two flag buttons
-  if (!isMobile) {
-    return (
-      <div style={{ display: "flex", gap: 8 }}>
-        {langs.map(l => (
-          <button
-            key={l}
-            onClick={() => setLang(l)}
-            style={{
-              width: 36,
-              height: 36,
-              borderRadius: "50%",
-              border: l === lang ? "2px solid var(--brass-500)" : "1px solid var(--ink-300)",
-              background: l === lang ? "rgba(218,178,96,0.1)" : "rgba(10,10,12,0.6)",
-              cursor: "pointer",
-              fontSize: 18,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              transition: "all 0.2s ease",
-            }}
-            onMouseEnter={e => {
-              e.currentTarget.style.borderColor = "var(--brass-500)";
-              e.currentTarget.style.transform = "scale(1.05)";
-            }}
-            onMouseLeave={e => {
-              e.currentTarget.style.borderColor = l === lang ? "var(--brass-500)" : "var(--ink-300)";
-              e.currentTarget.style.transform = "scale(1)";
-            }}
-            title={langNames[l]}
-          >
-            {flags[l]}
-          </button>
-        ))}
-      </div>
-    );
-  }
-
-  // Mobile: Dropdown with flags
   return (
-    <div style={{ position: "relative" }}>
-      <div className="nav-lang" onClick={() => setOpen(o => !o)} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <span style={{ fontSize: 18 }}>{flags[lang]}</span>
+    <button
+      onClick={toggle}
+      style={{
+        height: 36, padding: "0 12px", borderRadius: 18,
+        border: "1px solid var(--ink-300)",
+        background: "transparent",
+        color: "var(--bone-300)",
+        cursor: "pointer", display: "flex", alignItems: "center",
+        fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.1em",
+        transition: "border-color 0.2s, color 0.2s",
+        overflow: "hidden",
+      }}
+      onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--brass-500)"; e.currentTarget.style.color = "var(--brass-500)"; }}
+      onMouseLeave={e => { e.currentTarget.style.borderColor = "var(--ink-300)"; e.currentTarget.style.color = "var(--bone-300)"; }}
+      aria-label="Toggle language"
+    >
+      <span key={lang} style={{ animation: "lang-flip 0.3s var(--ease-out) both", display: "inline-block" }}>
         {lang}
-        <span style={{ opacity: 0.5 }}>▾</span>
-      </div>
-      {open && (
-        <div style={{
-          position: "absolute", top: "calc(100% + 8px)", right: 0,
-          background: "rgba(10,10,12,0.95)", backdropFilter: "blur(20px)",
-          border: "1px solid var(--ink-300)", borderRadius: 12,
-          padding: 6, minWidth: 120,
-          zIndex: 200, boxShadow: "0 12px 40px rgba(0,0,0,0.6)",
-        }}>
-          {langs.map(l => (
-            <div key={l}
-              onClick={() => { setLang(l); setOpen(false); }}
-              style={{
-                padding: "10px 14px", fontFamily: "var(--font-mono)",
-                fontSize: 12, letterSpacing: "0.1em", color: l === lang ? "var(--brass-500)" : "var(--bone-200)",
-                cursor: "pointer", borderRadius: 6,
-                background: l === lang ? "rgba(218,178,96,0.06)" : "transparent",
-                display: "flex", alignItems: "center", gap: 10,
-              }}
-              onMouseEnter={e => e.currentTarget.style.background = "rgba(218,178,96,0.08)"}
-              onMouseLeave={e => e.currentTarget.style.background = l === lang ? "rgba(218,178,96,0.06)" : "transparent"}
-            >
-              <span style={{ fontSize: 18 }}>{flags[l]}</span>
-              {langNames[l]}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+      </span>
+    </button>
   );
 };
 
-export const Hero = () => {
+export const Hero = ({ heroBg = null }) => {
   const { t } = useTranslation();
   const [parallax, setParallax] = React.useState(0);
   React.useEffect(() => {
@@ -160,7 +88,10 @@ export const Hero = () => {
         transform: `translateY(${parallax * 0.5}px) scale(${1 + parallax * 0.0003})`,
         opacity: Math.max(0.2, 0.85 - parallax * 0.003),
       }}>
-        <PoolTableHero />
+        {heroBg
+          ? <img src={heroBg} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
+          : <PoolTableHero />
+        }
       </div>
       <div className="hero-vignette" />
 
@@ -189,15 +120,19 @@ export const Hero = () => {
       <div className="hero-stats reveal in-view delay-4">
         <div>
           <div className="hero-stat-num">10</div>
-          <div className="hero-stat-label">Tables</div>
+          <div className="hero-stat-label">Tische</div>
         </div>
         <div>
           <div className="hero-stat-num">114</div>
-          <div className="hero-stat-label">Years</div>
+          <div className="hero-stat-label">Jahre</div>
         </div>
         <div>
           <div className="hero-stat-num">3</div>
-          <div className="hero-stat-label">Disciplines</div>
+          <div className="hero-stat-label">Disziplinen</div>
+        </div>
+        <div>
+          <div className="hero-stat-num">240+</div>
+          <div className="hero-stat-label">Mitglieder</div>
         </div>
       </div>
 
@@ -660,9 +595,9 @@ export const Gallery = ({ images = [] }) => {
       </div>
 
       {items.length > 0 && (
-        <div className="gallery-grid reveal">
+        <div className="gallery-scroll reveal">
           {items.map((g, i) => (
-            <div key={i} className={`gallery-item ${g.cls}`} onClick={() => setActive(i)}
+            <div key={i} className="gallery-item" onClick={() => setActive(i)}
                  role="button" tabIndex={0} aria-label={`Open image: ${g.caption}`}
                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setActive(i); } }}>
               <img
@@ -673,12 +608,22 @@ export const Gallery = ({ images = [] }) => {
                   position: "absolute", inset: 0,
                   width: "100%", height: "100%",
                   objectFit: "cover",
-                  filter: "brightness(0.72) contrast(1.06) saturate(0.82) sepia(0.12)",
+                  imageOrientation: "from-image",
+                  filter: "brightness(0.85) contrast(1.05) saturate(0.9)",
                   transition: "filter 0.5s var(--ease-out), transform 0.6s var(--ease-out)",
                 }}
-                className="gallery-img"
               />
-              <div className="gallery-zoom-hint" aria-hidden="true">⤢</div>
+              {g.caption && (
+                <div style={{
+                  position: "absolute", bottom: 0, left: 0, right: 0,
+                  padding: "48px 24px 24px",
+                  background: "linear-gradient(transparent, rgba(5,5,6,0.85))",
+                  fontFamily: "var(--font-mono)", fontSize: 12,
+                  letterSpacing: "0.06em", color: "var(--bone-300)",
+                }}>
+                  {g.caption}
+                </div>
+              )}
             </div>
           ))}
         </div>

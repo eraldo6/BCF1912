@@ -1,5 +1,28 @@
+import { Space_Grotesk, JetBrains_Mono, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { AuthHashRouter } from "./components/auth-hash-router";
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--loaded-space-grotesk",
+  display: "block",
+});
+
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
+  style: ["normal", "italic"],
+  variable: "--loaded-cormorant",
+  display: "block",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--loaded-jetbrains-mono",
+  display: "swap",
+});
 
 export const metadata = {
   title: "BC Frankfurt 1912 — Frankfurt's Home of Billard Since 1912",
@@ -12,16 +35,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Fraunces:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap"
-          rel="stylesheet"
-        />
-        <style>{`@import url("https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap");`}</style>
-      </head>
+    <html lang="en" className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${cormorant.variable}`}>
       <body>
         <AuthHashRouter />
         {children}
