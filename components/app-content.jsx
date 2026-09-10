@@ -13,6 +13,7 @@ import {
   Membership,
   Tournaments,
   News,
+  CalendarSection,
   Contact,
   Footer,
 } from "./sections";
@@ -80,6 +81,7 @@ export const AppContent = ({ galleryImages = [], heroBg = null }) => {
         <Membership />
         <Tournaments />
         <News />
+        <CalendarSection />
         <Contact />
         <Footer />
       </TranslationContext.Provider>

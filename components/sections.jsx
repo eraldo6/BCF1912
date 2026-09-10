@@ -112,7 +112,7 @@ export const Hero = ({ heroBg = null }) => {
             {lang === "DE" ? "Vereinsheim besuchen" : "Visit us"} <ArrowOut />
           </a>
           <a href="#news" className="btn btn-ghost">
-            {lang === "DE" ? "Aktuelles" : "News"} <Arrow />
+            News Board <Arrow />
           </a>
         </div>
       </div>
@@ -888,153 +888,427 @@ export const Tournaments = () => {
   );
 };
 
+// ─── News illustrations (dummy) ───────────────────────────────────────────────
+
+const NewsIllustrationFeatured = () => (
+  <svg viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "100%", display: "block" }}>
+    <rect width="200" height="300" fill="#0d1420"/>
+    {/* table */}
+    <rect x="15" y="210" width="170" height="58" rx="6" fill="#15432b"/>
+    <rect x="15" y="210" width="170" height="58" rx="6" fill="none" stroke="#1e5c38" strokeWidth="1.5"/>
+    {/* balls */}
+    <circle cx="60" cy="238" r="11" fill="#c9a84c"/>
+    <circle cx="88" cy="228" r="11" fill="#e8e4d9"/>
+    <circle cx="116" cy="240" r="11" fill="#2b7fff"/>
+    <circle cx="144" cy="226" r="11" fill="#f87171"/>
+    {/* cue */}
+    <line x1="10" y1="280" x2="130" y2="215" stroke="#9a7a4a" strokeWidth="3" strokeLinecap="round"/>
+    {/* person */}
+    <circle cx="100" cy="88" r="22" fill="#d4a574"/>
+    <ellipse cx="100" cy="74" rx="22" ry="12" fill="#3d2b0a"/>
+    <circle cx="92" cy="87" r="3" fill="#5a3e20"/>
+    <circle cx="108" cy="87" r="3" fill="#5a3e20"/>
+    <path d="M90 100 Q100 108 110 100" fill="none" stroke="#5a3e20" strokeWidth="2.5" strokeLinecap="round"/>
+    <path d="M78 110 Q100 102 122 110 L126 172 L74 172 Z" fill="#2b5fa5"/>
+    {/* arms up */}
+    <line x1="78" y1="125" x2="42" y2="82" stroke="#d4a574" strokeWidth="10" strokeLinecap="round"/>
+    <line x1="122" y1="125" x2="158" y2="82" stroke="#d4a574" strokeWidth="10" strokeLinecap="round"/>
+    {/* trophy */}
+    <path d="M148 82 Q148 64 155 61 Q162 64 162 82 Z" fill="#c9a84c"/>
+    <path d="M148 72 Q138 72 138 79 Q138 85 148 83" fill="none" stroke="#c9a84c" strokeWidth="2.5"/>
+    <path d="M162 72 Q172 72 172 79 Q172 85 162 83" fill="none" stroke="#c9a84c" strokeWidth="2.5"/>
+    <rect x="153" y="82" width="4" height="12" fill="#c9a84c"/>
+    <rect x="148" y="94" width="14" height="4" rx="2" fill="#c9a84c"/>
+    {/* legs */}
+    <rect x="82" y="172" width="14" height="28" rx="5" fill="#1a3a6b"/>
+    <rect x="104" y="172" width="14" height="28" rx="5" fill="#1a3a6b"/>
+    <ellipse cx="89" cy="200" rx="10" ry="5" fill="#111"/>
+    <ellipse cx="111" cy="200" rx="10" ry="5" fill="#111"/>
+    {/* confetti */}
+    <circle cx="28" cy="42" r="4" fill="#c9a84c" opacity="0.8"/>
+    <circle cx="172" cy="35" r="5" fill="#c9a84c" opacity="0.6"/>
+    <circle cx="22" cy="140" r="3" fill="#2b7fff" opacity="0.6"/>
+    <circle cx="178" cy="145" r="3" fill="#f87171" opacity="0.6"/>
+    <circle cx="48" cy="52" r="2.5" fill="#4ade80" opacity="0.7"/>
+    <circle cx="156" cy="55" r="2.5" fill="#e8e4d9" opacity="0.5"/>
+    <rect x="26" y="160" width="8" height="3" rx="1" fill="#c9a84c" opacity="0.4" transform="rotate(-20 26 160)"/>
+    <rect x="166" y="170" width="8" height="3" rx="1" fill="#4ade80" opacity="0.4" transform="rotate(15 166 170)"/>
+  </svg>
+);
+
+const NEWS_ILLUSTRATIONS = [
+  // Card 0: Player taking a shot
+  <svg viewBox="0 0 300 140" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "100%", display: "block" }}>
+    <rect width="300" height="140" fill="#0d1420"/>
+    <rect x="0" y="75" width="300" height="65" rx="0" fill="#15432b" opacity="0.7"/>
+    <rect x="0" y="75" width="300" height="2" fill="#1e5c38"/>
+    {/* balls */}
+    <circle cx="180" cy="100" r="13" fill="#e8e4d9"/>
+    <circle cx="215" cy="96" r="13" fill="#c9a84c"/>
+    <circle cx="240" cy="105" r="13" fill="#2b7fff"/>
+    {/* cue */}
+    <line x1="20" y1="118" x2="166" y2="96" stroke="#9a7a4a" strokeWidth="4" strokeLinecap="round"/>
+    {/* person leaning */}
+    <ellipse cx="55" cy="72" rx="18" ry="18" fill="#d4a574"/>
+    <ellipse cx="55" cy="59" rx="18" ry="10" fill="#3d2b0a"/>
+    <circle cx="47" cy="71" r="2.5" fill="#5a3e20"/>
+    <circle cx="63" cy="71" r="2.5" fill="#5a3e20"/>
+    <path d="M47 82 Q55 88 63 82" fill="none" stroke="#5a3e20" strokeWidth="2" strokeLinecap="round"/>
+    {/* body leaning forward */}
+    <path d="M37 90 L73 90 L85 118 L25 118 Z" fill="#2b5fa5"/>
+    {/* arm extended holding cue */}
+    <line x1="73" y1="95" x2="120" y2="105" stroke="#d4a574" strokeWidth="9" strokeLinecap="round"/>
+    {/* motion lines */}
+    <line x1="155" y1="88" x2="168" y2="88" stroke="#c9a84c" strokeWidth="1.5" opacity="0.5"/>
+    <line x1="152" y1="93" x2="167" y2="93" stroke="#c9a84c" strokeWidth="1.5" opacity="0.3"/>
+    <line x1="155" y1="98" x2="168" y2="98" stroke="#c9a84c" strokeWidth="1.5" opacity="0.5"/>
+  </svg>,
+  // Card 1: Two people celebrating
+  <svg viewBox="0 0 300 140" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "100%", display: "block" }}>
+    <rect width="300" height="140" fill="#0d1420"/>
+    {/* person 1 */}
+    <circle cx="100" cy="45" r="20" fill="#d4a574"/>
+    <ellipse cx="100" cy="32" rx="20" ry="10" fill="#3d2b0a"/>
+    <circle cx="92" cy="44" r="2.5" fill="#5a3e20"/>
+    <circle cx="108" cy="44" r="2.5" fill="#5a3e20"/>
+    <path d="M90 56 Q100 64 110 56" fill="none" stroke="#5a3e20" strokeWidth="2.5" strokeLinecap="round"/>
+    <path d="M80 65 Q100 58 120 65 L122 120 L78 120 Z" fill="#c9a84c" opacity="0.9"/>
+    <line x1="80" y1="78" x2="45" y2="40" stroke="#d4a574" strokeWidth="9" strokeLinecap="round"/>
+    <line x1="120" y1="78" x2="148" y2="48" stroke="#d4a574" strokeWidth="9" strokeLinecap="round"/>
+    {/* person 2 */}
+    <circle cx="210" cy="48" r="20" fill="#c9a58a"/>
+    <ellipse cx="210" cy="35" rx="20" ry="10" fill="#5a3e20"/>
+    <circle cx="202" cy="47" r="2.5" fill="#3d2b0a"/>
+    <circle cx="218" cy="47" r="2.5" fill="#3d2b0a"/>
+    <path d="M200 59 Q210 67 220 59" fill="none" stroke="#3d2b0a" strokeWidth="2.5" strokeLinecap="round"/>
+    <path d="M190 68 Q210 61 230 68 L232 120 L188 120 Z" fill="#2b5fa5"/>
+    <line x1="190" y1="80" x2="152" y2="48" stroke="#c9a58a" strokeWidth="9" strokeLinecap="round"/>
+    <line x1="230" y1="80" x2="262" y2="42" stroke="#c9a58a" strokeWidth="9" strokeLinecap="round"/>
+    {/* high five hands meeting */}
+    <circle cx="150" cy="48" r="10" fill="#d4a574" opacity="0.9"/>
+    <circle cx="150" cy="48" r="10" fill="#c9a58a" opacity="0.5"/>
+    {/* confetti */}
+    <circle cx="30" cy="20" r="4" fill="#c9a84c" opacity="0.7"/>
+    <circle cx="270" cy="18" r="4" fill="#4ade80" opacity="0.7"/>
+    <circle cx="150" cy="15" r="5" fill="#f87171" opacity="0.6"/>
+    <circle cx="60" cy="110" r="3" fill="#2b7fff" opacity="0.5"/>
+    <circle cx="240" cy="108" r="3" fill="#c9a84c" opacity="0.5"/>
+    <rect x="28" y="70" width="9" height="3" rx="1" fill="#c9a84c" opacity="0.5" transform="rotate(-30 28 70)"/>
+    <rect x="262" y="72" width="9" height="3" rx="1" fill="#4ade80" opacity="0.5" transform="rotate(25 262 72)"/>
+    <rect x="148" y="125" width="9" height="3" rx="1" fill="#f87171" opacity="0.4" transform="rotate(10 148 125)"/>
+  </svg>,
+  // Card 2: Trophy with energy rays
+  <svg viewBox="0 0 300 140" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "100%", display: "block" }}>
+    <rect width="300" height="140" fill="#0d1420"/>
+    {/* rays */}
+    {[0,30,60,90,120,150,180,210,240,270,300,330].map((angle, i) => (
+      <line key={i}
+        x1="150" y1="70"
+        x2={150 + Math.cos(angle * Math.PI/180) * 90}
+        y2={70 + Math.sin(angle * Math.PI/180) * 90}
+        stroke="#c9a84c" strokeWidth="1.5" opacity="0.12"
+      />
+    ))}
+    {/* glow */}
+    <circle cx="150" cy="70" r="40" fill="#c9a84c" opacity="0.06"/>
+    <circle cx="150" cy="70" r="25" fill="#c9a84c" opacity="0.08"/>
+    {/* trophy */}
+    <path d="M125 90 Q125 48 150 44 Q175 48 175 90 Z" fill="#c9a84c"/>
+    <path d="M125 66 Q108 66 108 76 Q108 86 125 82" fill="none" stroke="#c9a84c" strokeWidth="4"/>
+    <path d="M175 66 Q192 66 192 76 Q192 86 175 82" fill="none" stroke="#c9a84c" strokeWidth="4"/>
+    <rect x="144" y="90" width="12" height="20" fill="#c9a84c"/>
+    <rect x="130" y="110" width="40" height="8" rx="4" fill="#c9a84c"/>
+    {/* star on trophy */}
+    <polygon points="150,55 153,63 162,63 155,68 158,77 150,72 142,77 145,68 138,63 147,63" fill="#fff" opacity="0.9"/>
+    {/* billiard balls bottom */}
+    <circle cx="55" cy="118" r="14" fill="#e8e4d9" opacity="0.8"/>
+    <circle cx="55" cy="118" r="7" fill="none" stroke="#1a1f2e" strokeWidth="1.5"/>
+    <text x="55" y="122" textAnchor="middle" fontSize="9" fill="#1a1f2e" fontWeight="bold">8</text>
+    <circle cx="240" cy="120" r="12" fill="#2b7fff" opacity="0.8"/>
+    <circle cx="265" cy="112" r="10" fill="#f87171" opacity="0.7"/>
+    <circle cx="38" cy="108" r="10" fill="#4ade80" opacity="0.6"/>
+    {/* sparkles */}
+    <circle cx="80" cy="32" r="3.5" fill="#c9a84c" opacity="0.7"/>
+    <circle cx="220" cy="28" r="3.5" fill="#c9a84c" opacity="0.7"/>
+    <circle cx="50" cy="58" r="2.5" fill="#c9a84c" opacity="0.5"/>
+    <circle cx="250" cy="55" r="2.5" fill="#c9a84c" opacity="0.5"/>
+  </svg>
+];
+
 // ─── News ─────────────────────────────────────────────────────────────────────
 
-const NEWS = [
+const CATEGORY_STYLE = {
+  "Turnier":  { color: "#2b7fff", bg: "rgba(43,127,255,0.1)",  border: "rgba(43,127,255,0.25)" },
+  "Aufstieg": { color: "#4ade80", bg: "rgba(74,222,128,0.1)",  border: "rgba(74,222,128,0.25)" },
+  "Event":    { color: "#fbbf24", bg: "rgba(251,191,36,0.1)",  border: "rgba(251,191,36,0.25)" },
+  "News":     { color: "#a5b4c8", bg: "rgba(165,180,200,0.08)", border: "rgba(165,180,200,0.2)" },
+};
+
+const BOARD_ITEMS = [
   {
-    date: "2026-05-20",
-    category: "Tournament",
+    featured: true,
+    date: "2026-09-06",
+    category: "Aufstieg",
+    title: "BCF II steigt in die Bundesliga auf",
+    excerpt: "Nach einer dominanten Saison sichert sich unsere zweite Mannschaft den Aufstieg in die höchste deutsche Spielklasse. Ein historischer Moment für den Verein.",
+  },
+  {
+    date: "2026-09-20",
+    category: "Turnier",
     title: "Hessen Snooker Cup 2026",
-    excerpt: "Annual tournament returns June 15-16. Registration open for all skill levels.",
-    badge: "Upcoming"
+    excerpt: "Das Jahresturnier kehrt zurück — 15./16. Oktober, offen für alle Spielstärken.",
   },
   {
-    date: "2026-05-10",
-    category: "Promotion",
-    title: "BCF II Promoted to Bundesliga",
-    excerpt: "After a dominant season, our second team secures promotion to the top flight.",
-    badge: "Team News"
-  },
-  {
-    date: "2026-04-28",
+    date: "2026-09-08",
     category: "Event",
-    title: "Spring Member Tournament Results",
-    excerpt: "Congratulations to Marcel Behr (Karambol), Lisa Weber (Pool), and Thomas Klein (Snooker).",
-    badge: "Results"
+    title: "Süd-Regional Karambol-Meisterschaft",
+    excerpt: "BCF richtet die Regionale Meisterschaft aus. Zuschauer herzlich willkommen.",
   },
   {
-    date: "2026-04-15",
-    category: "Tournament",
-    title: "Regional Karambol Championship",
-    excerpt: "BCF hosts the Süd Regional Championship, September 8-10. Spectators welcome.",
-    badge: "Hosting"
+    date: "2026-08-15",
+    category: "News",
+    title: "Neue Tische im Snooker-Bereich",
+    excerpt: "Zwei vollständig renovierte Match-Snookertische stehen ab sofort zur Verfügung.",
+    noImage: true,
   },
 ];
 
-export const News = () => {
-  const { t } = useTranslation();
+const CategoryChip = ({ cat }) => {
+  const s = CATEGORY_STYLE[cat] ?? CATEGORY_STYLE["News"];
   return (
-  <section className="section" id="news" style={{ background: "var(--ink-050)" }}>
+    <span style={{ display: "inline-block", padding: "3px 10px", borderRadius: 999, fontSize: 10, fontFamily: "var(--font-mono)", letterSpacing: "0.1em", textTransform: "uppercase", color: s.color, background: s.bg, border: `1px solid ${s.border}` }}>
+      {cat}
+    </span>
+  );
+};
+
+const formatDate = (dateStr, lang) => {
+  const d = new Date(dateStr);
+  return d.toLocaleDateString(lang === "DE" ? "de-DE" : "en-GB", { day: "numeric", month: "long", year: "numeric" });
+};
+
+export const News = () => {
+  const { t, lang } = useTranslation();
+  const sorted = [...BOARD_ITEMS].sort((a, b) => new Date(b.date) - new Date(a.date));
+  const featured = sorted[0];
+  const rest = sorted.slice(1);
+
+  return (
+  <section className="section" id="news" style={{ background: "var(--ink-050)", position: "relative" }}>
     <div className="container">
-      <div className="section-head reveal">
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 40 }} className="reveal">
         <div>
           <div className="section-eyebrow-row">
             <span className="section-num">{t("news.num")}</span>
             <span className="section-divider" />
-            <span className="eyebrow">{t("news.eyebrow")}</span>
+            <span className="eyebrow">News Board</span>
           </div>
-          <h2 className="section-title" style={{ marginTop: 24 }} dangerouslySetInnerHTML={{ __html: t("news.title") }} />
+          <h2 className="section-title" style={{ marginTop: 16 }}>Aktuelles aus <em>dem Verein</em>.</h2>
         </div>
-        <p className="section-lede">
-          {t("news.lede")}
-        </p>
+        <button onClick={() => document.getElementById("kalender")?.scrollIntoView({ behavior: "smooth" })} className="btn btn-ghost" style={{ padding: "10px 18px", fontSize: 12, display: "inline-flex", alignItems: "center", gap: 6, flexShrink: 0, cursor: "pointer" }}>
+          Kalender <ArrowOut size={12} />
+        </button>
       </div>
 
-      <div style={{ display: "grid", gap: "16px", marginTop: 48 }} className="reveal">
-        {NEWS.map((item, i) => (
-          <div key={i} style={{
-            background: "var(--ink-100)",
-            border: "1px solid var(--ink-300)",
-            borderRadius: "14px",
-            padding: "32px",
-            display: "grid",
-            gridTemplateColumns: "auto 1fr auto",
-            gap: "24px",
-            alignItems: "center",
-            transition: "all 0.3s var(--ease-out)",
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.borderColor = "var(--brass-500)"}
-          onMouseLeave={(e) => e.currentTarget.style.borderColor = "var(--ink-300)"}
-          >
-            <div style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              padding: "16px",
-              background: "var(--ink-050)",
-              borderRadius: "10px",
-              minWidth: "80px",
-            }}>
-              <div style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "32px",
-                fontWeight: 500,
-                color: "var(--brass-500)",
-                lineHeight: 1,
-              }}>
-                {new Date(item.date).getDate()}
-              </div>
-              <div style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "10px",
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                color: "var(--bone-400)",
-                marginTop: 4,
-              }}>
-                {new Date(item.date).toLocaleDateString('en', { month: 'short' })}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 16 }} className="reveal">
+        <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+          {/* Featured card */}
+          {featured && (
+            <div className="news-card" style={{ borderRadius: 16, overflow: "hidden", position: "relative", height: 300 }}>
+              <div style={{ position: "absolute", inset: 0, backgroundImage: "url('https://picsum.photos/seed/bcf1/600/400')", backgroundSize: "cover", backgroundPosition: "center" }} />
+              <div className="news-card-overlay" />
+              <div style={{ position: "absolute", inset: 0, padding: "32px 36px", display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 10 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <CategoryChip cat={featured.category} />
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "rgba(255,255,255,0.55)", letterSpacing: "0.06em" }}>{formatDate(featured.date, lang)}</span>
+                </div>
+                <h3 style={{ fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 400, lineHeight: 1.2, letterSpacing: "-0.02em", color: "var(--bone-100)", margin: 0 }}>{featured.title}</h3>
+                <p style={{ fontSize: 14, lineHeight: 1.65, color: "rgba(255,255,255,0.6)", margin: 0 }}>{featured.excerpt}</p>
               </div>
             </div>
+          )}
 
-            <div>
-              <div style={{
-                fontFamily: "var(--font-mono)",
-                fontSize: "10px",
-                letterSpacing: "0.16em",
-                textTransform: "uppercase",
-                color: "var(--brass-500)",
-                marginBottom: 8,
-              }}>
-                {item.category}
+          {/* Card grid */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18, alignItems: "start" }}>
+            {rest.map((item, i) => (
+              <div key={i} className="news-card" style={{ borderRadius: 14, overflow: "hidden", position: "relative", height: item.noImage ? "auto" : 260 }}>
+                {item.noImage ? (
+                  <div style={{ background: "linear-gradient(135deg, var(--ink-200) 0%, var(--ink-100) 100%)", padding: "20px 22px", display: "flex", flexDirection: "column", gap: 7 }}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                      <CategoryChip cat={item.category} />
+                      <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--bone-400)", letterSpacing: "0.06em" }}>{formatDate(item.date, lang)}</span>
+                    </div>
+                    <h4 style={{ fontFamily: "var(--font-display)", fontSize: 17, fontWeight: 400, lineHeight: 1.3, color: "var(--bone-100)", margin: 0 }}>{item.title}</h4>
+                    <p style={{ fontSize: 11, lineHeight: 1.6, color: "var(--bone-400)", margin: 0 }}>{item.excerpt}</p>
+                  </div>
+                ) : (
+                  <>
+                    <div style={{ position: "absolute", inset: 0, backgroundImage: `url('https://picsum.photos/seed/bcf${i + 2}/400/200')`, backgroundSize: "cover", backgroundPosition: "center" }} />
+                    <div className="news-card-overlay" />
+                    <div style={{ position: "absolute", inset: 0, padding: "20px 22px", display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 7 }}>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        <CategoryChip cat={item.category} />
+                        <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "rgba(255,255,255,0.5)", letterSpacing: "0.06em" }}>{formatDate(item.date, lang)}</span>
+                      </div>
+                      <h4 style={{ fontFamily: "var(--font-display)", fontSize: 17, fontWeight: 400, lineHeight: 1.3, color: "var(--bone-100)", margin: 0 }}>{item.title}</h4>
+                      <p style={{ fontSize: 11, lineHeight: 1.6, color: "rgba(255,255,255,0.55)", margin: 0 }}>{item.excerpt}</p>
+                    </div>
+                  </>
+                )}
               </div>
-              <h3 style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "24px",
-                fontWeight: 400,
-                marginBottom: 8,
-                color: "var(--bone-100)",
-              }}>
-                {item.title}
-              </h3>
-              <p style={{
-                color: "var(--bone-300)",
-                fontSize: "14px",
-                lineHeight: 1.6,
-              }}>
-                {item.excerpt}
-              </p>
-            </div>
-
-            <div style={{
-              padding: "8px 16px",
-              background: "var(--felt-900)",
-              border: "1px solid var(--felt-700)",
-              borderRadius: "999px",
-              fontFamily: "var(--font-mono)",
-              fontSize: "10px",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--felt-300)",
-              whiteSpace: "nowrap",
-            }}>
-              {item.badge}
-            </div>
+            ))}
           </div>
-        ))}
+          <a href="/vereinshistorie" className="btn btn-ghost" style={{ marginTop: 16, padding: "12px 22px", fontSize: 12, alignSelf: "flex-start" }}>
+            Zu unserer Vereinshistorie <ArrowOut size={11} />
+          </a>
+        </div>
+
+        {/* Kommende Turniere sidebar */}
+        <div style={{ background: "var(--ink-100)", border: "1px solid var(--ink-300)", borderRadius: 16, padding: "28px 24px", display: "flex", flexDirection: "column" }}>
+          <div style={{ fontFamily: "var(--font-display)", fontSize: 24, fontWeight: 400, letterSpacing: "-0.02em", color: "var(--bone-100)", marginBottom: 24, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <span><em style={{ fontStyle: "italic", color: "var(--brass-500)", marginRight: "0.2em" }}>Kommende</em>{" "}Turniere</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--brass-500)", flexShrink: 0 }}>
+              <path d="M7 3h10v7a5 5 0 0 1-10 0V3z"/>
+              <path d="M7 7H4a2 2 0 0 0 0 4h3"/>
+              <path d="M17 7h3a2 2 0 0 1 0 4h-3"/>
+              <line x1="12" y1="15" x2="12" y2="19"/>
+              <line x1="8" y1="21" x2="16" y2="21"/>
+            </svg>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 0, flex: 1 }}>
+            {(() => {
+              const all = [
+                { date: "2026-11-29", name: "Winterpokal Frankfurt", disziplin: "Pool", typ: "offen", href: "https://cuescore.com/bcfrankfurt1912/tournaments" },
+                { date: "2026-11-08", name: "Süd-Regional Karambol", disziplin: "Karambol", typ: "offen", href: "https://cuescore.com/bcfrankfurt1912/tournaments" },
+                { date: "2026-10-22", name: "BCF Vereinsmeisterschaft", disziplin: "Pool", typ: "intern", href: "https://cuescore.com/bcfrankfurt1912/tournaments" },
+                { date: "2026-08-15", name: "Hessen Snooker Cup", disziplin: "Snooker", typ: "offen", href: "https://cuescore.com/bcfrankfurt1912/tournaments" },
+              ];
+              const now = new Date();
+              const upcoming = all.filter(t => new Date(t.date) >= now).slice(0, 3);
+              const past = all.filter(t => new Date(t.date) < now).slice(0, 2);
+              return [...upcoming, ...past];
+            })().map((t, i, arr) => {
+              const past = new Date(t.date) < new Date();
+              return (
+              <div key={i} style={{ padding: "20px 0", borderBottom: i < arr.length - 1 ? "1px solid var(--ink-300)" : "none" }}>
+                <div style={{ fontFamily: "var(--font-mono)", letterSpacing: "0.06em", marginBottom: 8 }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <div style={{ fontSize: 13, lineHeight: 1, color: past ? "var(--bone-500)" : "var(--brass-500)", opacity: past ? 0.4 : 1 }}>
+                      {new Date(t.date).toLocaleDateString("de-DE", { day: "2-digit", month: "short" })}
+                      <span style={{ color: "var(--bone-500)", marginLeft: 8 }}>{t.disziplin}</span>
+                    </div>
+                    {past && <span style={{ fontSize: 11, color: "var(--bone-500)", opacity: 0.5, fontFamily: "var(--font-mono)", letterSpacing: "0.06em" }}>Vergangen</span>}
+                  </div>
+                  <div style={{ fontSize: 11, lineHeight: 1, color: t.typ === "intern" ? "rgba(248,113,113,0.5)" : "rgba(134,239,172,0.5)", marginTop: 8 }}>{t.typ === "intern" ? "Internes Vereinsturnier" : "Öffentliches Hausturnier"}</div>
+                </div>
+                <div style={{ fontSize: 16, fontWeight: 400, color: "var(--bone-100)", lineHeight: 1.3, marginBottom: 6, opacity: past ? 0.4 : 1 }}>{t.name}</div>
+                <a href={t.href} target="_blank" rel="noopener" className="turnier-link" style={{}}>
+                  {past ? "Ergebnisse auf CueScore" : "Anmelden auf CueScore"} <ArrowOut size={11} />
+                </a>
+              </div>
+            );})}
+          </div>
+          <a href="/calendar" className="btn btn-ghost" style={{ marginTop: 20, padding: "9px 14px", fontSize: 11, display: "inline-flex", alignItems: "center", gap: 5, justifyContent: "center" }}>
+            Alle Turniere auf CueScore ansehen <ArrowOut size={11} />
+          </a>
+        </div>
       </div>
+
+      <button
+        onClick={() => document.getElementById("kalender")?.scrollIntoView({ behavior: "smooth" })}
+        style={{ position: "absolute", bottom: 64, left: "50%", transform: "translateX(-50%)", background: "none", border: "none", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 12, padding: 0, opacity: 0.7, transition: "opacity 0.2s", zIndex: 10, pointerEvents: "all" }}
+        onMouseEnter={e => e.currentTarget.style.opacity = 1}
+        onMouseLeave={e => e.currentTarget.style.opacity = 0.7}
+      >
+        <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--bone-500)" }}>Zum Kalender</div>
+        <div style={{ width: 1, height: 40, background: "linear-gradient(to bottom, var(--brass-500), transparent)", position: "relative", overflow: "hidden" }}>
+          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 12, background: "var(--brass-500)", animation: "scroll-cue 3.6s ease-in-out infinite" }} />
+        </div>
+      </button>
     </div>
   </section>
 );
+};
+
+// ─── Calendar ─────────────────────────────────────────────────────────────────
+
+const WEEKDAYS_SHORT = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+
+function buildCalendarDays(year, month) {
+  const first = new Date(year, month, 1);
+  const last = new Date(year, month + 1, 0);
+  const offset = (first.getDay() + 6) % 7;
+  const days = Array(offset).fill(null);
+  for (let d = 1; d <= last.getDate(); d++) days.push(new Date(year, month, d));
+  return days;
+}
+
+export const CalendarSection = () => {
+  const [current, setCurrent] = React.useState(() => {
+    const t = new Date(); return new Date(t.getFullYear(), t.getMonth(), 1);
+  });
+  const today = new Date();
+  const year = current.getFullYear();
+  const month = current.getMonth();
+  const days = buildCalendarDays(year, month);
+  const monthLabel = current.toLocaleDateString("de-DE", { month: "long", year: "numeric" });
+
+  return (
+  <section className="section" id="kalender" style={{ background: "linear-gradient(to bottom, var(--ink-050) 0%, transparent 120px), radial-gradient(ellipse at 15% -10%, color-mix(in srgb, var(--felt-700) 70%, transparent) 0%, var(--ink-050) 55%, var(--ink-000) 100%)" }}>
+    <div className="container">
+      <div style={{ marginBottom: 40 }}>
+        <div className="section-eyebrow-row">
+          <span className="section-num">06</span>
+          <span className="section-divider" />
+          <span className="eyebrow">Kalender</span>
+        </div>
+        <h2 className="section-title" style={{ marginTop: 16 }}>Termine &amp; <em>Spielplan.</em></h2>
+        <p style={{ marginTop: 12, fontSize: 15, color: "var(--bone-400)", fontFamily: "var(--font-display)" }}>Ligaspiele und interne Termine des BC Frankfurt 1912.</p>
+      </div>
+
+      <div style={{ maxWidth: 780 }}>
+        {/* Month nav */}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24, padding: "16px 24px", background: "var(--ink-100)", borderRadius: 12, border: "1px solid var(--ink-300)" }}>
+          <button onClick={() => setCurrent(new Date(year, month - 1, 1))}
+            style={{ background: "transparent", border: "none", color: "var(--bone-400)", padding: "6px 8px", cursor: "pointer", lineHeight: 1, transition: "color 0.2s", display: "flex", alignItems: "center" }}
+            onMouseEnter={e => e.currentTarget.style.color = "var(--brass-500)"}
+            onMouseLeave={e => e.currentTarget.style.color = "var(--bone-400)"}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <span style={{ fontFamily: "var(--font-display)", fontSize: 24, color: "var(--bone-100)", fontWeight: 400 }}>{monthLabel}</span>
+          <button onClick={() => setCurrent(new Date(year, month + 1, 1))}
+            style={{ background: "transparent", border: "none", color: "var(--bone-400)", padding: "6px 8px", cursor: "pointer", lineHeight: 1, transition: "color 0.2s", display: "flex", alignItems: "center" }}
+            onMouseEnter={e => e.currentTarget.style.color = "var(--brass-500)"}
+            onMouseLeave={e => e.currentTarget.style.color = "var(--bone-400)"}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+
+        {/* Weekday headers */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 8, marginBottom: 4 }}>
+          {WEEKDAYS_SHORT.map(d => (
+            <div key={d} style={{ textAlign: "center", fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--bone-500)", padding: 8 }}>{d}</div>
+          ))}
+        </div>
+
+        {/* Day cells */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 8 }}>
+          {days.map((date, i) => {
+            if (!date) return <div key={`e-${i}`} />;
+            const isToday = date.toDateString() === today.toDateString();
+            const isPast = date < today && !isToday;
+            return (
+              <div key={i} style={{ aspectRatio: "1", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--ink-100)", border: isToday ? "2px solid var(--brass-500)" : "1px solid var(--ink-300)", borderRadius: 8, color: isToday ? "var(--brass-500)" : "var(--bone-300)", fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: isToday ? 700 : 400, opacity: isPast ? 0.25 : 1 }}>
+                {date.getDate()}
+              </div>
+            );
+          })}
+        </div>
+
+      </div>
+    </div>
+  </section>
+  );
 };
 
 export const Contact = () => {
@@ -1114,6 +1388,7 @@ export const Contact = () => {
           border: "1px solid var(--ink-300)",
           borderRadius: "16px",
           padding: "48px",
+          alignSelf: "flex-start",
         }}>
           <div className="eyebrow" style={{ marginBottom: 24, color: "var(--brass-500)" }}>{t("contact.membersOnly")}</div>
           <h3 style={{ fontFamily: "var(--font-display)", fontSize: 36, fontWeight: 400, marginBottom: 16, lineHeight: 1.2, letterSpacing: "-0.02em" }} dangerouslySetInnerHTML={{ __html: t("contact.privateClub") }} />
@@ -1162,7 +1437,7 @@ export const Contact = () => {
               </a>
             </p>
           </div>
-          <a href="#membership" className="btn btn-ghost" style={{ marginTop: 20, padding: "10px 18px", fontSize: 12, display: "inline-flex", alignItems: "center", gap: 6, alignSelf: "flex-start" }}>
+          <a href="#membership" className="btn btn-ghost" style={{ marginTop: 40, padding: "10px 18px", fontSize: 12, display: "inline-flex", alignItems: "center", gap: 6, alignSelf: "flex-start" }}>
             Alles zur Mitgliedschaft <Arrow size={12} />
           </a>
         </div>
@@ -1242,7 +1517,7 @@ export const Footer = () => {
       </div>
       <div className="footer-bottom">
         <span>© 1912–{new Date().getFullYear()} · Billard Club Frankfurt e.V.</span>
-        <a href="/admin/login" style={{ color: 'var(--bone-500)', fontSize: '0.75rem', opacity: 0.5 }}>Vorstand</a>
+        <a href="/admin/login" style={{ color: 'var(--bone-500)', fontSize: '0.75rem', opacity: 0.5 }}>Vorstandslogin</a>
       </div>
     </div>
   </footer>
