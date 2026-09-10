@@ -74,7 +74,7 @@ export const LangPicker = () => {
 };
 
 export const Hero = ({ heroBg = null }) => {
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
   const [parallax, setParallax] = React.useState(0);
   React.useEffect(() => {
     const onScroll = () => setParallax(window.scrollY * 0.5);
@@ -108,11 +108,11 @@ export const Hero = ({ heroBg = null }) => {
         </p>
 
         <div className="hero-cta reveal in-view delay-3">
-          <a href="#membership" className="btn btn-brass">
-            {t("hero.becomeMember")} <Arrow />
+          <a href="#contact" className="btn btn-brass">
+            {lang === "DE" ? "Vereinsheim besuchen" : "Visit us"} <ArrowOut />
           </a>
-          <a href="#contact" className="btn btn-ghost">
-            {t("hero.visitClub")} <ArrowOut />
+          <a href="#news" className="btn btn-ghost">
+            {lang === "DE" ? "Aktuelles" : "News"} <Arrow />
           </a>
         </div>
       </div>
@@ -635,6 +635,74 @@ export const Gallery = ({ images = [] }) => {
 );
 };
 
+export const ClubSection = ({ images = [] }) => {
+  const { t, lang } = useTranslation();
+  const [active, setActive] = React.useState(null);
+
+  const items = images.map((row) => ({ caption: row.titel ?? '', img: row.bild_url }));
+  const nav = React.useCallback((dir) => {
+    setActive((cur) => (cur == null ? cur : (cur + dir + items.length) % items.length));
+  }, [items.length]);
+
+  const disciplines = [
+    { name: lang === "DE" ? "Billard" : "Pool", desc: t("disc.pool.desc"), image: "https://bcfrankfurt.de/wp-content/uploads/2018/02/kugeln_s.jpg" },
+    { name: "Karambol", desc: t("disc.karambol.desc"), image: "https://bcfrankfurt.de/wp-content/uploads/2018/02/Karambolage.jpg" },
+    { name: "Snooker", desc: t("disc.snooker.desc"), image: "https://bcfrankfurt.de/wp-content/uploads/2018/02/atmo3.jpg" },
+  ];
+
+  return (
+    <section className="section" id="about" style={{ paddingBottom: 0 }}>
+      <div className="container">
+        <div className="section-head reveal">
+          <div>
+            <div className="section-eyebrow-row">
+              <span className="section-num">01</span>
+              <span className="section-divider" />
+              <span className="eyebrow">{t("about.eyebrow")}</span>
+            </div>
+            <h2 className="section-title" style={{ marginTop: 24 }} dangerouslySetInnerHTML={{ __html: t("about.title") }} />
+          </div>
+          <p className="section-lede">{t("about.p1")}</p>
+        </div>
+      </div>
+
+      {/* Discipline image strip */}
+      <div className="club-disc-strip reveal" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 2, marginBottom: 2 }}>
+        {disciplines.map((d) => (
+          <div key={d.name} className="club-disc-card">
+            <img src={d.image} alt={d.name} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", filter: "brightness(0.55) contrast(1.05) saturate(0.75)", transition: "transform 0.7s var(--ease-out), filter 0.5s" }} />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(transparent 35%, rgba(5,5,6,0.92))" }} />
+            <div style={{ position: "absolute", bottom: 28, left: 28, right: 28 }}>
+              <div style={{ fontFamily: 'var(--loaded-cormorant), "Cormorant Garamond", Georgia, serif', fontStyle: "italic", fontWeight: 300, fontSize: 40, letterSpacing: "-0.02em", color: "var(--bone-100)", lineHeight: 1 }}>{d.name}</div>
+              <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--bone-400)", marginTop: 10, letterSpacing: "0.04em", lineHeight: 1.5 }}>{d.desc}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Gallery scroll */}
+      {items.length > 0 && (
+        <div className="gallery-scroll" style={{ marginTop: 0 }}>
+          {items.map((g, i) => (
+            <div key={i} className="gallery-item" onClick={() => setActive(i)}
+                 role="button" tabIndex={0} aria-label={`Open image: ${g.caption}`}
+                 onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setActive(i); } }}>
+              <img src={g.img} alt={g.caption} loading="lazy" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", imageOrientation: "from-image", filter: "brightness(0.85) contrast(1.05) saturate(0.9)", transition: "filter 0.5s var(--ease-out), transform 0.6s var(--ease-out)" }} />
+              {g.caption && (
+                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "48px 24px 24px", background: "linear-gradient(transparent, rgba(5,5,6,0.85))", fontFamily: "var(--font-mono)", fontSize: 12, letterSpacing: "0.06em", color: "var(--bone-300)" }}>
+                  {g.caption}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      <Lightbox items={items} index={active} onClose={() => setActive(null)} onNav={nav} />
+    </section>
+  );
+};
+
 // ─── Tournaments ─────────────────────────────────────────────────────────────
 
 const NAV_OFFSET = 80;
@@ -981,11 +1049,8 @@ export const Contact = () => {
             <span className="section-divider" />
             <span className="eyebrow">{t("contact.visitContact")}</span>
           </div>
-          <h2 className="section-title" style={{ marginTop: 24 }} dangerouslySetInnerHTML={{ __html: t("contact.borsigallee") }} />
+          <h2 className="section-title" style={{ marginTop: 24 }} dangerouslySetInnerHTML={{ __html: t("contact.title") }} />
         </div>
-        <p className="section-lede">
-          {t("contact.fiveMinutes")}
-        </p>
       </div>
 
       <div className="contact-grid reveal">
@@ -1014,15 +1079,19 @@ export const Contact = () => {
           <div className="contact-info-block">
             <h4>{t("contact.address.title")}</h4>
             <p>Borsigallee 45<br />60388 Frankfurt am Main</p>
-          </div>
-
-          <div className="contact-info-block">
-            <h4>{t("contact.hours.title")}</h4>
-            <p style={{ fontSize: 14, color: "var(--bone-200)", fontFamily: "var(--font-sans)", lineHeight: 1.6 }}>
-              {t("contact.hours.weekdays")}: {t("contact.hours.weekdaysTimes")}<br />
-              {t("contact.hours.weekend")}: {t("contact.hours.weekendTimes")}<br />
-              <span style={{ color: "var(--bone-400)", fontStyle: "italic" }}>{t("contact.hours.closed")}</span>
-            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 16 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, color: "var(--bone-300)", fontSize: 15 }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, color: "var(--brass-500)" }}><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 17V8h4a3 3 0 0 1 0 6H9"/></svg>
+                <span>Parkplätze direkt vor Ort</span>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, color: "var(--bone-300)", fontSize: 15 }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
+                  <rect x="1" y="1" width="22" height="22" rx="4" fill="#1a3a6b"/>
+                  <text x="12" y="18.5" textAnchor="middle" fontSize="15" fontWeight="800" fontFamily="Arial, system-ui, sans-serif" fill="white">U</text>
+                </svg>
+                <span>4 Min. von der U7 (Hessen-Center)</span>
+              </div>
+            </div>
           </div>
 
           <div className="contact-info-block">
@@ -1093,6 +1162,9 @@ export const Contact = () => {
               </a>
             </p>
           </div>
+          <a href="#membership" className="btn btn-ghost" style={{ marginTop: 20, padding: "10px 18px", fontSize: 12, display: "inline-flex", alignItems: "center", gap: 6, alignSelf: "flex-start" }}>
+            Alles zur Mitgliedschaft <Arrow size={12} />
+          </a>
         </div>
       </div>
     </div>

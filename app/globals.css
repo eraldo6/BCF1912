@@ -1576,6 +1576,18 @@ section {
   .member-grid { grid-template-columns: 1fr; }
 }
 
+/* Club discipline strip */
+.club-disc-card {
+  position: relative;
+  height: 340px;
+  overflow: hidden;
+  cursor: default;
+}
+.club-disc-card:hover img {
+  transform: scale(1.04);
+  filter: brightness(0.65) contrast(1.05) saturate(0.8) !important;
+}
+
 /* Gallery — horizontal scroll strip */
 .gallery-scroll {
   display: flex;
@@ -2114,10 +2126,12 @@ section {
   display: flex;
   width: max-content;
   animation: marquee 90s linear infinite;
-  font-family: var(--font-display);
-  font-size: 28px;
-  color: var(--bone-200);
+  font-family: var(--loaded-cormorant), "Cormorant Garamond", Georgia, serif;
+  font-size: 32px;
+  font-weight: 300;
   font-style: italic;
+  letter-spacing: -0.02em;
+  color: var(--bone-200);
 }
 .marquee-content {
   display: inline-flex;

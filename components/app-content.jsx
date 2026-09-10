@@ -8,11 +8,9 @@ import {
   Nav,
   Hero,
   Marquee,
-  About,
-  Disciplines,
+  ClubSection,
   Experience,
   Membership,
-  Gallery,
   Tournaments,
   News,
   Contact,
@@ -77,11 +75,9 @@ export const AppContent = ({ galleryImages = [], heroBg = null }) => {
         <Nav />
         <Hero heroBg={heroBg} />
         <Marquee />
-        <About />
-        <Disciplines />
+        <ClubSection images={galleryImages} />
         <Experience />
         <Membership />
-        <Gallery images={galleryImages} />
         <Tournaments />
         <News />
         <Contact />
