@@ -10,6 +10,7 @@ import {
   Marquee,
   ClubSection,
   Experience,
+  Gallery,
   Membership,
   Tournaments,
   News,
@@ -76,12 +77,11 @@ export const AppContent = ({ galleryImages = [], heroBg = null }) => {
         <Nav />
         <Hero heroBg={heroBg} />
         <Marquee />
-        <ClubSection images={galleryImages} />
-        <Experience />
-        <Membership />
-        <Tournaments />
         <News />
         <CalendarSection />
+        <ClubSection images={galleryImages} hideGallery />
+        <Experience />
+        <Gallery images={galleryImages} />
         <Contact />
         <Footer />
       </TranslationContext.Provider>

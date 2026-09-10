@@ -28,7 +28,7 @@ export const Nav = () => {
         <li><a href="#about">{t("nav.club")}</a></li>
         <li><a href="#disciplines">{t("nav.disciplines")}</a></li>
         <li><a href="#experience">{t("nav.experience")}</a></li>
-        <li><a href="#membership">{t("nav.membership")}</a></li>
+        <li><a href="/mitgliedschaft">{t("nav.membership")}</a></li>
         <li><a href="#gallery">{t("nav.gallery")}</a></li>
         <li><a href="#news">News</a></li>
         <li><a href="#contact">{t("nav.visit")}</a></li>
@@ -36,7 +36,7 @@ export const Nav = () => {
       </ul>
       <div className="nav-cta">
         <LangPicker />
-        <a href="#membership" className="btn btn-brass" style={{ padding: "10px 20px", fontSize: 12 }}>
+        <a href="/mitgliedschaft" className="btn btn-brass" style={{ padding: "10px 20px", fontSize: 12 }}>
           {t("nav.becomeMember")} <Arrow size={12} />
         </a>
       </div>
@@ -73,9 +73,36 @@ export const LangPicker = () => {
   );
 };
 
+function useCountUp(target, duration = 2400, suffix = "") {
+  const [display, setDisplay] = React.useState("0" + suffix);
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      obs.disconnect();
+      const start = performance.now();
+      const tick = (now) => {
+        const p = Math.min((now - start) / duration, 1);
+        const ease = Math.pow(Math.sin(p * Math.PI / 2), 0.45);
+        setDisplay(Math.round(ease * target) + suffix);
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }, { threshold: 0.5 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [target, duration, suffix]);
+  return [display, ref];
+}
+
 export const Hero = ({ heroBg = null }) => {
   const { t, lang } = useTranslation();
   const [parallax, setParallax] = React.useState(0);
+  const [jahre, jahreRef] = useCountUp(114, 2200);
+  const [disziplinen, disziplinenRef] = useCountUp(3, 1400);
+  const [mitglieder, mitgliederRef] = useCountUp(240, 2600, "+");
   React.useEffect(() => {
     const onScroll = () => setParallax(window.scrollY * 0.5);
     window.addEventListener("scroll", onScroll);
@@ -107,32 +134,30 @@ export const Hero = ({ heroBg = null }) => {
           {t("hero.subtitle")}
         </p>
 
-        <div className="hero-cta reveal in-view delay-3">
-          <a href="#contact" className="btn btn-brass">
-            {lang === "DE" ? "Vereinsheim besuchen" : "Visit us"} <ArrowOut />
-          </a>
-          <a href="#news" className="btn btn-ghost">
-            News Board <Arrow />
-          </a>
-        </div>
-      </div>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingBottom: 32, borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
+          <div className="hero-cta reveal in-view delay-3">
+            <a href="#contact" className="btn btn-brass">
+              {lang === "DE" ? "Vereinsheim besuchen" : "Visit us"} <ArrowOut />
+            </a>
+            <a href="#news" className="btn btn-ghost">
+              News Board <Arrow />
+            </a>
+          </div>
 
-      <div className="hero-stats reveal in-view delay-4">
-        <div>
-          <div className="hero-stat-num">10</div>
-          <div className="hero-stat-label">Tische</div>
+          <div className="hero-stats reveal in-view delay-4">
+          <div ref={jahreRef}>
+            <div className="hero-stat-num">{jahre}</div>
+            <div className="hero-stat-label">Jahre</div>
+          </div>
+          <div ref={disziplinenRef}>
+            <div className="hero-stat-num">{disziplinen}</div>
+            <div className="hero-stat-label">Disziplinen</div>
+          </div>
+          <div ref={mitgliederRef}>
+            <div className="hero-stat-num">{mitglieder}</div>
+            <div className="hero-stat-label">Mitglieder</div>
+          </div>
         </div>
-        <div>
-          <div className="hero-stat-num">114</div>
-          <div className="hero-stat-label">Jahre</div>
-        </div>
-        <div>
-          <div className="hero-stat-num">3</div>
-          <div className="hero-stat-label">Disziplinen</div>
-        </div>
-        <div>
-          <div className="hero-stat-num">240+</div>
-          <div className="hero-stat-label">Mitglieder</div>
         </div>
       </div>
 
@@ -346,7 +371,7 @@ export const Experience = () => {
       <div className="section-head reveal">
         <div>
           <div className="section-eyebrow-row">
-            <span className="section-num">03</span>
+            <span className="section-num">04</span>
             <span className="section-divider" />
             <span className="eyebrow">{t("experience.whyJoin")}</span>
           </div>
@@ -405,7 +430,7 @@ export const Experience = () => {
           <p style={{ color: "var(--bone-200)" }}>
             {t("experience.trial.desc")}
           </p>
-          <a href="#membership" className="btn btn-brass" style={{ marginTop: 24, alignSelf: "flex-start", padding: "12px 20px", fontSize: 12 }}>
+          <a href="/mitgliedschaft" className="btn btn-brass" style={{ marginTop: 24, alignSelf: "flex-start", padding: "12px 20px", fontSize: 12 }}>
             {t("experience.trial.reserve")} <Arrow size={12} />
           </a>
         </div>
@@ -479,12 +504,7 @@ export const Membership = () => {
     <div className="container">
       <div className="section-head reveal">
         <div>
-          <div className="section-eyebrow-row">
-            <span className="section-num">04</span>
-            <span className="section-divider" />
-            <span className="eyebrow">{t("membership.eyebrow")}</span>
-          </div>
-          <h2 className="section-title" style={{ marginTop: 24 }} dangerouslySetInnerHTML={{ __html: t("membership.threeWays") }} />
+          <h2 className="section-title" dangerouslySetInnerHTML={{ __html: t("membership.threeWays") }} />
         </div>
         <p className="section-lede">
           {t("membership.flatFair")}
@@ -586,6 +606,7 @@ export const Gallery = ({ images = [] }) => {
             <span className="section-num">05</span>
             <span className="section-divider" />
             <span className="eyebrow">{t("gallery.eyebrow")}</span>
+
           </div>
           <h2 className="section-title" style={{ marginTop: 24 }} dangerouslySetInnerHTML={{ __html: t("gallery.title") }} />
         </div>
@@ -635,7 +656,7 @@ export const Gallery = ({ images = [] }) => {
 );
 };
 
-export const ClubSection = ({ images = [] }) => {
+export const ClubSection = ({ images = [], hideGallery = false }) => {
   const { t, lang } = useTranslation();
   const [active, setActive] = React.useState(null);
 
@@ -645,7 +666,7 @@ export const ClubSection = ({ images = [] }) => {
   }, [items.length]);
 
   const disciplines = [
-    { name: lang === "DE" ? "Billard" : "Pool", desc: t("disc.pool.desc"), image: "https://bcfrankfurt.de/wp-content/uploads/2018/02/kugeln_s.jpg" },
+    { name: "Pool", desc: t("disc.pool.desc"), image: "https://bcfrankfurt.de/wp-content/uploads/2018/02/kugeln_s.jpg" },
     { name: "Karambol", desc: t("disc.karambol.desc"), image: "https://bcfrankfurt.de/wp-content/uploads/2018/02/Karambolage.jpg" },
     { name: "Snooker", desc: t("disc.snooker.desc"), image: "https://bcfrankfurt.de/wp-content/uploads/2018/02/atmo3.jpg" },
   ];
@@ -656,7 +677,7 @@ export const ClubSection = ({ images = [] }) => {
         <div className="section-head reveal">
           <div>
             <div className="section-eyebrow-row">
-              <span className="section-num">01</span>
+              <span className="section-num">03</span>
               <span className="section-divider" />
               <span className="eyebrow">{t("about.eyebrow")}</span>
             </div>
@@ -681,7 +702,7 @@ export const ClubSection = ({ images = [] }) => {
       </div>
 
       {/* Gallery scroll */}
-      {items.length > 0 && (
+      {!hideGallery && items.length > 0 && (
         <div className="gallery-scroll" style={{ marginTop: 0 }}>
           {items.map((g, i) => (
             <div key={i} className="gallery-item" onClick={() => setActive(i)}
@@ -1258,7 +1279,7 @@ export const CalendarSection = () => {
     <div className="container">
       <div style={{ marginBottom: 40 }}>
         <div className="section-eyebrow-row">
-          <span className="section-num">06</span>
+          <span className="section-num">02</span>
           <span className="section-divider" />
           <span className="eyebrow">Kalender</span>
         </div>
@@ -1266,7 +1287,8 @@ export const CalendarSection = () => {
         <p style={{ marginTop: 12, fontSize: 15, color: "var(--bone-400)", fontFamily: "var(--font-display)" }}>Ligaspiele und interne Termine des BC Frankfurt 1912.</p>
       </div>
 
-      <div style={{ maxWidth: 780 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 32, alignItems: "start" }}>
+      <div>
         {/* Month nav */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24, padding: "16px 24px", background: "var(--ink-100)", borderRadius: 12, border: "1px solid var(--ink-300)" }}>
           <button onClick={() => setCurrent(new Date(year, month - 1, 1))}
@@ -1304,6 +1326,38 @@ export const CalendarSection = () => {
             );
           })}
         </div>
+
+      </div>
+
+      {/* Events sidebar */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        {[
+          { cat: "Pool", format: "8-Ball", title: "Sunday-Break-Out 8-Ball", date: "13. Sep 2026", org: "BCFrankfurt1912", past: false, link: "Auf CueScore ansehen" },
+          { cat: "Pool", format: "9-Ball", title: "Sunday-Break-Out 9-Ball", date: "16. Aug 2026", org: "BCFrankfurt1912", past: true, link: "Ergebnisse ansehen" },
+          { cat: "Pool", format: "9-Ball", title: "Sommercamp Turnier 2026 – Endrunde", date: "8. Aug 2026", org: "Fordan Pécs", past: true, link: "Ergebnisse ansehen" },
+        ].map((ev, i) => (
+          <div key={i} style={{ background: "var(--ink-100)", border: "1px solid var(--ink-300)", borderLeft: "3px solid var(--brass-500)", borderRadius: 10, padding: "16px 18px", display: "flex", flexDirection: "column", gap: 8 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "var(--ink-200)", border: "1px solid var(--ink-300)", borderRadius: 20, padding: "3px 10px", fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.06em", color: "var(--bone-300)" }}>
+                <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--brass-500)", display: "inline-block" }} />
+                {ev.cat.toUpperCase()}
+              </span>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                {ev.past && <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.08em", color: "var(--bone-500)", background: "var(--ink-200)", border: "1px solid var(--ink-300)", borderRadius: 20, padding: "3px 8px" }}>VORBEI</span>}
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.08em", color: "var(--bone-500)" }}>{ev.format}</span>
+              </div>
+            </div>
+            <div style={{ fontFamily: "var(--font-display)", fontSize: 16, fontWeight: 600, color: ev.past ? "var(--bone-400)" : "var(--bone-100)", lineHeight: 1.3 }}>{ev.title}</div>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--bone-500)" }}>{ev.date}</div>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--bone-500)" }}>{ev.org}</div>
+            <a href="#" style={{ marginTop: 4, fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--bone-400)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4, borderBottom: "1px solid transparent", transition: "color 0.2s, border-color 0.2s" }}
+              onMouseEnter={e => { e.currentTarget.style.color = "var(--bone-100)"; e.currentTarget.style.borderBottomColor = "var(--bone-100)"; }}
+              onMouseLeave={e => { e.currentTarget.style.color = "var(--bone-400)"; e.currentTarget.style.borderBottomColor = "transparent"; }}>
+              {ev.link} <ArrowOut size={9} />
+            </a>
+          </div>
+        ))}
+      </div>
 
       </div>
     </div>
@@ -1437,7 +1491,7 @@ export const Contact = () => {
               </a>
             </p>
           </div>
-          <a href="#membership" className="btn btn-ghost" style={{ marginTop: 40, padding: "10px 18px", fontSize: 12, display: "inline-flex", alignItems: "center", gap: 6, alignSelf: "flex-start" }}>
+          <a href="/mitgliedschaft" className="btn btn-ghost" style={{ marginTop: 40, padding: "10px 18px", fontSize: 12, display: "inline-flex", alignItems: "center", gap: 6, alignSelf: "flex-start" }}>
             Alles zur Mitgliedschaft <Arrow size={12} />
           </a>
         </div>
@@ -1508,7 +1562,7 @@ export const Footer = () => {
             <li><a href="#about">{t("nav.club")}</a></li>
             <li><a href="#disciplines">{t("nav.disciplines")}</a></li>
             <li><a href="#experience">{t("nav.experience")}</a></li>
-            <li><a href="#membership">{t("nav.membership")}</a></li>
+            <li><a href="/mitgliedschaft">{t("nav.membership")}</a></li>
             <li><a href="#gallery">{t("nav.gallery")}</a></li>
             <li><a href="#contact">{t("nav.visit")}</a></li>
             <li><a href="/calendar">{t("nav.games")}</a></li>
