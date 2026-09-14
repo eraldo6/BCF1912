@@ -12,6 +12,7 @@ const COLUMNS = [
   { key: 'created_at',       label: 'Erstellt am' },
   { key: 'aktualisiert_von', label: 'Bearbeitet von' },
   { key: 'updated_at',       label: 'Aktualisiert am' },
+  { key: 'datum',           label: 'Anzeigedatum' },
   { key: 'titel',           label: 'Titel' },
   { key: 'subtitel',        label: 'Subtitel' },
   { key: 'inhalt',          label: 'Inhalt' },
@@ -41,6 +42,25 @@ const btnStyle = {
   display: 'flex', alignItems: 'center', lineHeight: 1,
 }
 
+function TitelCounter({ name, max, initialLen = 0 }) {
+  const [len, setLen] = useState(initialLen)
+  const ref = useRef(null)
+  useEffect(() => {
+    const form = ref.current?.closest('form')
+    const input = form?.elements[name]
+    if (!input) return
+    setLen(input.value.length)
+    const handler = () => setLen(input.value.length)
+    input.addEventListener('input', handler)
+    return () => input.removeEventListener('input', handler)
+  }, [name])
+  return (
+    <span ref={ref} style={{ color: len > max * 0.9 ? '#f87171' : 'var(--bone-600)', fontSize: '0.75rem' }}>
+      {len}/{max}
+    </span>
+  )
+}
+
 function DeleteModal({ row, onConfirm, onCancel, isPending }) {
   return (
     <div style={{ position: 'fixed', inset: 0, zIndex: 50, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -67,6 +87,7 @@ function BeitragModal({ row, onClose, onSuccess, onError, isPending, startTransi
   const [saveError, setSaveError] = useState(null)
   const [imageFile, setImageFile] = useState(null)
   const [imagePreview, setImagePreview] = useState(row?.bild_url ?? null)
+  const [imageRemoved, setImageRemoved] = useState(false)
   const [uploading, setUploading] = useState(false)
 
   const handleFileChange = (e) => {
@@ -81,7 +102,7 @@ function BeitragModal({ row, onClose, onSuccess, onError, isPending, startTransi
     const formData = new FormData(e.target)
     setSaveError(null)
 
-    let bild_url = row?.bild_url ?? null
+    let bild_url = imageRemoved ? null : (row?.bild_url ?? null)
 
     if (imageFile) {
       setUploading(true)
@@ -131,25 +152,55 @@ function BeitragModal({ row, onClose, onSuccess, onError, isPending, startTransi
           <div style={{ display: 'grid', gap: '16px', marginBottom: '16px' }}>
 
             <div>
-              <label style={labelStyle}>Titel *</label>
-              <input name="titel" type="text" required style={inputStyle} defaultValue={row?.titel ?? ''} placeholder="z.B. Vereinsmeisterschaft 2026" />
+              <label style={{ ...labelStyle, display: 'flex', justifyContent: 'space-between' }}>
+                <span>Titel *</span>
+                <TitelCounter name="titel" max={55} initialLen={row?.titel?.length ?? 0} />
+              </label>
+              <input name="titel" type="text" required maxLength={55} pattern=".*\S.*" style={inputStyle} defaultValue={row?.titel ?? ''} placeholder="z.B. Vereinsmeisterschaft 2026" />
             </div>
 
             <div>
-              <label style={labelStyle}>Subtitel</label>
-              <input name="subtitel" type="text" style={inputStyle} defaultValue={row?.subtitel ?? ''} placeholder="z.B. Rückblick auf ein spannendes Turnier" />
+              <label style={{ ...labelStyle, display: 'flex', justifyContent: 'space-between' }}>
+                <span>Subtitel *</span>
+                <TitelCounter name="subtitel" max={80} initialLen={row?.subtitel?.length ?? 0} />
+              </label>
+              <input name="subtitel" type="text" required maxLength={80} pattern=".*\S.*" style={inputStyle} defaultValue={row?.subtitel ?? ''} placeholder="z.B. Rückblick auf ein spannendes Turnier" />
+            </div>
+
+            <div>
+              <label style={labelStyle}>Anzeigedatum *</label>
+              <input name="datum" type="date" required style={inputStyle} defaultValue={row?.datum ?? ''} />
             </div>
 
             <div>
               <label style={labelStyle}>Inhalt</label>
-              <textarea name="inhalt" rows={6} style={{ ...inputStyle, resize: 'vertical' }} defaultValue={row?.inhalt ?? ''} placeholder="Text des Beitrags…" />
+              <textarea
+                name="inhalt"
+                rows={6}
+                style={{ ...inputStyle, resize: 'vertical' }}
+                defaultValue={row?.inhalt ?? ''}
+                placeholder="Text des Beitrags…"
+                onInput={e => {
+                  const v = e.target.value
+                  e.target.setCustomValidity(v.length > 0 && !v.trim() ? 'Inhalt darf nicht nur aus Leerzeichen bestehen' : '')
+                }}
+              />
             </div>
 
             <div>
               <label style={labelStyle}>Bild</label>
               <input type="file" accept="image/*" onChange={handleFileChange} style={{ color: 'var(--bone-300)', fontSize: '0.875rem' }} />
               {imagePreview && (
-                <img src={imagePreview} alt="Vorschau" style={{ marginTop: '8px', maxHeight: '160px', borderRadius: '6px', objectFit: 'cover' }} />
+                <div style={{ marginTop: '8px', position: 'relative', display: 'inline-block' }}>
+                  <img src={imagePreview} alt="Vorschau" style={{ display: 'block', maxHeight: '160px', borderRadius: '6px', objectFit: 'cover' }} />
+                  <button
+                    type="button"
+                    onClick={() => { setImagePreview(null); setImageFile(null); setImageRemoved(true) }}
+                    style={{ position: 'absolute', top: '6px', right: '6px', background: 'rgba(0,0,0,0.7)', color: '#fff', border: 'none', borderRadius: '4px', padding: '3px 8px', fontSize: '0.75rem', cursor: 'pointer', fontFamily: 'var(--font-mono)' }}
+                  >
+                    ✕ entfernen
+                  </button>
+                </div>
               )}
             </div>
 
@@ -242,7 +293,7 @@ export function BeitraegeTable({ rows: initialRows, userMap = {} }) {
 
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
-          <h2 style={{ fontFamily: 'var(--font-display)', color: 'var(--bone-200)', fontSize: '1.4rem', margin: 0 }}>Beiträge</h2>
+          <h2 style={{ fontFamily: 'var(--font-display)', color: 'var(--bone-200)', fontSize: '1.4rem', margin: 0 }}>News Beiträge</h2>
           {rows.length > 0 && (
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--bone-500)' }}>
               {rows.length} {rows.length === 1 ? 'Eintrag' : 'Einträge'}
@@ -364,6 +415,10 @@ export function BeitraegeTable({ rows: initialRows, userMap = {} }) {
                             ? key === 'updated_at' && row.updated_at !== row.created_at
                               ? <span style={{ background: 'rgba(255,255,255,0.10)', color: 'var(--bone-300)', padding: '2px 6px', borderRadius: '4px' }}>{formatDatum(row.updated_at)}</span>
                               : formatDatum(row[key])
+                          : key === 'datum'
+                            ? row[key]
+                              ? <span>{new Date(row[key]).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' })}</span>
+                              : <span style={{ color: 'var(--bone-600)' }}>—</span>
                           : key === 'bild_url'
                             ? row[key]
                               ? <img src={row[key]} alt="" style={{ height: '32px', width: '48px', objectFit: 'cover', borderRadius: '4px' }} />

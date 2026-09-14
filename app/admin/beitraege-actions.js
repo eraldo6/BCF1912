@@ -12,8 +12,14 @@ function str(formData, key, maxLen = 500) {
 }
 
 function validateBeitrag(formData) {
-  const titel = str(formData, 'titel')
+  const titel = str(formData, 'titel', 55)
   if (!titel) return 'Titel ist erforderlich'
+  const subtitel = str(formData, 'subtitel', 80)
+  if (!subtitel) return 'Subtitel ist erforderlich'
+  const datum = str(formData, 'datum')
+  if (!datum) return 'Datum ist erforderlich'
+  const inhaltRaw = formData.get('inhalt') ?? ''
+  if (inhaltRaw.length > 0 && !inhaltRaw.trim()) return 'Inhalt darf nicht nur aus Leerzeichen bestehen'
   return null
 }
 
@@ -30,6 +36,7 @@ export async function createBeitrag(formData) {
     subtitel:        str(formData, 'subtitel'),
     inhalt:          str(formData, 'inhalt', 500),
     bild_url:        str(formData, 'bild_url', 1000),
+    datum:           str(formData, 'datum') || null,
     veroeffentlicht: formData.get('veroeffentlicht') === 'true',
     erstellt_von:    user.id,
   })
@@ -53,6 +60,7 @@ export async function updateBeitrag(id, formData) {
     subtitel:         str(formData, 'subtitel'),
     inhalt:           str(formData, 'inhalt', 500),
     bild_url:         str(formData, 'bild_url', 1000),
+    datum:            str(formData, 'datum') || null,
     veroeffentlicht:  formData.get('veroeffentlicht') === 'true',
     aktualisiert_von: user.id,
   }).eq('id', id)

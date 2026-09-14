@@ -3,6 +3,7 @@
 import React from "react";
 import { useTranslation } from "./translation-context";
 import { Arrow, ArrowOut, PoolTableHero, ScrollCue } from "./visuals";
+import DOMPurify from "dompurify";
 
 /* Sections — broken down for maintainability */
 
@@ -25,14 +26,11 @@ export const Nav = () => {
         <span>BC Frankfurt <em style={{ fontStyle: "italic", color: "var(--brass-500)", fontWeight: 400 }}>1912</em> e.V.</span>
       </a>
       <ul className="nav-links">
-        <li><a href="#about">{t("nav.club")}</a></li>
-        <li><a href="#disciplines">{t("nav.disciplines")}</a></li>
-        <li><a href="#experience">{t("nav.experience")}</a></li>
-        <li><a href="/mitgliedschaft">{t("nav.membership")}</a></li>
-        <li><a href="#gallery">{t("nav.gallery")}</a></li>
         <li><a href="#news">News</a></li>
-        <li><a href="#contact">{t("nav.visit")}</a></li>
         <li><a href="/calendar">{t("nav.games")}</a></li>
+        <li><a href="#about">{t("nav.disciplines")}</a></li>
+        <li><a href="#experience">{t("nav.experience")}</a></li>
+        <li><a href="#contact">{t("nav.visit")}</a></li>
       </ul>
       <div className="nav-cta">
         <LangPicker />
@@ -97,9 +95,10 @@ function useCountUp(target, duration = 2400, suffix = "") {
   return [display, ref];
 }
 
-export const Hero = ({ heroBg = null }) => {
+export const Hero = ({ images = [] }) => {
   const { t, lang } = useTranslation();
   const [parallax, setParallax] = React.useState(0);
+  const [slideIndex, setSlideIndex] = React.useState(0);
   const [jahre, jahreRef] = useCountUp(114, 2200);
   const [disziplinen, disziplinenRef] = useCountUp(3, 1400);
   const [mitglieder, mitgliederRef] = useCountUp(240, 2600, "+");
@@ -108,6 +107,11 @@ export const Hero = ({ heroBg = null }) => {
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+  React.useEffect(() => {
+    if (images.length < 2) return;
+    const id = setInterval(() => setSlideIndex(i => (i + 1) % images.length), 6000);
+    return () => clearInterval(id);
+  }, [images.length]);
 
   return (
     <section className="hero felt-texture grain" id="top" style={{ borderBottom: "1px solid var(--ink-300)" }}>
@@ -115,10 +119,9 @@ export const Hero = ({ heroBg = null }) => {
         transform: `translateY(${parallax * 0.5}px) scale(${1 + parallax * 0.0003})`,
         opacity: Math.max(0.2, 0.85 - parallax * 0.003),
       }}>
-        {heroBg
-          ? <img src={heroBg} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
-          : <PoolTableHero />
-        }
+        {images.length > 0 ? images.map((img, i) => (
+          <img key={img.id ?? i} src={img.bild_url} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", opacity: i === slideIndex ? 1 : 0, transition: "opacity 1.5s ease" }} />
+        )) : <PoolTableHero />}
       </div>
       <div className="hero-vignette" />
 
@@ -598,19 +601,11 @@ export const Gallery = ({ images = [] }) => {
   }, [items.length]);
 
   return (
-  <section className="section" id="gallery">
+  <section className="section" id="gallery" style={{ paddingTop: 0 }}>
     <div className="container">
-      <div className="section-head reveal">
-        <div>
-          <div className="section-eyebrow-row">
-            <span className="section-num">05</span>
-            <span className="section-divider" />
-            <span className="eyebrow">{t("gallery.eyebrow")}</span>
-
-          </div>
-          <h2 className="section-title" style={{ marginTop: 24 }} dangerouslySetInnerHTML={{ __html: t("gallery.title") }} />
-        </div>
-        <p className="section-lede">
+      <div className="reveal" style={{ marginBottom: 48 }}>
+        <h2 className="section-title" style={{ fontSize: "clamp(42px, 5vw, 80px)" }} dangerouslySetInnerHTML={{ __html: t("gallery.title") }} />
+        <p className="section-lede" style={{ marginTop: 20 }}>
           {t("gallery.letLight")}
         </p>
       </div>
@@ -699,6 +694,13 @@ export const ClubSection = ({ images = [], hideGallery = false }) => {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Sportbetrieb CTA */}
+      <div style={{ display: "flex", justifyContent: "center", padding: "40px 0 8px" }}>
+        <a href="/sportbetrieb" className="btn btn-ghost" style={{ padding: "12px 22px", fontSize: 12 }}>
+          Zum Sportbetrieb &amp; unseren Mannschaften <ArrowOut size={11} />
+        </a>
       </div>
 
       {/* Gallery scroll */}
@@ -1065,34 +1067,6 @@ const CATEGORY_STYLE = {
   "News":     { color: "#a5b4c8", bg: "rgba(165,180,200,0.08)", border: "rgba(165,180,200,0.2)" },
 };
 
-const BOARD_ITEMS = [
-  {
-    featured: true,
-    date: "2026-09-06",
-    category: "Aufstieg",
-    title: "BCF II steigt in die Bundesliga auf",
-    excerpt: "Nach einer dominanten Saison sichert sich unsere zweite Mannschaft den Aufstieg in die höchste deutsche Spielklasse. Ein historischer Moment für den Verein.",
-  },
-  {
-    date: "2026-09-20",
-    category: "Turnier",
-    title: "Hessen Snooker Cup 2026",
-    excerpt: "Das Jahresturnier kehrt zurück — 15./16. Oktober, offen für alle Spielstärken.",
-  },
-  {
-    date: "2026-09-08",
-    category: "Event",
-    title: "Süd-Regional Karambol-Meisterschaft",
-    excerpt: "BCF richtet die Regionale Meisterschaft aus. Zuschauer herzlich willkommen.",
-  },
-  {
-    date: "2026-08-15",
-    category: "News",
-    title: "Neue Tische im Snooker-Bereich",
-    excerpt: "Zwei vollständig renovierte Match-Snookertische stehen ab sofort zur Verfügung.",
-    noImage: true,
-  },
-];
 
 const CategoryChip = ({ cat }) => {
   const s = CATEGORY_STYLE[cat] ?? CATEGORY_STYLE["News"];
@@ -1108,11 +1082,119 @@ const formatDate = (dateStr, lang) => {
   return d.toLocaleDateString(lang === "DE" ? "de-DE" : "en-GB", { day: "numeric", month: "long", year: "numeric" });
 };
 
-export const News = () => {
+const ArticleModal = ({ item, lang, onClose }) => {
+  React.useEffect(() => {
+    const onKey = (e) => { if (e.key === "Escape") onClose(); };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [onClose]);
+
+  return (
+    <div
+      onClick={onClose}
+      style={{ position: "fixed", inset: 0, zIndex: 200, background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px 16px", overflowY: "auto" }}
+    >
+      <div
+        onClick={e => e.stopPropagation()}
+        className="article-modal-inner"
+        style={{ background: "var(--ink-100)", border: "1px solid var(--ink-300)", borderRadius: 20, width: "100%", maxWidth: 720, maxHeight: "90vh", overflowY: "auto", display: "flex", flexDirection: "column", scrollbarWidth: "none", msOverflowStyle: "none" }}
+      >
+        {item.bild_url && (
+          <div style={{ width: "100%", aspectRatio: "16/9", overflow: "hidden", borderRadius: "20px 20px 0 0", flexShrink: 0 }}>
+            <img src={item.bild_url} alt={item.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          </div>
+        )}
+        <div style={{ padding: "36px 40px 44px" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
+            <span style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--bone-400)", letterSpacing: "0.06em" }}>{formatDate(item.date, lang)}</span>
+            <button
+              onClick={onClose}
+              onMouseEnter={e => { e.currentTarget.style.opacity = 1; e.currentTarget.querySelector(".back-underline").style.transform = "scaleX(1)"; }}
+              onMouseLeave={e => { e.currentTarget.style.opacity = 0.7; e.currentTarget.querySelector(".back-underline").style.transform = "scaleX(0)"; }}
+              style={{ background: "transparent", border: "none", color: "var(--bone-400)", cursor: "pointer", fontSize: 20, lineHeight: 1, padding: "0 0 0 16px", opacity: 0.7, display: "flex", flexDirection: "column", gap: 3 }}
+            >
+              ✕
+              <span className="back-underline" style={{ display: "block", height: 1, background: "var(--bone-500)", transformOrigin: "left", transform: "scaleX(0)", transition: "transform 0.25s ease" }} />
+            </button>
+          </div>
+          <h2 style={{ fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 400, lineHeight: 1.2, letterSpacing: "-0.02em", color: "var(--bone-100)", margin: "0 0 12px" }}>{item.title}</h2>
+          <p style={{ fontSize: 16, lineHeight: 1.6, color: "var(--bone-300)", margin: "0 0 28px" }}>{item.excerpt}</p>
+          {item.inhalt && (
+            <div
+              className="article-body"
+              style={{ borderTop: "1px solid var(--ink-300)", paddingTop: 28 }}
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.inhalt) }}
+            />
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const News = ({ items = [] }) => {
   const { t, lang } = useTranslation();
-  const sorted = [...BOARD_ITEMS].sort((a, b) => new Date(b.date) - new Date(a.date));
+  const sorted = [...items].sort((a, b) => new Date(b.date) - new Date(a.date));
   const featured = sorted[0];
   const rest = sorted.slice(1);
+
+  const [openArticle, setOpenArticle] = React.useState(null);
+
+  const sidebarRef = React.useRef(null);
+  const featuredRef = React.useRef(null);
+  const btnRef = React.useRef(null);
+  const columnsContainerRef = React.useRef(null);
+  const [sidebarHeight, setSidebarHeight] = React.useState(null);
+  const [columnsHeight, setColumnsHeight] = React.useState(null);
+  const [colWidth, setColWidth] = React.useState(null);
+
+  // Simulate CSS columns column-fill:auto using measured column width for accurate image card heights
+  const visibleRest = React.useMemo(() => {
+    const ch = columnsHeight ?? 260;
+    const colW = colWidth ?? 300;
+    const imageCardH = Math.round(colW * (2 / 3)) + 18; // aspect-ratio 3/2 + marginBottom
+    let col = 0, colH = 0, count = 0;
+    for (const item of rest) {
+      const h = item.noImage ? 150 : imageCardH;
+      if (colH + h > ch) {
+        col++;
+        if (col >= 3) break;
+        colH = 0;
+      }
+      colH += h;
+      count++;
+    }
+    return rest.slice(0, count);
+  }, [rest, columnsHeight, colWidth]);
+
+  React.useEffect(() => {
+    const measure = () => {
+      const sidebar = sidebarRef.current;
+      const featured = featuredRef.current;
+      const btn = btnRef.current;
+      const cols = columnsContainerRef.current;
+      if (!sidebar) return;
+      const sh = sidebar.offsetHeight;
+      setSidebarHeight(sh);
+      if (cols) {
+        const gap = 18;
+        setColWidth((cols.offsetWidth - gap * 2) / 3);
+      }
+      if (featured && btn) {
+        setColumnsHeight(Math.max(sh - featured.offsetHeight - btn.offsetHeight - 18 * 2, 100));
+      }
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    if (sidebarRef.current) ro.observe(sidebarRef.current);
+    if (featuredRef.current) ro.observe(featuredRef.current);
+    if (columnsContainerRef.current) ro.observe(columnsContainerRef.current);
+    return () => ro.disconnect();
+  }, []);
 
   return (
   <section className="section" id="news" style={{ background: "var(--ink-050)", position: "relative" }}>
@@ -1131,61 +1213,63 @@ export const News = () => {
         </button>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 16 }} className="reveal">
-        <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 16, alignItems: "start" }} className="reveal">
+        <div style={{ display: "flex", flexDirection: "column", gap: 18, height: sidebarHeight ?? undefined }}>
           {/* Featured card */}
           {featured && (
-            <div className="news-card" style={{ borderRadius: 16, overflow: "hidden", position: "relative", height: 300 }}>
-              <div style={{ position: "absolute", inset: 0, backgroundImage: "url('https://picsum.photos/seed/bcf1/600/400')", backgroundSize: "cover", backgroundPosition: "center" }} />
-              <div className="news-card-overlay" />
-              <div style={{ position: "absolute", inset: 0, padding: "32px 36px", display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 10 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  <CategoryChip cat={featured.category} />
-                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "rgba(255,255,255,0.55)", letterSpacing: "0.06em" }}>{formatDate(featured.date, lang)}</span>
+            featured.bild_url ? (
+              <div ref={featuredRef} className="news-card" onClick={() => setOpenArticle(featured)} style={{ borderRadius: 16, overflow: "hidden", position: "relative", height: 300, flexShrink: 0, cursor: "pointer" }}>
+                <div style={{ position: "absolute", inset: 0, backgroundImage: `url('${featured.bild_url}')`, backgroundSize: "cover", backgroundPosition: "center" }} />
+                <div className="news-card-overlay" />
+                <div style={{ position: "absolute", inset: 0, padding: "32px 36px", display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 10 }}>
+                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 15, color: "rgba(255,255,255,0.7)", letterSpacing: "0.06em" }}>{formatDate(featured.date, lang)}</span>
+                  <h3 style={{ fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 400, lineHeight: 1.2, letterSpacing: "-0.02em", color: "var(--bone-100)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{featured.title}</h3>
+                  <p style={{ fontSize: 14, lineHeight: 1.65, color: "rgba(255,255,255,0.6)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{featured.excerpt}</p>
                 </div>
-                <h3 style={{ fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 400, lineHeight: 1.2, letterSpacing: "-0.02em", color: "var(--bone-100)", margin: 0 }}>{featured.title}</h3>
-                <p style={{ fontSize: 14, lineHeight: 1.65, color: "rgba(255,255,255,0.6)", margin: 0 }}>{featured.excerpt}</p>
               </div>
-            </div>
+            ) : (
+              <div ref={featuredRef} className="news-card" onClick={() => setOpenArticle(featured)} style={{ borderRadius: 16, overflow: "hidden", flexShrink: 0, background: "linear-gradient(135deg, var(--ink-200) 0%, var(--ink-100) 100%)", padding: "28px 36px", display: "flex", flexDirection: "column", gap: 10, cursor: "pointer" }}>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: 15, color: "var(--bone-400)", letterSpacing: "0.06em" }}>{formatDate(featured.date, lang)}</span>
+                <h3 style={{ fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 400, lineHeight: 1.2, letterSpacing: "-0.02em", color: "var(--bone-100)", margin: 0 }}>{featured.title}</h3>
+                <p style={{ fontSize: 14, lineHeight: 1.65, color: "var(--bone-400)", margin: 0 }}>{featured.excerpt}</p>
+              </div>
+            )
           )}
 
-          {/* Card grid */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18, alignItems: "start" }}>
-            {rest.map((item, i) => (
-              <div key={i} className="news-card" style={{ borderRadius: 14, overflow: "hidden", position: "relative", height: item.noImage ? "auto" : 260 }}>
-                {item.noImage ? (
-                  <div style={{ background: "linear-gradient(135deg, var(--ink-200) 0%, var(--ink-100) 100%)", padding: "20px 22px", display: "flex", flexDirection: "column", gap: 7 }}>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                      <CategoryChip cat={item.category} />
-                      <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--bone-400)", letterSpacing: "0.06em" }}>{formatDate(item.date, lang)}</span>
+          {/* Card grid — fills remaining space, columns flow top-to-bottom */}
+          <div>
+            <div ref={columnsContainerRef} style={{ columns: 3, columnGap: 18, columnFill: "auto", height: columnsHeight ?? "auto" }}>
+              {visibleRest.map((item, i) => (
+                <div key={i} className="news-card" onClick={() => setOpenArticle(item)} style={{ borderRadius: 14, overflow: "hidden", position: "relative", breakInside: "avoid", marginBottom: 18, aspectRatio: item.noImage ? undefined : "3/2", cursor: "pointer" }}>
+                  {item.noImage ? (
+                    <div style={{ background: "linear-gradient(135deg, var(--ink-200) 0%, var(--ink-100) 100%)", padding: "20px 22px", height: "100%", boxSizing: "border-box", display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 7 }}>
+                      <span style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--bone-400)", letterSpacing: "0.06em" }}>{formatDate(item.date, lang)}</span>
+                      <h4 style={{ fontFamily: "var(--font-display)", fontSize: 17, fontWeight: 400, lineHeight: 1.3, color: "var(--bone-100)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{item.title}</h4>
+                      <p style={{ fontSize: 13, lineHeight: 1.6, color: "rgba(255,255,255,0.55)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}>{item.excerpt}</p>
                     </div>
-                    <h4 style={{ fontFamily: "var(--font-display)", fontSize: 17, fontWeight: 400, lineHeight: 1.3, color: "var(--bone-100)", margin: 0 }}>{item.title}</h4>
-                    <p style={{ fontSize: 11, lineHeight: 1.6, color: "var(--bone-400)", margin: 0 }}>{item.excerpt}</p>
-                  </div>
-                ) : (
-                  <>
-                    <div style={{ position: "absolute", inset: 0, backgroundImage: `url('https://picsum.photos/seed/bcf${i + 2}/400/200')`, backgroundSize: "cover", backgroundPosition: "center" }} />
-                    <div className="news-card-overlay" />
-                    <div style={{ position: "absolute", inset: 0, padding: "20px 22px", display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 7 }}>
-                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                        <CategoryChip cat={item.category} />
-                        <span style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "rgba(255,255,255,0.5)", letterSpacing: "0.06em" }}>{formatDate(item.date, lang)}</span>
+                  ) : (
+                    <>
+                      <div style={{ position: "absolute", inset: 0, backgroundImage: `url('${item.bild_url}')`, backgroundSize: "cover", backgroundPosition: "center" }} />
+                      <div className="news-card-overlay" />
+                      <div style={{ position: "absolute", inset: 0, padding: "20px 22px", display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 7 }}>
+                        <span style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "rgba(255,255,255,0.7)", letterSpacing: "0.06em" }}>{formatDate(item.date, lang)}</span>
+                        <h4 style={{ fontFamily: "var(--font-display)", fontSize: 17, fontWeight: 400, lineHeight: 1.3, color: "var(--bone-100)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{item.title}</h4>
+                        <p style={{ fontSize: 13, lineHeight: 1.6, color: "rgba(255,255,255,0.55)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{item.excerpt}</p>
                       </div>
-                      <h4 style={{ fontFamily: "var(--font-display)", fontSize: 17, fontWeight: 400, lineHeight: 1.3, color: "var(--bone-100)", margin: 0 }}>{item.title}</h4>
-                      <p style={{ fontSize: 11, lineHeight: 1.6, color: "rgba(255,255,255,0.55)", margin: 0 }}>{item.excerpt}</p>
-                    </div>
-                  </>
-                )}
-              </div>
-            ))}
+                    </>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-          <a href="/vereinshistorie" className="btn btn-ghost" style={{ marginTop: 16, padding: "12px 22px", fontSize: 12, alignSelf: "flex-start" }}>
+
+          <a ref={btnRef} href="/vereinshistorie" className="btn btn-ghost" style={{ padding: "12px 22px", fontSize: 12, alignSelf: "flex-start", flexShrink: 0 }}>
             Zu unserer Vereinshistorie <ArrowOut size={11} />
           </a>
         </div>
 
         {/* Kommende Turniere sidebar */}
-        <div style={{ background: "var(--ink-100)", border: "1px solid var(--ink-300)", borderRadius: 16, padding: "28px 24px", display: "flex", flexDirection: "column" }}>
+        <div ref={sidebarRef} style={{ background: "var(--ink-100)", border: "1px solid var(--ink-300)", borderRadius: 16, padding: "28px 24px", display: "flex", flexDirection: "column" }}>
           <div style={{ fontFamily: "var(--font-display)", fontSize: 24, fontWeight: 400, letterSpacing: "-0.02em", color: "var(--bone-100)", marginBottom: 24, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <span><em style={{ fontStyle: "italic", color: "var(--brass-500)", marginRight: "0.2em" }}>Kommende</em>{" "}Turniere</span>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--brass-500)", flexShrink: 0 }}>
@@ -1206,7 +1290,7 @@ export const News = () => {
               ];
               const now = new Date();
               const upcoming = all.filter(t => new Date(t.date) >= now).slice(0, 3);
-              const past = all.filter(t => new Date(t.date) < now).slice(0, 2);
+              const past = all.filter(t => new Date(t.date) < now).slice(0, 1);
               return [...upcoming, ...past];
             })().map((t, i, arr) => {
               const past = new Date(t.date) < new Date();
@@ -1247,6 +1331,7 @@ export const News = () => {
         </div>
       </button>
     </div>
+    {openArticle && <ArticleModal item={openArticle} lang={lang} onClose={() => setOpenArticle(null)} />}
   </section>
 );
 };
@@ -1545,6 +1630,7 @@ export const Footer = () => {
         <div className="footer-brand">
           <h3>Billard Club<br /><em>Frankfurt</em> 1912 e.V.</h3>
           <p>{t("footer.about.line1")}</p>
+          {/* Social icons — ausgeblendet bis URLs feststehen
           <div style={{ display: "flex", justifyContent: "center", gap: 12, marginTop: 32 }}>
             {socialLinks.map(({ label, href, icon }) => (
               <a key={label} href={href} aria-label={label}
@@ -1556,16 +1642,16 @@ export const Footer = () => {
                 }}>{icon}</a>
             ))}
           </div>
+          */}
         </div>
         <div className="footer-col footer-nav">
           <ul>
-            <li><a href="#about">{t("nav.club")}</a></li>
-            <li><a href="#disciplines">{t("nav.disciplines")}</a></li>
-            <li><a href="#experience">{t("nav.experience")}</a></li>
-            <li><a href="/mitgliedschaft">{t("nav.membership")}</a></li>
-            <li><a href="#gallery">{t("nav.gallery")}</a></li>
-            <li><a href="#contact">{t("nav.visit")}</a></li>
+            <li><a href="#news">News</a></li>
             <li><a href="/calendar">{t("nav.games")}</a></li>
+            <li><a href="#about">{t("nav.disciplines")}</a></li>
+            <li><a href="#experience">{t("nav.experience")}</a></li>
+            <li><a href="#contact">{t("nav.visit")}</a></li>
+            <li><a href="/impressum">Impressum &amp; Vorstand</a></li>
           </ul>
         </div>
       </div>
