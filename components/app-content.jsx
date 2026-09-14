@@ -27,7 +27,7 @@ const TWEAKS_DEFAULTS = /*EDITMODE-BEGIN*/{
   "displayFont": "Space Grotesk"
 }/*EDITMODE-END*/;
 
-export const AppContent = ({ galleryImages = [], heroBg = null }) => {
+export const AppContent = ({ galleryImages = [], newsItems = [] }) => {
   const [tweaks, setTweak] = useTweaks(TWEAKS_DEFAULTS);
   const [lang, setLangState] = React.useState("DE");
 
@@ -75,9 +75,9 @@ export const AppContent = ({ galleryImages = [], heroBg = null }) => {
     <>
       <TranslationContext.Provider value={{ lang, setLang, t }}>
         <Nav />
-        <Hero heroBg={heroBg} />
+        <Hero images={galleryImages} />
         <Marquee />
-        <News />
+        <News items={newsItems} />
         <CalendarSection />
         <ClubSection images={galleryImages} hideGallery />
         <Experience />

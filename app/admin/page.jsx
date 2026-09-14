@@ -26,7 +26,7 @@ export default async function AdminPage() {
 
   const { data: beitraege, error: beitraegeError } = await supabase
     .from('beitraege')
-    .select('id, titel, subtitel, inhalt, bild_url, veroeffentlicht, erstellt_von, aktualisiert_von, created_at, updated_at')
+    .select('id, titel, subtitel, inhalt, bild_url, datum, veroeffentlicht, erstellt_von, aktualisiert_von, created_at, updated_at')
     .eq('geloescht', false)
     .order('created_at', { ascending: false })
 

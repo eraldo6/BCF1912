@@ -372,12 +372,8 @@ export function VeranstaltungenTable({ rows: initialRows, userMap = {}, attribut
     })
   }
 
-  const syncTop = () => {
-    if (bottomRef.current) bottomRef.current.scrollLeft = topRef.current.scrollLeft
-  }
-  const syncBottom = () => {
-    if (topRef.current) topRef.current.scrollLeft = bottomRef.current.scrollLeft
-  }
+  const syncTop = () => { if (bottomRef.current) bottomRef.current.scrollLeft = topRef.current.scrollLeft }
+  const syncBottom = () => { if (topRef.current) topRef.current.scrollLeft = bottomRef.current.scrollLeft }
 
   return (
     <div>
