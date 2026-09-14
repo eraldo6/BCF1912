@@ -5,6 +5,7 @@ import { signOut } from './actions'
 import { VeranstaltungenTable } from './veranstaltungen-table'
 import { BeitraegeTable } from './beitraege-table'
 import { GalerieTable } from './galerie-table'
+import { TurniereTable } from './turniere-table'
 
 export default async function AdminPage() {
   const supabase = await createClient()
@@ -35,6 +36,12 @@ export default async function AdminPage() {
     .select('id, titel, kategorie, spielart, staffel, spieltag, heimmannschaft, gastmannschaft, austragungsort, termin, termin_ende, ganztaegig, dauer_stunden, quelle, veroeffentlicht, erstellt_von, aktualisiert_von, created_at, updated_at, veveto_id')
     .eq('geloescht', false)
     .order('termin', { ascending: true })
+
+  const { data: turniere, error: turniereError } = await supabase
+    .from('turniere')
+    .select('id, name, turnierbeginn, disziplin, typ, href, veroeffentlicht, created_at')
+    .eq('geloescht', false)
+    .order('turnierbeginn', { ascending: false })
 
   return (
     <main style={{
@@ -85,23 +92,20 @@ export default async function AdminPage() {
         )}
       </div>
 
-      <div style={{
-        background: 'var(--ink-100)',
-        border: '1px solid var(--ink-300)',
-        borderRadius: '12px',
-        padding: '32px',
-      }}>
-          {error ? (
-            <p style={{ color: '#ef4444', fontFamily: 'var(--font-mono)', fontSize: '0.875rem' }}>
-              Fehler: {error.message}
-            </p>
-          ) : (
-            <VeranstaltungenTable
-              rows={rows ?? []}
-              userMap={userMap}
-              attributeCount={rows?.[0] ? Object.keys(rows[0]).length : 0}
-            />
-          )}
+      <div style={{ background: 'var(--ink-100)', border: '1px solid var(--ink-300)', borderRadius: '12px', padding: '32px', marginBottom: '32px' }}>
+        {turniereError ? (
+          <p style={{ color: '#ef4444', fontFamily: 'var(--font-mono)', fontSize: '0.875rem' }}>Fehler: {turniereError.message}</p>
+        ) : (
+          <TurniereTable rows={turniere ?? []} />
+        )}
+      </div>
+
+      <div style={{ background: 'var(--ink-100)', border: '1px solid var(--ink-300)', borderRadius: '12px', padding: '32px' }}>
+        {error ? (
+          <p style={{ color: '#ef4444', fontFamily: 'var(--font-mono)', fontSize: '0.875rem' }}>Fehler: {error.message}</p>
+        ) : (
+          <VeranstaltungenTable rows={rows ?? []} userMap={userMap} attributeCount={rows?.[0] ? Object.keys(rows[0]).length : 0} />
+        )}
       </div>
     </main>
   )

@@ -12,7 +12,6 @@ import {
   Experience,
   Gallery,
   Membership,
-  Tournaments,
   News,
   CalendarSection,
   Contact,
@@ -27,7 +26,7 @@ const TWEAKS_DEFAULTS = /*EDITMODE-BEGIN*/{
   "displayFont": "Space Grotesk"
 }/*EDITMODE-END*/;
 
-export const AppContent = ({ galleryImages = [], newsItems = [] }) => {
+export const AppContent = ({ galleryImages = [], newsItems = [], turniere = [] }) => {
   const [tweaks, setTweak] = useTweaks(TWEAKS_DEFAULTS);
   const [lang, setLangState] = React.useState("DE");
 
@@ -77,7 +76,7 @@ export const AppContent = ({ galleryImages = [], newsItems = [] }) => {
         <Nav />
         <Hero images={galleryImages} />
         <Marquee />
-        <News items={newsItems} />
+        <News items={newsItems} turniere={turniere} />
         <CalendarSection />
         <ClubSection images={galleryImages} hideGallery />
         <Experience />

@@ -726,190 +726,8 @@ export const ClubSection = ({ images = [], hideGallery = false }) => {
   );
 };
 
-// ─── Tournaments ─────────────────────────────────────────────────────────────
-
-const NAV_OFFSET = 80;
-const CUESCORE_ORG_ID = 81469381;
-const CUESCORE_LIST_URL = `https://api.cuescore.com/organization/?id=${CUESCORE_ORG_ID}`;
-const CUESCORE_TOURNAMENT_URL = (id) => `https://api.cuescore.com/tournament/?id=${id}`;
-const CUESCORE_ALL_URL = "https://cuescore.com/bcfrankfurt1912/tournaments?q=&d=0&season=0&s=0";
-
-const disciplineToType = (discipline) => {
-  const d = (discipline || "").toLowerCase();
-  if (/snooker/.test(d)) return "snooker";
-  if (/(carom|karambol|cushion|cadre|libre|balkline|billiard fran)/.test(d)) return "karambol";
-  return "pool";
-};
-
-const sortTournaments = (list) => {
-  const now = Date.now();
-  const withMeta = list.map((t) => {
-    const time = t.date ? new Date(t.date).getTime() : NaN;
-    const past = !isNaN(time) && time < now - 1000 * 60 * 60 * 24;
-    return { ...t, past, _time: isNaN(time) ? Infinity : time };
-  });
-  return withMeta.sort((a, b) => {
-    if (a.past !== b.past) return a.past ? 1 : -1;
-    return a.past ? b._time - a._time : a._time - b._time;
-  });
-};
-
-const useTournaments = () => {
-  const [state, setState] = React.useState({ items: null, loading: true, error: false });
-
-  React.useEffect(() => {
-    let cancelled = false;
-    const normalise = (raw) => ({
-      id: raw.tournamentId,
-      type: disciplineToType(raw.discipline),
-      discipline: raw.discipline || "Pool",
-      name: (raw.name || "").replace(/^.*?>\s*/, ""),
-      date: raw.starttime || null,
-      displayDate: raw.displayDate || null,
-      venue: (raw.venues && raw.venues[0] && raw.venues[0].name) || null,
-      status: raw.status || null,
-      url: raw.url || null,
-    });
-
-    const load = async () => {
-      try {
-        const res = await fetch(CUESCORE_LIST_URL);
-        if (!res.ok) throw new Error("list");
-        const ids = await res.json();
-        const live = await Promise.all(
-          (Array.isArray(ids) ? ids : []).map(async (id) => {
-            try {
-              const r = await fetch(CUESCORE_TOURNAMENT_URL(id));
-              if (!r.ok) return null;
-              return normalise(await r.json());
-            } catch { return null; }
-          })
-        );
-        if (cancelled) return;
-        setState({ items: sortTournaments(live.filter(Boolean)), loading: false, error: false });
-      } catch {
-        if (cancelled) return;
-        setState({ items: [], loading: false, error: true });
-      }
-    };
-
-    load();
-    return () => { cancelled = true; };
-  }, []);
-
-  return state;
-};
-
-const formatTournamentDate = (t, lang) => {
-  if (t.displayDate) return t.displayDate;
-  if (!t.date) return null;
-  const d = new Date(t.date);
-  if (isNaN(d.getTime())) return null;
-  return d.toLocaleDateString(lang === "DE" ? "de-DE" : "en-GB", {
-    day: "numeric", month: "long", year: "numeric",
-  });
-};
-
-const TYPE_ICON = { pool: "◉", karambol: "◆", snooker: "▦" };
-
-const TournamentCard = ({ item }) => {
-  const { t, lang } = useTranslation();
-  const label = t(`tournaments.${item.type}`);
-  const when = formatTournamentDate(item, lang) || t("tournaments.tbd");
-  return (
-    <article className={`tournament-card tc-${item.type}${item.past ? " tc-past" : ""}`}>
-      <div className="tc-accent" aria-hidden="true" />
-      {item.past && <span className="tc-past-tag">{t("tournaments.past")}</span>}
-      <div className="tc-body">
-        <div className="tc-badge-row">
-          <span className="tc-badge">
-            <span className="tc-icon" aria-hidden="true">{TYPE_ICON[item.type]}</span>
-            {label}
-          </span>
-          <span className="tc-discipline">{item.discipline}</span>
-        </div>
-        <h3 className="tc-name">{item.name}</h3>
-        <div className="tc-meta">
-          <span className="tc-date">{when}</span>
-          {item.venue && <span className="tc-venue">{item.venue}</span>}
-        </div>
-      </div>
-      {item.url && (
-        <a className="tc-cta" href={item.url} target="_blank" rel="noopener noreferrer">
-          {item.past ? t("tournaments.viewResults") : t("tournaments.register")} <ArrowOut />
-        </a>
-      )}
-    </article>
-  );
-};
-
-const TOURNAMENTS_PER_PAGE = 3;
-
-export const Tournaments = () => {
-  const { t } = useTranslation();
-  const { items, loading } = useTournaments();
-  const [page, setPage] = React.useState(0);
-
-  const total = items ? items.length : 0;
-  const pageCount = Math.max(1, Math.ceil(total / TOURNAMENTS_PER_PAGE));
-  const current = Math.min(page, pageCount - 1);
-  const start = current * TOURNAMENTS_PER_PAGE;
-  const visible = items ? items.slice(start, start + TOURNAMENTS_PER_PAGE) : [];
-
-  const goTo = (next) => {
-    setPage(next);
-    const sec = document.getElementById("tournaments");
-    if (sec) window.scrollTo({ top: Math.max(0, window.scrollY + sec.getBoundingClientRect().top - NAV_OFFSET), behavior: "smooth" });
-  };
-
-  return (
-    <section className="section" id="tournaments">
-      <div className="container">
-        <div className="section-head reveal">
-          <div>
-            <div className="section-eyebrow-row">
-              <span className="section-num">{t("tournaments.num")}</span>
-              <span className="section-divider" />
-              <span className="eyebrow">{t("tournaments.eyebrow")}</span>
-            </div>
-            <h2 className="section-title" style={{ marginTop: 24 }} dangerouslySetInnerHTML={{ __html: t("tournaments.title") }} />
-          </div>
-          <p className="section-lede">{t("tournaments.lede")}</p>
-        </div>
-
-        <div className="tournament-grid reveal">
-          {loading && <div className="tournament-status">{t("tournaments.loading")}</div>}
-          {!loading && total === 0 && (
-            <div className="tournament-status">{t("tournaments.empty")}</div>
-          )}
-          {!loading && visible.map((item) => (
-            <TournamentCard key={item.id} item={item} />
-          ))}
-        </div>
-
-        {!loading && pageCount > 1 && (
-          <div className="tournament-pagination reveal">
-            <button className="tp-btn" onClick={() => goTo(current - 1)} disabled={current === 0}>
-              ‹ {t("tournaments.prev")}
-            </button>
-            <span className="tp-status">
-              {t("tournaments.page")} {current + 1} / {pageCount}
-            </span>
-            <button className="tp-btn" onClick={() => goTo(current + 1)} disabled={current >= pageCount - 1}>
-              {t("tournaments.next")} ›
-            </button>
-          </div>
-        )}
-
-        <div className="tournament-footer reveal">
-          <a href={CUESCORE_ALL_URL} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">
-            {t("tournaments.allOnCuescore")} <ArrowOut />
-          </a>
-        </div>
-      </div>
-    </section>
-  );
-};
+// ─── Tournaments (CueScore Live-Fetch) ────────────────────────────────────────
+// Ausgelagert nach lib/cuescore-tournament-importScript.js — Nice-to-Haves #30
 
 // ─── News illustrations (dummy) ───────────────────────────────────────────────
 
@@ -1136,7 +954,7 @@ const ArticleModal = ({ item, lang, onClose }) => {
   );
 };
 
-export const News = ({ items = [] }) => {
+export const News = ({ items = [], turniere = [] }) => {
   const { t, lang } = useTranslation();
   const sorted = [...items].sort((a, b) => new Date(b.date) - new Date(a.date));
   const featured = sorted[0];
@@ -1282,36 +1100,51 @@ let col = 0, colH = 0, count = 0;
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 0, flex: 1 }}>
             {(() => {
-              const all = [
-                { date: "2026-11-29", name: "Winterpokal Frankfurt", disziplin: "Pool", typ: "offen", href: "https://cuescore.com/bcfrankfurt1912/tournaments" },
-                { date: "2026-11-08", name: "Süd-Regional Karambol", disziplin: "Karambol", typ: "offen", href: "https://cuescore.com/bcfrankfurt1912/tournaments" },
-                { date: "2026-10-22", name: "BCF Vereinsmeisterschaft", disziplin: "Pool", typ: "intern", href: "https://cuescore.com/bcfrankfurt1912/tournaments" },
-                { date: "2026-08-15", name: "Hessen Snooker Cup", disziplin: "Snooker", typ: "offen", href: "https://cuescore.com/bcfrankfurt1912/tournaments" },
-              ];
               const now = new Date();
-              const upcoming = all.filter(t => new Date(t.date) >= now).slice(0, 3);
-              const past = all.filter(t => new Date(t.date) < now).slice(0, 1);
-              return [...upcoming, ...past];
-            })().map((t, i, arr) => {
-              const past = new Date(t.date) < new Date();
-              return (
-              <div key={i} style={{ padding: "20px 0", borderBottom: i < arr.length - 1 ? "1px solid var(--ink-300)" : "none" }}>
-                <div style={{ fontFamily: "var(--font-mono)", letterSpacing: "0.06em", marginBottom: 8 }}>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <div style={{ fontSize: 13, lineHeight: 1, color: past ? "var(--bone-500)" : "var(--brass-500)", opacity: past ? 0.4 : 1 }}>
-                      {new Date(t.date).toLocaleDateString("de-DE", { day: "2-digit", month: "short" })}
-                      <span style={{ color: "var(--bone-500)", marginLeft: 8 }}>{t.disziplin}</span>
+              const upcoming = turniere.filter(t => new Date(t.turnierbeginn) >= now);
+              const pastList = turniere.filter(t => new Date(t.turnierbeginn) < now);
+              const hasPast = pastList.length > 0;
+              const maxUpcoming = hasPast ? 3 : 4;
+              const upcomingSlots = [...upcoming].sort((a, b) => new Date(b.turnierbeginn) - new Date(a.turnierbeginn));
+              while (upcomingSlots.length < maxUpcoming) upcomingSlots.unshift(null);
+              const slots = hasPast ? [...upcomingSlots, pastList[0]] : upcomingSlots;
+              return slots.map((t, i) => {
+                const isLast = i === slots.length - 1;
+                if (!t) return (
+                  <div key={`ph-${i}`} style={{ padding: "20px 0", borderBottom: isLast ? "none" : "1px solid var(--ink-300)", opacity: 0.18 }}>
+                    <div style={{ fontFamily: "var(--font-mono)", letterSpacing: "0.06em", marginBottom: 8 }}>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        <div style={{ fontSize: 13, lineHeight: 1, color: "var(--bone-500)" }}>— —</div>
+                      </div>
+                      <div style={{ fontSize: 12, lineHeight: 1, color: "var(--bone-500)", marginTop: 14 }}>Kein Turnier geplant</div>
                     </div>
-                    {past && <span style={{ fontSize: 11, color: "var(--bone-500)", opacity: 0.5, fontFamily: "var(--font-mono)", letterSpacing: "0.06em" }}>Vergangen</span>}
+                    <div style={{ fontSize: 17, fontWeight: 400, color: "var(--bone-500)", lineHeight: 1.3, marginBottom: 6, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>—</div>
+                    <a className="turnier-link" style={{ pointerEvents: "none", color: "var(--bone-500)" }}>— <ArrowOut size={11} /></a>
                   </div>
-                  <div style={{ fontSize: 11, lineHeight: 1, color: t.typ === "intern" ? "rgba(248,113,113,0.5)" : "rgba(134,239,172,0.5)", marginTop: 8 }}>{t.typ === "intern" ? "Internes Vereinsturnier" : "Öffentliches Hausturnier"}</div>
-                </div>
-                <div style={{ fontSize: 16, fontWeight: 400, color: "var(--bone-100)", lineHeight: 1.3, marginBottom: 6, opacity: past ? 0.4 : 1 }}>{t.name}</div>
-                <a href={t.href} target="_blank" rel="noopener" className="turnier-link" style={{}}>
-                  {past ? "Ergebnisse auf CueScore" : "Anmelden auf CueScore"} <ArrowOut size={11} />
-                </a>
-              </div>
-            );})}
+                );
+                const past = new Date(t.turnierbeginn) < new Date();
+                const uhrzeit = t.turnierbeginn ? new Date(t.turnierbeginn).toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" }) : null;
+                return (
+                  <div key={t.id ?? i} style={{ padding: "20px 0", borderBottom: isLast ? "none" : "1px solid var(--ink-300)" }}>
+                    <div style={{ fontFamily: "var(--font-mono)", letterSpacing: "0.06em", marginBottom: 8 }}>
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        <div style={{ fontSize: 13, lineHeight: 1, color: past ? "var(--bone-500)" : "var(--brass-500)", opacity: past ? 0.4 : 1, minWidth: 0, overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
+                          {new Date(t.turnierbeginn).toLocaleDateString("de-DE", { day: "2-digit", month: "short" })}
+                          {uhrzeit && <span style={{ color: "var(--bone-500)", marginLeft: 12, fontSize: 12 }}>{uhrzeit}</span>}
+                          <span style={{ color: "var(--bone-500)", marginLeft: 8 }}>· {t.disziplin}</span>
+                        </div>
+                        {past && <span style={{ fontSize: 11, color: "var(--bone-500)", opacity: 0.5, fontFamily: "var(--font-mono)", letterSpacing: "0.06em", flexShrink: 0, marginLeft: 8 }}>Vergangen</span>}
+                      </div>
+                      <div style={{ fontSize: 12, lineHeight: 1, color: t.typ === "intern" ? "rgba(248,113,113,0.5)" : "rgba(134,239,172,0.5)", marginTop: 14, fontFamily: "inherit" }}>{t.typ === "intern" ? "Internes Vereinsturnier" : "Öffentliches Hausturnier"}</div>
+                    </div>
+                    <div style={{ fontSize: 17, fontWeight: 400, color: "var(--bone-100)", lineHeight: 1.3, marginBottom: 6, opacity: past ? 0.4 : 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{t.name}</div>
+                    <a href={t.href} target="_blank" rel="noopener" className="turnier-link" style={{}}>
+                      {past ? "Ergebnisse auf CueScore" : "Anmelden auf CueScore"} <ArrowOut size={11} />
+                    </a>
+                  </div>
+                );
+              });
+            })()}
           </div>
           <a href="/calendar" className="btn btn-ghost" style={{ marginTop: 20, padding: "9px 14px", fontSize: 11, display: "inline-flex", alignItems: "center", gap: 5, justifyContent: "center" }}>
             Alle Turniere auf CueScore ansehen <ArrowOut size={11} />

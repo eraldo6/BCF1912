@@ -27,5 +27,20 @@ export default async function Page() {
     noImage: !b.bild_url,
   }))
 
-  return <AppContent galleryImages={images} newsItems={newsItems} />;
+  const { data: turniereRaw } = await supabase
+    .from('turniere')
+    .select('id, name, turnierbeginn, disziplin, typ, href')
+    .eq('veroeffentlicht', true)
+    .eq('geloescht', false)
+    .order('turnierbeginn', { ascending: true })
+
+  const now = new Date()
+  const allUpcoming = (turniereRaw ?? []).filter(t => new Date(t.turnierbeginn) >= now)
+  const allPast = (turniereRaw ?? []).filter(t => new Date(t.turnierbeginn) < now)
+  const hasPast = allPast.length > 0
+  const upcoming = allUpcoming.slice(0, hasPast ? 3 : 4)
+  const past = allPast.slice(-1)
+  const turniere = [...upcoming, ...past]
+
+  return <AppContent galleryImages={images} newsItems={newsItems} turniere={turniere} />;
 }
