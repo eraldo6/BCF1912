@@ -1157,7 +1157,7 @@ export const News = ({ items = [] }) => {
     const ch = columnsHeight ?? 260;
     const colW = colWidth ?? 300;
     const imageCardH = Math.round(colW * (2 / 3)) + 18; // aspect-ratio 3/2 + marginBottom
-    let col = 0, colH = 0, count = 0;
+let col = 0, colH = 0, count = 0;
     for (const item of rest) {
       const h = item.noImage ? 150 : imageCardH;
       if (colH + h > ch) {
@@ -1218,7 +1218,7 @@ export const News = ({ items = [] }) => {
           {/* Featured card */}
           {featured && (
             featured.bild_url ? (
-              <div ref={featuredRef} className="news-card" onClick={() => setOpenArticle(featured)} style={{ borderRadius: 16, overflow: "hidden", position: "relative", height: 300, flexShrink: 0, cursor: "pointer" }}>
+              <div ref={featuredRef} className="news-card" onClick={() => setOpenArticle(featured)} style={{ borderRadius: 16, overflow: "hidden", position: "relative", height: 250, flexShrink: 0, cursor: "pointer" }}>
                 <div style={{ position: "absolute", inset: 0, backgroundImage: `url('${featured.bild_url}')`, backgroundSize: "cover", backgroundPosition: "center" }} />
                 <div className="news-card-overlay" />
                 <div style={{ position: "absolute", inset: 0, padding: "32px 36px", display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 10 }}>
