@@ -189,8 +189,8 @@ function VeranstaltungModal({ row, onClose, onSuccess, onError, isPending, start
               <select name="kategorie" required style={inputStyle} defaultValue={row?.kategorie ?? ''}>
                 <option value="" disabled>— keine —</option>
                 <option value="Heimspiel">Heimspiel</option>
-                <option value="Internes Turnier">Internes Turnier</option>
-                <option value="Externes Turnier">Externes Turnier</option>
+                <option value="Internes Vereinsturnier">Internes Vereinsturnier</option>
+                <option value="Öffentliches Hausturnier">Öffentliches Hausturnier</option>
                 <option value="Mitgliederversammlung">Mitgliederversammlung</option>
                 <option value="Mannschaftstraining">Mannschaftstraining</option>
                 <option value="Training Anfänger">Training Anfänger</option>

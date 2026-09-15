@@ -1171,6 +1171,18 @@ let col = 0, colH = 0, count = 0;
 
 // ─── Calendar ─────────────────────────────────────────────────────────────────
 
+const KATEGORIE_ICON = {
+  "Heimspiel":               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="3" x2="5" y2="21"/><path d="M5 3 L18 8 L5 13"/></svg>,
+  "Auswärtsspiel":           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="3" x2="5" y2="21"/><path d="M5 3 L18 8 L5 13"/></svg>,
+  "Internes Vereinsturnier": <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M7 3h10v7a5 5 0 0 1-10 0V3z"/><path d="M7 7H4a2 2 0 0 0 0 4h3"/><path d="M17 7h3a2 2 0 0 1 0 4h-3"/><line x1="12" y1="15" x2="12" y2="19"/><line x1="8" y1="21" x2="16" y2="21"/></svg>,
+  "Öffentliches Hausturnier":<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M7 3h10v7a5 5 0 0 1-10 0V3z"/><path d="M7 7H4a2 2 0 0 0 0 4h3"/><path d="M17 7h3a2 2 0 0 1 0 4h-3"/><line x1="12" y1="15" x2="12" y2="19"/><line x1="8" y1="21" x2="16" y2="21"/></svg>,
+  "Mannschaftstraining":     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>,
+  "Training Anfänger":       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>,
+  "Training Fortgeschritten":<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>,
+  "Mitgliederversammlung":   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+  "Sonstiges":               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
+};
+
 const WEEKDAYS_SHORT = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
 
 function buildCalendarDays(year, month) {
@@ -1183,9 +1195,15 @@ function buildCalendarDays(year, month) {
 }
 
 const CALENDAR_EVENTS = [
-  { cat: "Pool", format: "8-Ball", title: "Sunday-Break-Out 8-Ball", dateKey: "2026-09-16", date: "16. Sep 2026", timeFrom: "10:00", timeTo: "12:00", org: "BCFrankfurt1912", past: false, link: "Auf CueScore ansehen" },
-  { cat: "Pool", format: "9-Ball", title: "Sunday-Break-Out 9-Ball", dateKey: "2026-09-16", date: "16. Sep 2026", timeFrom: "11:00", timeTo: "17:00", org: "BCFrankfurt1912", past: false, link: "Auf CueScore ansehen" },
-  { cat: "Pool", format: "9-Ball", title: "Sommercamp Turnier 2026 – Endrunde", dateKey: "2026-09-16", date: "16. Sep 2026", timeFrom: "18:00", timeTo: "22:00", org: "Fordan Pécs", past: false, link: "Auf CueScore ansehen" },
+  { dateKey: "2026-09-16", titel: "Pool Heimspiel Landesliga Hessen | 3. Spieltag: BC Frankfurt 1912 e.V. 1 vs. Billardclub Rüsselsheim am Rhein e.V.", kategorie: "Heimspiel", spielart: "Pool", termin: "2026-09-16T10:00", termin_ende: "2026-09-16T12:00", ganztaegig: false },
+  { dateKey: "2026-09-16", titel: "Internes Vereinsturnier 9-Ball", kategorie: "Internes Vereinsturnier", spielart: "Pool", termin: "2026-09-16T14:00", termin_ende: "2026-09-16T18:00", ganztaegig: false },
+  { dateKey: "2026-09-16", titel: "Training Fortgeschrittene", kategorie: "Training Fortgeschritten", spielart: "Snooker", termin: "2026-09-16T19:00", termin_ende: "2026-09-16T21:00", ganztaegig: false },
+  { dateKey: "2026-09-16", titel: "Karambol Vereinsturnier — Cadre 47/2", kategorie: "Internes Vereinsturnier", spielart: "Karambol", termin: "2026-09-16T15:00", termin_ende: "2026-09-16T19:00", ganztaegig: false },
+  { dateKey: "2026-09-16", titel: "Training Anfänger Pool", kategorie: "Training Anfänger", spielart: "Pool", termin: "2026-09-16T17:00", termin_ende: "2026-09-16T19:00", ganztaegig: false },
+  { dateKey: "2026-09-16", titel: "Snooker Externe Liga | 2. Spieltag: BCF vs. SC Offenbach", kategorie: "Öffentliches Hausturnier", spielart: "Snooker", termin: "2026-09-16T13:00", termin_ende: "2026-09-16T16:00", ganztaegig: false },
+  { dateKey: "2026-09-16", titel: "Mannschaftstraining Karambol", kategorie: "Mannschaftstraining", spielart: "Karambol", termin: "2026-09-16T20:00", termin_ende: "2026-09-16T22:00", ganztaegig: false },
+  { dateKey: "2026-09-16", titel: "Vereinsabend & Sonstiges", kategorie: "Sonstiges", spielart: null, termin: null, termin_ende: null, ganztaegig: true },
+  { dateKey: "2026-09-22", titel: "Mitgliederversammlung Herbst 2026", kategorie: "Mitgliederversammlung", spielart: null, termin: "2026-09-22T19:00", termin_ende: "2026-09-22T21:00", ganztaegig: false },
 ];
 
 export const CalendarSection = () => {
@@ -1204,6 +1222,17 @@ export const CalendarSection = () => {
   const [displayEvents, setDisplayEvents] = React.useState([]);
   const [displayNoEvents, setDisplayNoEvents] = React.useState(false);
   const [contentVisible, setContentVisible] = React.useState(true);
+  const [scrollEdge, setScrollEdge] = React.useState({ top: true, bottom: false });
+  const scrollRef = React.useRef(null);
+
+  const handleSidebarScroll = (e) => {
+    const el = e.currentTarget;
+    setScrollEdge({
+      top: el.scrollTop <= 0,
+      bottom: el.scrollTop >= el.scrollHeight - el.clientHeight - 1,
+    });
+  };
+
   React.useEffect(() => {
     if (!selectedKey) {
       const t = setTimeout(() => { setDisplayEvents([]); setDisplayNoEvents(false); setContentVisible(true); }, 450);
@@ -1211,9 +1240,16 @@ export const CalendarSection = () => {
     }
     setContentVisible(false);
     const t = setTimeout(() => {
-      if (selectedEvents.length > 0) { setDisplayEvents(selectedEvents); setDisplayNoEvents(false); }
+      if (selectedEvents.length > 0) { setDisplayEvents([...selectedEvents].sort((a, b) => {
+  if (b.ganztaegig !== a.ganztaegig) return (b.ganztaegig ? 1 : 0) - (a.ganztaegig ? 1 : 0);
+  return new Date(a.termin) - new Date(b.termin);
+})); setDisplayNoEvents(false); }
       else { setDisplayEvents([]); setDisplayNoEvents(true); }
       setContentVisible(true);
+      if (scrollRef.current) {
+        scrollRef.current.scrollTop = 0;
+        setScrollEdge({ top: true, bottom: false });
+      }
     }, 180);
     return () => clearTimeout(t);
   }, [selectedKey]);
@@ -1264,15 +1300,32 @@ export const CalendarSection = () => {
             const isToday = date.toDateString() === today.toDateString();
             const isPast = date < today && !isToday;
             const key = toKey(date);
-            const cellEvents = CALENDAR_EVENTS.filter(e => e.dateKey === key);
+            const cellEvents = CALENDAR_EVENTS.filter(e => e.dateKey === key).sort((a, b) => {
+              if (b.ganztaegig !== a.ganztaegig) return (b.ganztaegig ? 1 : 0) - (a.ganztaegig ? 1 : 0);
+              return new Date(a.termin) - new Date(b.termin);
+            });
             return (
-              <div key={i} onClick={() => setSelected(s => s === date.toDateString() ? null : date.toDateString())} style={{ aspectRatio: "1", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between", padding: "8px 4px 5px", background: "var(--ink-100)", border: selected === date.toDateString() ? "2px solid var(--brass-500)" : isToday ? "2px solid var(--bone-300)" : "1px solid var(--ink-300)", borderRadius: 8, color: selected === date.toDateString() ? "var(--brass-500)" : isToday ? "var(--bone-100)" : "var(--bone-300)", fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: isToday || selected === date.toDateString() ? 700 : 400, opacity: isPast ? 0.25 : 1, cursor: "pointer" }}>
+              <div key={i} onClick={() => setSelected(s => s === date.toDateString() ? null : date.toDateString())} style={{ aspectRatio: "1", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-start", gap: 5, padding: "8px 4px 5px", background: "var(--ink-100)", border: selected === date.toDateString() ? "2px solid var(--brass-500)" : isToday ? "2px solid var(--bone-300)" : "1px solid var(--ink-300)", borderRadius: 8, color: selected === date.toDateString() ? "var(--brass-500)" : isToday ? "var(--bone-100)" : "var(--bone-300)", fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: isToday || selected === date.toDateString() ? 700 : 400, opacity: isPast ? 0.25 : 1, cursor: "pointer", overflow: "hidden" }}>
                 <span>{date.getDate()}</span>
                 {cellEvents.length > 0 && (
-                  <div style={{ display: "flex", gap: 2, flexWrap: "wrap", justifyContent: "center" }}>
-                    {cellEvents.map((_, ci) => (
-                      <span key={ci} style={{ width: 4, height: 4, borderRadius: "50%", background: "var(--brass-500)", display: "block", flexShrink: 0 }} />
-                    ))}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 2, width: "100%", overflow: "hidden" }}>
+                    {cellEvents.slice(0, 3).map((ev, ci) => {
+                      const barColor = ev.spielart === "Pool" ? "#6fa3e0"
+                        : ev.spielart === "Snooker" ? "#6dc98a"
+                        : ev.spielart === "Karambol" ? "#e08080"
+                        : "var(--bone-300)";
+                      return (
+                        <span key={ci} style={{ display: "flex", alignItems: "center", gap: 3, background: `color-mix(in srgb, ${barColor} 22%, transparent)`, borderRadius: 3, padding: "1px 4px", fontSize: 9, color: barColor, lineHeight: 1.5, flexShrink: 0, overflow: "hidden" }}>
+                          {KATEGORIE_ICON[ev.kategorie] && <span style={{ flexShrink: 0, display: "flex" }}>{KATEGORIE_ICON[ev.kategorie]}</span>}
+                          <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{ev.titel}</span>
+                        </span>
+                      );
+                    })}
+                    {cellEvents.length > 3 && (
+                      <span style={{ display: "block", borderRadius: 3, padding: "1px 4px", fontSize: 9, color: "var(--bone-400)", lineHeight: 1.5, flexShrink: 0 }}>
+                        +{cellEvents.length - 3} weitere
+                      </span>
+                    )}
                   </div>
                 )}
               </div>
@@ -1282,36 +1335,46 @@ export const CalendarSection = () => {
 
       </div>
 
-      {/* Events sidebar */}
-      <div style={{ flex: "0 0 340px", maxWidth: selected ? 340 : 0, marginLeft: selected ? 32 : 0, opacity: selected ? 1 : 0, overflow: "hidden", transition: "max-width 0.45s cubic-bezier(0.4,0,0.2,1), margin-left 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease" }}>
-      <div style={{ width: 340, height: "100%", display: "flex", flexDirection: "column", gap: 12, opacity: contentVisible ? 1 : 0, transition: "opacity 0.18s ease" }}>
+      {/* Events sidebar — outer controls width slide, inner is absolute to take flex-stretched height without inflating it */}
+      <div style={{ flex: "0 0 auto", width: selected ? 372 : 0, overflow: "hidden", opacity: selected ? 1 : 0, position: "relative", transition: "width 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease" }}>
+      <div ref={scrollRef} onScroll={handleSidebarScroll} className="no-scrollbar" style={{ position: "absolute", top: 0, right: 0, bottom: 0, width: 340, display: "flex", flexDirection: "column", gap: 12, padding: "12px 0", boxSizing: "border-box", opacity: contentVisible ? 1 : 0, transition: "opacity 0.18s ease", overflowY: "auto", overflowX: "hidden", scrollbarWidth: "none", msOverflowStyle: "none", maskImage: `linear-gradient(to bottom, ${scrollEdge.top ? "black 0px" : "transparent 0px, black 20px"}, ${scrollEdge.bottom ? "black 100%" : "black calc(100% - 20px), transparent 100%"})`, WebkitMaskImage: `linear-gradient(to bottom, ${scrollEdge.top ? "black 0px" : "transparent 0px, black 20px"}, ${scrollEdge.bottom ? "black 100%" : "black calc(100% - 20px), transparent 100%"})` }}>
         {displayNoEvents && (
           <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--bone-500)", fontFamily: "var(--font-mono)", fontSize: 12, letterSpacing: "0.06em", textAlign: "center", padding: 24, border: "1px solid var(--ink-300)", borderRadius: 10, background: "var(--ink-100)" }}>
             An diesem Tag<br />keine Termine
           </div>
         )}
-        {displayEvents.map((ev, i) => (
-          <div key={i} style={{ background: "var(--ink-100)", border: "1px solid var(--ink-300)", borderLeft: "3px solid var(--brass-500)", borderRadius: 10, padding: "16px 18px", display: "flex", flexDirection: "column", gap: 8 }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "var(--ink-200)", border: "1px solid var(--ink-300)", borderRadius: 20, padding: "3px 10px", fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.06em", color: "var(--bone-300)" }}>
-                <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--brass-500)", display: "inline-block" }} />
-                {ev.cat.toUpperCase()}
+        {displayEvents.map((ev, i) => {
+          const timeFrom = ev.termin ? new Date(ev.termin).toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" }) : null;
+          const timeTo = ev.termin_ende ? new Date(ev.termin_ende).toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" }) : null;
+          const accentColor = ev.spielart === "Pool" ? "#6fa3e0"
+            : ev.spielart === "Snooker" ? "#6dc98a"
+            : ev.spielart === "Karambol" ? "#e08080"
+            : "var(--bone-300)";
+          return (
+          <div key={i} style={{ background: "var(--ink-100)", border: "1px solid var(--ink-300)", ...(ev.ganztaegig ? { borderTop: `3px solid ${accentColor}` } : { borderLeft: `3px solid ${accentColor}` }), borderRadius: 10, padding: "16px 18px", display: "flex", flexDirection: "column", gap: 10 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 6 }}>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "var(--ink-200)", border: "1px solid var(--ink-300)", borderRadius: 20, padding: "3px 10px", fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--bone-400)" }}>
+                {KATEGORIE_ICON[ev.kategorie] ?? null}
+                {ev.kategorie}
               </span>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                {ev.past && <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.08em", color: "var(--bone-500)", background: "var(--ink-200)", border: "1px solid var(--ink-300)", borderRadius: 20, padding: "3px 8px" }}>VORBEI</span>}
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.08em", color: "var(--bone-500)" }}>{ev.format}</span>
-              </div>
+              {ev.spielart && (
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 5, background: `color-mix(in srgb, ${accentColor} 12%, transparent)`, border: `1px solid color-mix(in srgb, ${accentColor} 30%, transparent)`, borderRadius: 20, padding: "3px 10px", fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: accentColor }}>
+                  <span style={{ width: 5, height: 5, borderRadius: "50%", background: accentColor, display: "inline-block", flexShrink: 0 }} />
+                  {ev.spielart}
+                </span>
+              )}
             </div>
-            <div style={{ fontFamily: "var(--font-display)", fontSize: 16, fontWeight: 600, color: ev.past ? "var(--bone-400)" : "var(--bone-100)", lineHeight: 1.3 }}>{ev.title}</div>
-            <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--bone-500)" }}>{ev.date}{ev.timeFrom && <span style={{ marginLeft: 10, opacity: 0.7 }}>{ev.timeFrom}{ev.timeTo ? ` – ${ev.timeTo}` : ""} Uhr</span>}</div>
-            <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--bone-500)" }}>{ev.org}</div>
-            <a href="#" style={{ marginTop: 4, fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--bone-400)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4, borderBottom: "1px solid transparent", transition: "color 0.2s, border-color 0.2s" }}
-              onMouseEnter={e => { e.currentTarget.style.color = "var(--bone-100)"; e.currentTarget.style.borderBottomColor = "var(--bone-100)"; }}
-              onMouseLeave={e => { e.currentTarget.style.color = "var(--bone-400)"; e.currentTarget.style.borderBottomColor = "transparent"; }}>
-              {ev.link} <ArrowOut size={9} />
-            </a>
+            <div style={{ fontFamily: "var(--font-display)", fontSize: 17, fontWeight: 600, color: "var(--bone-100)", lineHeight: 1.35 }}>{ev.titel}</div>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--bone-400)", display: "flex", alignItems: "center", gap: 6 }}>
+              {ev.ganztaegig ? (
+                <span>Ganztägig <span style={{ fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: 12 }}>24h</span></span>
+              ) : (
+                <span>{timeFrom}{timeTo ? ` – ${timeTo}` : ""} Uhr</span>
+              )}
+            </div>
           </div>
-        ))}
+          );
+        })}
       </div>
       </div>
 

@@ -642,6 +642,7 @@ body {
 }
 
 .article-modal-inner::-webkit-scrollbar { display: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
 
 
 .article-body p { font-size: 15px; line-height: 1.8; color: var(--bone-200); margin: 0 0 16px; }
