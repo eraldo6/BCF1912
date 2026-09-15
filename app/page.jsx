@@ -42,5 +42,19 @@ export default async function Page() {
   const past = allPast.slice(-1)
   const turniere = [...upcoming, ...past]
 
-  return <AppContent galleryImages={images} newsItems={newsItems} turniere={turniere} />;
+  const { data: veranstaltungenRaw } = await supabase
+    .from('veranstaltungen')
+    .select('id, titel, kategorie, spielart, termin, termin_ende, ganztaegig, veroeffentlicht')
+    .eq('veroeffentlicht', true)
+    .eq('geloescht', false)
+    .order('termin', { ascending: true })
+
+  const veranstaltungen = (veranstaltungenRaw ?? []).map(v => {
+    const dateKey = v.termin
+      ? `${new Date(v.termin).getFullYear()}-${String(new Date(v.termin).getMonth()+1).padStart(2,'0')}-${String(new Date(v.termin).getDate()).padStart(2,'0')}`
+      : null
+    return { ...v, dateKey }
+  }).filter(v => v.dateKey)
+
+  return <AppContent galleryImages={images} newsItems={newsItems} turniere={turniere} veranstaltungen={veranstaltungen} />;
 }

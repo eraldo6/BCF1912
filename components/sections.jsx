@@ -1194,19 +1194,21 @@ function buildCalendarDays(year, month) {
   return days;
 }
 
-const CALENDAR_EVENTS = [
-  { dateKey: "2026-09-16", titel: "Pool Heimspiel Landesliga Hessen | 3. Spieltag: BC Frankfurt 1912 e.V. 1 vs. Billardclub Rüsselsheim am Rhein e.V.", kategorie: "Heimspiel", spielart: "Pool", termin: "2026-09-16T10:00", termin_ende: "2026-09-16T12:00", ganztaegig: false },
-  { dateKey: "2026-09-16", titel: "Internes Vereinsturnier 9-Ball", kategorie: "Internes Vereinsturnier", spielart: "Pool", termin: "2026-09-16T14:00", termin_ende: "2026-09-16T18:00", ganztaegig: false },
-  { dateKey: "2026-09-16", titel: "Training Fortgeschrittene", kategorie: "Training Fortgeschritten", spielart: "Snooker", termin: "2026-09-16T19:00", termin_ende: "2026-09-16T21:00", ganztaegig: false },
-  { dateKey: "2026-09-16", titel: "Karambol Vereinsturnier — Cadre 47/2", kategorie: "Internes Vereinsturnier", spielart: "Karambol", termin: "2026-09-16T15:00", termin_ende: "2026-09-16T19:00", ganztaegig: false },
-  { dateKey: "2026-09-16", titel: "Training Anfänger Pool", kategorie: "Training Anfänger", spielart: "Pool", termin: "2026-09-16T17:00", termin_ende: "2026-09-16T19:00", ganztaegig: false },
-  { dateKey: "2026-09-16", titel: "Snooker Externe Liga | 2. Spieltag: BCF vs. SC Offenbach", kategorie: "Öffentliches Hausturnier", spielart: "Snooker", termin: "2026-09-16T13:00", termin_ende: "2026-09-16T16:00", ganztaegig: false },
-  { dateKey: "2026-09-16", titel: "Mannschaftstraining Karambol", kategorie: "Mannschaftstraining", spielart: "Karambol", termin: "2026-09-16T20:00", termin_ende: "2026-09-16T22:00", ganztaegig: false },
-  { dateKey: "2026-09-16", titel: "Vereinsabend & Sonstiges", kategorie: "Sonstiges", spielart: null, termin: null, termin_ende: null, ganztaegig: true },
-  { dateKey: "2026-09-22", titel: "Mitgliederversammlung Herbst 2026", kategorie: "Mitgliederversammlung", spielart: null, termin: "2026-09-22T19:00", termin_ende: "2026-09-22T21:00", ganztaegig: false },
-];
+// Alte Kalender Dummy Daten
+// const CALENDAR_EVENTS = [
+//   { dateKey: "2026-09-16", titel: "Pool Heimspiel Landesliga Hessen | 3. Spieltag: BC Frankfurt 1912 e.V. 1 vs. Billardclub Rüsselsheim am Rhein e.V.", kategorie: "Heimspiel", spielart: "Pool", termin: "2026-09-16T10:00", termin_ende: "2026-09-16T12:00", ganztaegig: false },
+//   { dateKey: "2026-09-16", titel: "Internes Vereinsturnier 9-Ball", kategorie: "Internes Vereinsturnier", spielart: "Pool", termin: "2026-09-16T14:00", termin_ende: "2026-09-16T18:00", ganztaegig: false },
+//   { dateKey: "2026-09-16", titel: "Training Fortgeschrittene", kategorie: "Training Fortgeschritten", spielart: "Snooker", termin: "2026-09-16T19:00", termin_ende: "2026-09-16T21:00", ganztaegig: false },
+//   { dateKey: "2026-09-16", titel: "Karambol Vereinsturnier — Cadre 47/2", kategorie: "Internes Vereinsturnier", spielart: "Karambol", termin: "2026-09-16T15:00", termin_ende: "2026-09-16T19:00", ganztaegig: false },
+//   { dateKey: "2026-09-16", titel: "Training Anfänger Pool", kategorie: "Training Anfänger", spielart: "Pool", termin: "2026-09-16T17:00", termin_ende: "2026-09-16T19:00", ganztaegig: false },
+//   { dateKey: "2026-09-16", titel: "Snooker Externe Liga | 2. Spieltag: BCF vs. SC Offenbach", kategorie: "Öffentliches Hausturnier", spielart: "Snooker", termin: "2026-09-16T13:00", termin_ende: "2026-09-16T16:00", ganztaegig: false },
+//   { dateKey: "2026-09-16", titel: "Mannschaftstraining Karambol", kategorie: "Mannschaftstraining", spielart: "Karambol", termin: "2026-09-16T20:00", termin_ende: "2026-09-16T22:00", ganztaegig: false },
+//   { dateKey: "2026-09-16", titel: "Vereinsabend & Sonstiges", kategorie: "Sonstiges", spielart: null, termin: null, termin_ende: null, ganztaegig: true },
+//   { dateKey: "2026-09-22", titel: "Mitgliederversammlung Herbst 2026", kategorie: "Mitgliederversammlung", spielart: null, termin: "2026-09-22T19:00", termin_ende: "2026-09-22T21:00", ganztaegig: false },
+// ];
 
-export const CalendarSection = () => {
+export const CalendarSection = ({ veranstaltungen = [] }) => {
+  const events = veranstaltungen;
   const [current, setCurrent] = React.useState(() => {
     const t = new Date(); return new Date(t.getFullYear(), t.getMonth(), 1);
   });
@@ -1218,12 +1220,27 @@ export const CalendarSection = () => {
   const monthLabel = current.toLocaleDateString("de-DE", { month: "long", year: "numeric" });
   const toKey = (d) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
   const selectedKey = selected ? toKey(new Date(selected)) : null;
-  const selectedEvents = selectedKey ? CALENDAR_EVENTS.filter(e => e.dateKey === selectedKey) : [];
+  const selectedEvents = selectedKey ? events.filter(e => e.dateKey === selectedKey) : [];
   const [displayEvents, setDisplayEvents] = React.useState([]);
   const [displayNoEvents, setDisplayNoEvents] = React.useState(false);
   const [contentVisible, setContentVisible] = React.useState(true);
   const [scrollEdge, setScrollEdge] = React.useState({ top: true, bottom: false });
+  const [openShareIdx, setOpenShareIdx] = React.useState(null);
+  const [copiedIdx, setCopiedIdx] = React.useState(null);
   const scrollRef = React.useRef(null);
+
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const datum = params.get("datum");
+    if (!datum) return;
+    const d = new Date(datum + "T00:00:00");
+    if (isNaN(d.getTime())) return;
+    setCurrent(new Date(d.getFullYear(), d.getMonth(), 1));
+    setSelected(d.toDateString());
+    setTimeout(() => {
+      document.getElementById("kalender")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+  }, []);
 
   const handleSidebarScroll = (e) => {
     const el = e.currentTarget;
@@ -1239,6 +1256,7 @@ export const CalendarSection = () => {
       return () => clearTimeout(t);
     }
     setContentVisible(false);
+    setOpenShareIdx(null);
     const t = setTimeout(() => {
       if (selectedEvents.length > 0) { setDisplayEvents([...selectedEvents].sort((a, b) => {
   if (b.ganztaegig !== a.ganztaegig) return (b.ganztaegig ? 1 : 0) - (a.ganztaegig ? 1 : 0);
@@ -1300,12 +1318,12 @@ export const CalendarSection = () => {
             const isToday = date.toDateString() === today.toDateString();
             const isPast = date < today && !isToday;
             const key = toKey(date);
-            const cellEvents = CALENDAR_EVENTS.filter(e => e.dateKey === key).sort((a, b) => {
+            const cellEvents = events.filter(e => e.dateKey === key).sort((a, b) => {
               if (b.ganztaegig !== a.ganztaegig) return (b.ganztaegig ? 1 : 0) - (a.ganztaegig ? 1 : 0);
               return new Date(a.termin) - new Date(b.termin);
             });
             return (
-              <div key={i} onClick={() => setSelected(s => s === date.toDateString() ? null : date.toDateString())} style={{ aspectRatio: "1", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-start", gap: 5, padding: "8px 4px 5px", background: "var(--ink-100)", border: selected === date.toDateString() ? "2px solid var(--brass-500)" : isToday ? "2px solid var(--bone-300)" : "1px solid var(--ink-300)", borderRadius: 8, color: selected === date.toDateString() ? "var(--brass-500)" : isToday ? "var(--bone-100)" : "var(--bone-300)", fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: isToday || selected === date.toDateString() ? 700 : 400, opacity: isPast ? 0.25 : 1, cursor: "pointer", overflow: "hidden" }}>
+              <div key={i} onClick={() => setSelected(s => s === date.toDateString() ? null : date.toDateString())} style={{ aspectRatio: "1", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-start", gap: 5, padding: "8px 4px 5px", background: "var(--ink-100)", border: selected === date.toDateString() ? "2px solid var(--brass-500)" : isToday ? "2px solid var(--bone-300)" : "1px solid var(--ink-300)", borderRadius: 8, color: selected === date.toDateString() ? "var(--brass-500)" : isToday ? "var(--bone-100)" : "var(--bone-300)", fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: isToday || selected === date.toDateString() ? 700 : 400, opacity: isPast && selected !== date.toDateString() ? 0.25 : 1, cursor: "pointer", overflow: "hidden" }}>
                 <span>{date.getDate()}</span>
                 {cellEvents.length > 0 && (
                   <div style={{ display: "flex", flexDirection: "column", gap: 2, width: "100%", overflow: "hidden" }}>
@@ -1315,14 +1333,14 @@ export const CalendarSection = () => {
                         : ev.spielart === "Karambol" ? "#e08080"
                         : "var(--bone-300)";
                       return (
-                        <span key={ci} style={{ display: "flex", alignItems: "center", gap: 3, background: `color-mix(in srgb, ${barColor} 22%, transparent)`, borderRadius: 3, padding: "1px 4px", fontSize: 9, color: barColor, lineHeight: 1.5, flexShrink: 0, overflow: "hidden" }}>
+                        <span key={ci} style={{ display: "flex", alignItems: "center", gap: 3, background: `color-mix(in srgb, ${barColor} 22%, transparent)`, borderRadius: 3, padding: "1px 4px", fontSize: 11, color: barColor, lineHeight: 1.3, flexShrink: 0, overflow: "hidden" }}>
                           {KATEGORIE_ICON[ev.kategorie] && <span style={{ flexShrink: 0, display: "flex" }}>{KATEGORIE_ICON[ev.kategorie]}</span>}
                           <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{ev.titel}</span>
                         </span>
                       );
                     })}
                     {cellEvents.length > 3 && (
-                      <span style={{ display: "block", borderRadius: 3, padding: "1px 4px", fontSize: 9, color: "var(--bone-400)", lineHeight: 1.5, flexShrink: 0 }}>
+                      <span style={{ display: "block", borderRadius: 3, padding: "1px 4px", fontSize: 11, color: "var(--bone-400)", lineHeight: 1.3, flexShrink: 0 }}>
                         +{cellEvents.length - 3} weitere
                       </span>
                     )}
@@ -1344,14 +1362,60 @@ export const CalendarSection = () => {
           </div>
         )}
         {displayEvents.map((ev, i) => {
+          const now = new Date();
+          const evPast = ev.ganztaegig
+            ? new Date((ev.dateKey ?? "") + "T23:59:59") < now
+            : ev.termin_ende ? new Date(ev.termin_ende) < now : ev.termin ? new Date(ev.termin) < now : false;
           const timeFrom = ev.termin ? new Date(ev.termin).toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" }) : null;
           const timeTo = ev.termin_ende ? new Date(ev.termin_ende).toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" }) : null;
           const accentColor = ev.spielart === "Pool" ? "#6fa3e0"
             : ev.spielart === "Snooker" ? "#6dc98a"
             : ev.spielart === "Karambol" ? "#e08080"
             : "var(--bone-300)";
+
+          const toIcal = (isoStr) => {
+            const d = new Date(isoStr);
+            return d.getFullYear() + String(d.getMonth()+1).padStart(2,"0") + String(d.getDate()).padStart(2,"0") + "T" + String(d.getHours()).padStart(2,"0") + String(d.getMinutes()).padStart(2,"0") + "00";
+          };
+          const googleUrl = (() => {
+            if (!ev.termin) return null;
+            const start = ev.ganztaegig ? (ev.dateKey ?? "").replace(/-/g,"") : toIcal(ev.termin);
+            const end = ev.ganztaegig
+              ? (() => { const d = new Date((ev.dateKey ?? "") + "T00:00:00"); d.setDate(d.getDate()+1); return d.getFullYear() + String(d.getMonth()+1).padStart(2,"0") + String(d.getDate()).padStart(2,"0"); })()
+              : ev.termin_ende ? toIcal(ev.termin_ende) : toIcal(ev.termin);
+            return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.titel ?? "")}&dates=${start}/${end}`;
+          })();
+          const downloadIcs = () => {
+            const start = ev.ganztaegig ? (ev.dateKey ?? "").replace(/-/g,"") : toIcal(ev.termin);
+            const end = ev.ganztaegig
+              ? (() => { const d = new Date((ev.dateKey ?? "") + "T00:00:00"); d.setDate(d.getDate()+1); return d.getFullYear() + String(d.getMonth()+1).padStart(2,"0") + String(d.getDate()).padStart(2,"0"); })()
+              : ev.termin_ende ? toIcal(ev.termin_ende) : toIcal(ev.termin);
+            const dtProp = ev.ganztaegig ? "DATE" : "DATE-TIME";
+            const ics = `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//BCF1912//DE\r\nBEGIN:VEVENT\r\nDTSTART;VALUE=${dtProp}:${start}\r\nDTEND;VALUE=${dtProp}:${end}\r\nSUMMARY:${(ev.titel ?? "").replace(/\n/g,"\\n")}\r\nEND:VEVENT\r\nEND:VCALENDAR`;
+            const blob = new Blob([ics], { type: "text/calendar" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a"); a.href = url; a.download = "termin.ics"; a.click();
+            URL.revokeObjectURL(url);
+          };
+          const shareLink = () => {
+            const url = `${window.location.origin}${window.location.pathname}?datum=${ev.dateKey ?? ""}`;
+            const datumLang = (() => {
+              if (!ev.dateKey) return "";
+              const d = new Date(ev.dateKey + "T00:00:00");
+              const monate = ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+              return `${d.getDate()} ${monate[d.getMonth()]} ${d.getFullYear()}`;
+            })();
+            const zeitStr = ev.ganztaegig ? "Ganztägig" : timeFrom ? `${timeFrom}${timeTo ? ` – ${timeTo}` : ""} Uhr` : "";
+            const spielartZeile = ev.spielart ? `${ev.spielart} · ${ev.kategorie ?? ""}` : (ev.kategorie ?? "");
+            const text = [`BC Frankfurt 1912 — Termin:`, spielartZeile, ev.titel ?? "", `${datumLang}${zeitStr ? `, ${zeitStr}` : ""}`, "", url].join("\n");
+            navigator.clipboard.writeText(text).then(() => {
+              setCopiedIdx(i);
+              setTimeout(() => setCopiedIdx(c => c === i ? null : c), 2000);
+            });
+          };
+
           return (
-          <div key={i} style={{ background: "var(--ink-100)", border: "1px solid var(--ink-300)", ...(ev.ganztaegig ? { borderTop: `3px solid ${accentColor}` } : { borderLeft: `3px solid ${accentColor}` }), borderRadius: 10, padding: "16px 18px", display: "flex", flexDirection: "column", gap: 10 }}>
+          <div key={i} style={{ background: "var(--ink-100)", border: "1px solid var(--ink-300)", ...(ev.ganztaegig ? { borderTop: `3px solid ${accentColor}` } : { borderLeft: `3px solid ${accentColor}` }), borderRadius: 10, padding: "16px 18px", display: "flex", flexDirection: "column", gap: 10, opacity: evPast ? 0.4 : 1 }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 6 }}>
               <span style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "var(--ink-200)", border: "1px solid var(--ink-300)", borderRadius: 20, padding: "3px 10px", fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--bone-400)" }}>
                 {KATEGORIE_ICON[ev.kategorie] ?? null}
@@ -1371,6 +1435,43 @@ export const CalendarSection = () => {
               ) : (
                 <span>{timeFrom}{timeTo ? ` – ${timeTo}` : ""} Uhr</span>
               )}
+            </div>
+            {/* Share row */}
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <button
+                onClick={() => setOpenShareIdx(s => s === i ? null : i)}
+                style={{ background: "none", border: "none", cursor: "pointer", color: openShareIdx === i ? "var(--bone-300)" : "var(--bone-500)", padding: "2px 0", display: "flex", alignItems: "center", gap: 5, fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.06em" }}
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                </svg>
+                Teilen
+              </button>
+            </div>
+            <div style={{ maxHeight: openShareIdx === i ? 160 : 0, overflow: "hidden", opacity: openShareIdx === i ? 1 : 0, transition: "max-height 0.35s ease, opacity 0.2s ease" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 2, borderTop: "1px solid var(--ink-300)", paddingTop: 10 }}>
+                <button onClick={shareLink} style={{ background: "none", border: "none", cursor: "pointer", color: copiedIdx === i ? "var(--brass-500)" : "var(--bone-300)", fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.06em", padding: "6px 8px", borderRadius: 6, textAlign: "left", display: "flex", alignItems: "center", gap: 8, transition: "background 0.15s" }}
+                  onMouseEnter={e => e.currentTarget.style.background = "var(--ink-200)"}
+                  onMouseLeave={e => e.currentTarget.style.background = "none"}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  {copiedIdx === i ? "Link kopiert!" : "Link kopieren"}
+                </button>
+                {googleUrl && (
+                  <a href={googleUrl} target="_blank" rel="noopener" style={{ color: "var(--bone-300)", fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.06em", padding: "6px 8px", borderRadius: 6, display: "flex", alignItems: "center", gap: 8, textDecoration: "none", transition: "background 0.15s" }}
+                    onMouseEnter={e => e.currentTarget.style.background = "var(--ink-200)"}
+                    onMouseLeave={e => e.currentTarget.style.background = "none"}>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    Google Calendar
+                  </a>
+                )}
+                <button onClick={downloadIcs} style={{ background: "none", border: "none", cursor: "pointer", color: "var(--bone-300)", fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.06em", padding: "6px 8px", borderRadius: 6, textAlign: "left", display: "flex", alignItems: "center", gap: 8, transition: "background 0.15s" }}
+                  onMouseEnter={e => e.currentTarget.style.background = "var(--ink-200)"}
+                  onMouseLeave={e => e.currentTarget.style.background = "none"}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Apple / Outlook (.ics)
+                </button>
+              </div>
             </div>
           </div>
           );

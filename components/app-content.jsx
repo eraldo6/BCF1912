@@ -26,7 +26,7 @@ const TWEAKS_DEFAULTS = /*EDITMODE-BEGIN*/{
   "displayFont": "Space Grotesk"
 }/*EDITMODE-END*/;
 
-export const AppContent = ({ galleryImages = [], newsItems = [], turniere = [] }) => {
+export const AppContent = ({ galleryImages = [], newsItems = [], turniere = [], veranstaltungen = [] }) => {
   const [tweaks, setTweak] = useTweaks(TWEAKS_DEFAULTS);
   const [lang, setLangState] = React.useState("DE");
 
@@ -77,7 +77,7 @@ export const AppContent = ({ galleryImages = [], newsItems = [], turniere = [] }
         <Hero images={galleryImages} />
         <Marquee />
         <News items={newsItems} turniere={turniere} />
-        <CalendarSection />
+        <CalendarSection veranstaltungen={veranstaltungen} />
         <ClubSection images={galleryImages} hideGallery />
         <Experience />
         <Gallery images={galleryImages} />
