@@ -1182,15 +1182,41 @@ function buildCalendarDays(year, month) {
   return days;
 }
 
+const CALENDAR_EVENTS = [
+  { cat: "Pool", format: "8-Ball", title: "Sunday-Break-Out 8-Ball", dateKey: "2026-09-16", date: "16. Sep 2026", timeFrom: "10:00", timeTo: "12:00", org: "BCFrankfurt1912", past: false, link: "Auf CueScore ansehen" },
+  { cat: "Pool", format: "9-Ball", title: "Sunday-Break-Out 9-Ball", dateKey: "2026-09-16", date: "16. Sep 2026", timeFrom: "11:00", timeTo: "17:00", org: "BCFrankfurt1912", past: false, link: "Auf CueScore ansehen" },
+  { cat: "Pool", format: "9-Ball", title: "Sommercamp Turnier 2026 – Endrunde", dateKey: "2026-09-16", date: "16. Sep 2026", timeFrom: "18:00", timeTo: "22:00", org: "Fordan Pécs", past: false, link: "Auf CueScore ansehen" },
+];
+
 export const CalendarSection = () => {
   const [current, setCurrent] = React.useState(() => {
     const t = new Date(); return new Date(t.getFullYear(), t.getMonth(), 1);
   });
+  const [selected, setSelected] = React.useState(null);
   const today = new Date();
   const year = current.getFullYear();
   const month = current.getMonth();
   const days = buildCalendarDays(year, month);
   const monthLabel = current.toLocaleDateString("de-DE", { month: "long", year: "numeric" });
+  const toKey = (d) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  const selectedKey = selected ? toKey(new Date(selected)) : null;
+  const selectedEvents = selectedKey ? CALENDAR_EVENTS.filter(e => e.dateKey === selectedKey) : [];
+  const [displayEvents, setDisplayEvents] = React.useState([]);
+  const [displayNoEvents, setDisplayNoEvents] = React.useState(false);
+  const [contentVisible, setContentVisible] = React.useState(true);
+  React.useEffect(() => {
+    if (!selectedKey) {
+      const t = setTimeout(() => { setDisplayEvents([]); setDisplayNoEvents(false); setContentVisible(true); }, 450);
+      return () => clearTimeout(t);
+    }
+    setContentVisible(false);
+    const t = setTimeout(() => {
+      if (selectedEvents.length > 0) { setDisplayEvents(selectedEvents); setDisplayNoEvents(false); }
+      else { setDisplayEvents([]); setDisplayNoEvents(true); }
+      setContentVisible(true);
+    }, 180);
+    return () => clearTimeout(t);
+  }, [selectedKey]);
 
   return (
   <section className="section" id="kalender" style={{ background: "linear-gradient(to bottom, var(--ink-050) 0%, transparent 120px), radial-gradient(ellipse at 15% -10%, color-mix(in srgb, var(--felt-700) 70%, transparent) 0%, var(--ink-050) 55%, var(--ink-000) 100%)" }}>
@@ -1205,8 +1231,8 @@ export const CalendarSection = () => {
         <p style={{ marginTop: 12, fontSize: 15, color: "var(--bone-400)", fontFamily: "var(--font-display)" }}>Ligaspiele und interne Termine des BC Frankfurt 1912.</p>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 340px", gap: 32, alignItems: "start" }}>
-      <div>
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "stretch" }}>
+      <div style={{ flex: "0 0 840px", maxWidth: 840 }}>
         {/* Month nav */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24, padding: "16px 24px", background: "var(--ink-100)", borderRadius: 12, border: "1px solid var(--ink-300)" }}>
           <button onClick={() => setCurrent(new Date(year, month - 1, 1))}
@@ -1237,9 +1263,18 @@ export const CalendarSection = () => {
             if (!date) return <div key={`e-${i}`} />;
             const isToday = date.toDateString() === today.toDateString();
             const isPast = date < today && !isToday;
+            const key = toKey(date);
+            const cellEvents = CALENDAR_EVENTS.filter(e => e.dateKey === key);
             return (
-              <div key={i} style={{ aspectRatio: "1", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--ink-100)", border: isToday ? "2px solid var(--brass-500)" : "1px solid var(--ink-300)", borderRadius: 8, color: isToday ? "var(--brass-500)" : "var(--bone-300)", fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: isToday ? 700 : 400, opacity: isPast ? 0.25 : 1 }}>
-                {date.getDate()}
+              <div key={i} onClick={() => setSelected(s => s === date.toDateString() ? null : date.toDateString())} style={{ aspectRatio: "1", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-between", padding: "8px 4px 5px", background: "var(--ink-100)", border: selected === date.toDateString() ? "2px solid var(--brass-500)" : isToday ? "2px solid var(--bone-300)" : "1px solid var(--ink-300)", borderRadius: 8, color: selected === date.toDateString() ? "var(--brass-500)" : isToday ? "var(--bone-100)" : "var(--bone-300)", fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: isToday || selected === date.toDateString() ? 700 : 400, opacity: isPast ? 0.25 : 1, cursor: "pointer" }}>
+                <span>{date.getDate()}</span>
+                {cellEvents.length > 0 && (
+                  <div style={{ display: "flex", gap: 2, flexWrap: "wrap", justifyContent: "center" }}>
+                    {cellEvents.map((_, ci) => (
+                      <span key={ci} style={{ width: 4, height: 4, borderRadius: "50%", background: "var(--brass-500)", display: "block", flexShrink: 0 }} />
+                    ))}
+                  </div>
+                )}
               </div>
             );
           })}
@@ -1248,12 +1283,14 @@ export const CalendarSection = () => {
       </div>
 
       {/* Events sidebar */}
-      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        {[
-          { cat: "Pool", format: "8-Ball", title: "Sunday-Break-Out 8-Ball", date: "13. Sep 2026", org: "BCFrankfurt1912", past: false, link: "Auf CueScore ansehen" },
-          { cat: "Pool", format: "9-Ball", title: "Sunday-Break-Out 9-Ball", date: "16. Aug 2026", org: "BCFrankfurt1912", past: true, link: "Ergebnisse ansehen" },
-          { cat: "Pool", format: "9-Ball", title: "Sommercamp Turnier 2026 – Endrunde", date: "8. Aug 2026", org: "Fordan Pécs", past: true, link: "Ergebnisse ansehen" },
-        ].map((ev, i) => (
+      <div style={{ flex: "0 0 340px", maxWidth: selected ? 340 : 0, marginLeft: selected ? 32 : 0, opacity: selected ? 1 : 0, overflow: "hidden", transition: "max-width 0.45s cubic-bezier(0.4,0,0.2,1), margin-left 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease" }}>
+      <div style={{ width: 340, height: "100%", display: "flex", flexDirection: "column", gap: 12, opacity: contentVisible ? 1 : 0, transition: "opacity 0.18s ease" }}>
+        {displayNoEvents && (
+          <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--bone-500)", fontFamily: "var(--font-mono)", fontSize: 12, letterSpacing: "0.06em", textAlign: "center", padding: 24, border: "1px solid var(--ink-300)", borderRadius: 10, background: "var(--ink-100)" }}>
+            An diesem Tag<br />keine Termine
+          </div>
+        )}
+        {displayEvents.map((ev, i) => (
           <div key={i} style={{ background: "var(--ink-100)", border: "1px solid var(--ink-300)", borderLeft: "3px solid var(--brass-500)", borderRadius: 10, padding: "16px 18px", display: "flex", flexDirection: "column", gap: 8 }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <span style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "var(--ink-200)", border: "1px solid var(--ink-300)", borderRadius: 20, padding: "3px 10px", fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.06em", color: "var(--bone-300)" }}>
@@ -1266,7 +1303,7 @@ export const CalendarSection = () => {
               </div>
             </div>
             <div style={{ fontFamily: "var(--font-display)", fontSize: 16, fontWeight: 600, color: ev.past ? "var(--bone-400)" : "var(--bone-100)", lineHeight: 1.3 }}>{ev.title}</div>
-            <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--bone-500)" }}>{ev.date}</div>
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--bone-500)" }}>{ev.date}{ev.timeFrom && <span style={{ marginLeft: 10, opacity: 0.7 }}>{ev.timeFrom}{ev.timeTo ? ` – ${ev.timeTo}` : ""} Uhr</span>}</div>
             <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--bone-500)" }}>{ev.org}</div>
             <a href="#" style={{ marginTop: 4, fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--bone-400)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 4, borderBottom: "1px solid transparent", transition: "color 0.2s, border-color 0.2s" }}
               onMouseEnter={e => { e.currentTarget.style.color = "var(--bone-100)"; e.currentTarget.style.borderBottomColor = "var(--bone-100)"; }}
@@ -1275,6 +1312,7 @@ export const CalendarSection = () => {
             </a>
           </div>
         ))}
+      </div>
       </div>
 
       </div>
