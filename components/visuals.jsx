@@ -153,6 +153,13 @@ export const ArrowOut = ({ size = 14 }) => (
   </svg>
 );
 
+export const DownloadIcon = ({ size = 20 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path d="M12 3v13M7 11l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <line x1="4" y1="20" x2="20" y2="20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+
 export const TableIcon = ({ type = "pool", size = 60 }) => {
   if (type === "carom") {
     // No pockets

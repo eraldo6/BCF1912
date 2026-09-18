@@ -70,6 +70,32 @@ export const AppContent = ({ galleryImages = [], newsItems = [], turniere = [], 
     return () => obs.disconnect();
   }, []);
 
+  React.useEffect(() => {
+    // Restore exact scroll position with smooth animation
+    try {
+      const saved = sessionStorage.getItem("bcf_scroll_y");
+      if (saved) {
+        sessionStorage.removeItem("bcf_scroll_y");
+        const y = parseInt(saved, 10);
+        requestAnimationFrame(() => window.scrollTo({ top: y, behavior: "smooth" }));
+      }
+    } catch {}
+
+    // Save exact scroll position on scroll (throttled)
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          try { sessionStorage.setItem("bcf_scroll_y", String(window.scrollY)); } catch {}
+          ticking = false;
+        });
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
     <>
       <TranslationContext.Provider value={{ lang, setLang, t }}>

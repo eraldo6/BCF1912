@@ -52,7 +52,7 @@ export async function softDeleteVeranstaltung(id) {
   return { success: true }
 }
 
-const ALLOWED_SPIELART  = new Set(['Pool', 'Snooker', 'Karambol'])
+const ALLOWED_SPIELART  = new Set(['Pool', 'Snooker', 'Karambol GB', 'Karambol KB'])
 const ALLOWED_KATEGORIE = new Set(['Heimspiel', 'Internes Vereinsturnier', 'Öffentliches Hausturnier', 'Mitgliederversammlung', 'Mannschaftstraining', 'Training Anfänger', 'Training Fortgeschritten', 'Sonstiges'])
 const ALLOWED_STAFFEL   = new Set(['LL', 'BL', 'VL', 'OL'])
 

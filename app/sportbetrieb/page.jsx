@@ -36,12 +36,12 @@ export default function SportbetriebPage() {
             <span style={{ color: "var(--bone-500)", display: "inline-flex", flexDirection: "column", gap: 0 }}>
               <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
                 <span style={{ fontSize: 13 }}>←</span>
-                <span>Zurück</span>
+                <span>{t("nav.back")}</span>
               </span>
               <span className="back-underline" style={{ display: "block", height: 1, background: "var(--bone-500)", transformOrigin: "left", transform: "scaleX(0)", transition: "transform 0.25s ease" }} />
             </span>
             <span style={{ color: "var(--bone-700)", fontWeight: 300 }}>/</span>
-            <span style={{ color: "var(--brass-500)" }}>Sportbetrieb</span>
+            <span style={{ color: "var(--brass-500)" }}>{t("nav.sportsbetrieb")}</span>
           </a>
         </div>
 
@@ -67,13 +67,13 @@ export default function SportbetriebPage() {
           <div style={{ maxWidth: 640, width: "100%", textAlign: "left" }}>
             <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: "var(--brass-500)", marginBottom: 32, display: "flex", alignItems: "center", gap: 12 }}>
               <span style={{ display: "inline-block", width: 24, height: 1, background: "var(--brass-500)" }} />
-              In Arbeit
+              {t("sportsbetrieb.eyebrow")}
             </div>
             <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 700, color: "var(--bone-100)", lineHeight: 1.1, marginBottom: 24, letterSpacing: "-0.02em" }}>
-              Unsere <em style={{ fontStyle: "italic", color: "var(--brass-500)" }}>Mannschaften</em>
+              {t("sportsbetrieb.headline")}
             </h2>
             <p style={{ fontFamily: "var(--font-sans)", fontSize: 17, color: "var(--bone-500)", lineHeight: 1.7, maxWidth: 480 }}>
-              Hier erscheinen bald alle Mannschaften und der Sportbetrieb des BC Frankfurt 1912 e.V. — Pool, Karambol und Snooker.
+              {t("sportsbetrieb.lede")}
             </p>
           </div>
         </div>

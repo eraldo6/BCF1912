@@ -55,3 +55,37 @@ After styling changes, verify:
 - ✅ Reused existing CSS variables (`--brass-*`, `--felt-*`, `--ink-*`, `--bone-*`)
   where applicable instead of introducing new color values
 - ✅ No Tailwind utility classes, no `.tsx` files
+
+---
+
+## Project Structure
+
+### Pages (app router)
+
+| Route | File | Notes |
+|---|---|---|
+| `/` | `app/page.jsx` | One-pager — all main sections |
+| `/impressum` | `app/impressum/page.jsx` | Legal notice |
+| `/mitgliedschaft` | `app/mitgliedschaft/page.jsx` | Membership page |
+| `/sportbetrieb` | `app/sportbetrieb/page.jsx` | Sports operations & teams |
+| `/vereinshistorie` | `app/vereinshistorie/page.jsx` | Club history |
+| `/admin` | `app/admin/page.jsx` | Admin dashboard (auth-protected) |
+| `/admin/login` | `app/admin/login/page.jsx` | Admin login |
+| `/admin/update-password` | `app/admin/update-password/page.jsx` | Password reset |
+
+> **Note:** The calendar is part of the one-pager (`/`), not a separate subpage. There is no `/calendar` route.
+
+### Main sections on the one-pager (in order)
+
+1. **Hero** — full-bleed image, headline, CTAs
+2. **Club / About** — disciplines, gallery
+3. **News** — latest posts from Supabase `beitraege`
+4. **Turniere** — upcoming + past tournaments from Supabase `turniere`
+5. **Kalender** — interactive monthly calendar with event sidebar, data from Supabase `veranstaltungen`; supports `?datum=YYYY-MM-DD` URL param to deep-link a specific day
+6. **Kontakt** — contact info, address, membership CTA
+
+### Key components
+
+- `components/sections.jsx` — all one-pager sections
+- `components/app-content.jsx` — client wrapper, receives server-fetched props
+- `app/page.jsx` — server component, fetches all Supabase data and passes as props

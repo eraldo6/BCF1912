@@ -5,17 +5,73 @@ import { TranslationContext } from "../../components/translation-context";
 import { TRANSLATIONS } from "../../lib/translations";
 import React from "react";
 
+const VORSTAND = [
+  { name: "Max Mustermann",   rolle: "1. Vorsitzender" },
+  { name: "Erika Musterfrau", rolle: "2. Vorsitzende"  },
+  { name: "Hans Beispiel",    rolle: "Kassenwart"       },
+  { name: "Maria Beispiel",   rolle: "Sportwart"        },
+  { name: "Peter Muster",     rolle: "Schriftführer"    },
+];
+
+function PersonCard({ name, rolle }) {
+  return (
+    <div style={{
+      background: "var(--ink-100)",
+      border: "1px solid var(--ink-300)",
+      borderRadius: 12,
+      overflow: "hidden",
+    }}>
+      {/* Foto-Platzhalter */}
+      <div style={{
+        background: "var(--ink-200)",
+        height: 200,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        position: "relative",
+      }}>
+        <svg viewBox="0 0 200 220" style={{ width: "60%", opacity: 0.12 }} aria-hidden="true">
+          <ellipse cx="100" cy="72" rx="38" ry="40" fill="var(--bone-100)" />
+          <path d="M20 220 Q20 140 100 140 Q180 140 180 220Z" fill="var(--bone-100)" />
+        </svg>
+        <span style={{
+          position: "absolute",
+          bottom: 12,
+          left: 14,
+          fontFamily: "var(--font-mono)",
+          fontSize: 9,
+          letterSpacing: "0.12em",
+          textTransform: "uppercase",
+          color: "var(--bone-600)",
+        }}>Foto folgt</span>
+      </div>
+      <div style={{ padding: "16px 18px 20px" }}>
+        <div style={{ fontFamily: "var(--font-sans)", fontSize: 15, fontWeight: 600, color: "var(--bone-100)", marginBottom: 5 }}>{name}</div>
+        <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--brass-500)" }}>{rolle}</div>
+      </div>
+    </div>
+  );
+}
+
+function ImpressumBlock({ label, children }) {
+  return (
+    <div style={{ paddingBottom: 28, borderBottom: "1px solid var(--ink-300)", marginBottom: 28 }}>
+      <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 10 }}>
+        {label}
+      </div>
+      <div style={{ fontFamily: "var(--font-sans)", fontSize: 14, color: "var(--bone-200)", lineHeight: 1.7 }}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
 export default function ImpressumPage() {
   const [lang, setLang] = React.useState("DE");
 
   React.useEffect(() => {
     const saved = localStorage.getItem("bcf_lang");
     if (saved) setLang(saved);
-    const r = document.documentElement;
-    r.style.setProperty("--brass-500", "oklch(0.78 0.13 220)");
-    r.style.setProperty("--brass-700", "oklch(0.62 0.11 218)");
-    r.style.setProperty("--brass-300", "oklch(0.88 0.10 222)");
-    r.style.setProperty("--brass-900", "oklch(0.42 0.08 215)");
   }, []);
 
   const t = (key) => TRANSLATIONS[lang]?.[key] || key;
@@ -23,84 +79,103 @@ export default function ImpressumPage() {
   return (
     <TranslationContext.Provider value={{ lang, setLang, t }}>
       <Nav />
-      <div style={{ minHeight: "100vh", background: "var(--ink-050)", paddingTop: 80, display: "flex", flexDirection: "column" }}>
+      <div style={{ minHeight: "100vh", background: "var(--ink-000)", paddingTop: 80 }}>
 
-        {/* Breadcrumb */}
-        <div className="container" style={{ paddingTop: 32 }}>
-          <a
-            href="/"
-            style={{ display: "inline-flex", alignItems: "center", gap: 10, fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", textDecoration: "none", opacity: 0.7, transition: "opacity 0.2s" }}
-            onMouseEnter={e => { e.currentTarget.style.opacity = 1; e.currentTarget.querySelector(".back-underline").style.transform = "scaleX(1)"; }}
-            onMouseLeave={e => { e.currentTarget.style.opacity = 0.7; e.currentTarget.querySelector(".back-underline").style.transform = "scaleX(0)"; }}
-          >
-            <span style={{ color: "var(--bone-500)", display: "inline-flex", flexDirection: "column", gap: 0 }}>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: 13 }}>←</span>
-                <span>Zurück</span>
-              </span>
-              <span className="back-underline" style={{ display: "block", height: 1, background: "var(--bone-500)", transformOrigin: "left", transform: "scaleX(0)", transition: "transform 0.25s ease" }} />
-            </span>
-            <span style={{ color: "var(--bone-700)", fontWeight: 300 }}>/</span>
-            <span style={{ color: "var(--brass-500)" }}>Impressum &amp; Vorstand</span>
-          </a>
-        </div>
-
-        {/* Sloth hero */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 72, paddingBottom: 48, textAlign: "center" }}>
-          <style>{`
-            @keyframes sloth-sway {
-              0%   { transform: rotate(-4deg) translateY(0px); }
-              50%  { transform: rotate(4deg) translateY(-6px); }
-              100% { transform: rotate(-4deg) translateY(0px); }
-            }
-          `}</style>
-          <div style={{ fontSize: "clamp(80px, 14vw, 140px)", lineHeight: 1, animation: "sloth-sway 4s ease-in-out infinite", transformOrigin: "top center", display: "inline-block" }}>
-            🦥
-          </div>
-          <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(36px, 7vw, 96px)", fontWeight: 700, color: "var(--bone-100)", letterSpacing: "-0.03em", lineHeight: 1, marginTop: 32, marginBottom: 0 }}>
-            Under<br /><em style={{ fontStyle: "italic", color: "var(--brass-500)" }}>Construction</em>
-          </h1>
-        </div>
-
-        {/* Content */}
-        <div style={{ flex: 1, padding: "0 24px 100px" }}>
+        {/* Header */}
+        <div style={{
+          borderBottom: "1px solid var(--ink-300)",
+          padding: "48px 0 56px",
+          background: "radial-gradient(ellipse at 70% 0%, color-mix(in srgb, var(--felt-700) 40%, transparent) 0%, transparent 60%)",
+        }}>
           <div className="container">
-            <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: "var(--brass-500)", marginBottom: 48, display: "flex", alignItems: "center", gap: 12 }}>
-              <span style={{ display: "inline-block", width: 24, height: 1, background: "var(--brass-500)" }} />
+            <a
+              href="/"
+              style={{ display: "inline-flex", alignItems: "center", gap: 10, fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", textDecoration: "none", opacity: 0.7, transition: "opacity 0.2s", marginBottom: 32 }}
+              onMouseEnter={e => { e.currentTarget.style.opacity = 1; e.currentTarget.querySelector(".back-underline").style.transform = "scaleX(1)"; }}
+              onMouseLeave={e => { e.currentTarget.style.opacity = 0.7; e.currentTarget.querySelector(".back-underline").style.transform = "scaleX(0)"; }}
+            >
+              <span style={{ color: "var(--bone-500)", display: "inline-flex", flexDirection: "column", gap: 0 }}>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+                  <span style={{ fontSize: 13 }}>←</span>
+                  <span>{t("nav.back")}</span>
+                </span>
+                <span className="back-underline" style={{ display: "block", height: 1, background: "var(--bone-500)", transformOrigin: "left", transform: "scaleX(0)", transition: "transform 0.25s ease" }} />
+              </span>
+              <span style={{ color: "var(--bone-700)", fontWeight: 300 }}>/</span>
+              <span style={{ color: "var(--brass-500)" }}>{t("nav.impressum")}</span>
+            </a>
+            <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(40px, 7vw, 88px)", fontWeight: 700, color: "var(--bone-100)", lineHeight: 1.05, letterSpacing: "-0.03em", marginBottom: 16 }}>
+              Impressum &amp;<br /><em style={{ fontStyle: "italic", color: "var(--brass-500)" }}>Vorstand</em>
+            </h1>
+            <p style={{ fontFamily: "var(--font-sans)", fontSize: 15, color: "var(--bone-400)", maxWidth: 480, lineHeight: 1.6 }}>
+              Angaben gemäß § 5 DDG. Verantwortlich für den Betrieb dieser Website.
+            </p>
+          </div>
+        </div>
+
+        {/* Vorstand */}
+        <div style={{ padding: "72px 0" }}>
+          <div className="container">
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 32, display: "flex", alignItems: "center", gap: 12 }}>
+              <span style={{ display: "inline-block", width: 20, height: 1, background: "var(--bone-500)", opacity: 0.4 }} />
               Der Vorstand
             </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: 20 }}>
+              {VORSTAND.map(p => <PersonCard key={p.name} {...p} />)}
+            </div>
+          </div>
+        </div>
 
-            {/* Vorstand cards */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 24, marginBottom: 64 }}>
-              {[
-                { initials: "MM", name: "Max Mustermann",    rolle: "1. Vorsitzender" },
-                { initials: "EM", name: "Erika Musterfrau",  rolle: "2. Vorsitzende" },
-                { initials: "HB", name: "Hans Beispiel",     rolle: "Kassenwart" },
-                { initials: "MB", name: "Maria Beispiel",    rolle: "Sportwart" },
-                { initials: "PM", name: "Peter Muster",      rolle: "Schriftführer" },
-              ].map(({ initials, name, rolle }) => (
-                <div key={initials} style={{ background: "var(--ink-200)", border: "1px solid var(--ink-300)", borderRadius: 12, overflow: "hidden" }}>
-                  <div style={{ background: "var(--ink-300)", display: "flex", alignItems: "flex-end", justifyContent: "center", height: 200, position: "relative", overflow: "hidden" }}>
-                    {/* Silhouette */}
-                    <svg viewBox="0 0 200 220" style={{ width: "75%", opacity: 0.18 }} aria-hidden="true">
-                      <ellipse cx="100" cy="72" rx="38" ry="40" fill="var(--bone-100)" />
-                      <path d="M20 220 Q20 140 100 140 Q180 140 180 220Z" fill="var(--bone-100)" />
-                    </svg>
-                    <div style={{ position: "absolute", bottom: 16, left: 16, fontFamily: "var(--font-mono)", fontSize: 9, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--bone-500)", opacity: 0.5 }}>
-                      Foto folgt
-                    </div>
-                  </div>
-                  <div style={{ padding: "16px 18px" }}>
-                    <div style={{ fontFamily: "var(--font-display)", fontSize: 16, fontWeight: 600, color: "var(--bone-100)", marginBottom: 4 }}>{name}</div>
-                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.08em", color: "var(--brass-500)", textTransform: "uppercase" }}>{rolle}</div>
-                  </div>
-                </div>
-              ))}
+        {/* Impressum */}
+        <div style={{ borderTop: "1px solid var(--ink-300)", padding: "72px 0 100px" }}>
+          <div className="container">
+            <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 48, display: "flex", alignItems: "center", gap: 12 }}>
+              <span style={{ display: "inline-block", width: 20, height: 1, background: "var(--bone-500)", opacity: 0.4 }} />
+              Impressum
             </div>
 
-            <p style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--ink-500)", borderTop: "1px solid var(--ink-300)", paddingTop: 24 }}>
-              Echte Namen &amp; Fotos folgen — Impressum in Kürze
-            </p>
+            <div style={{ maxWidth: 620 }}>
+
+              <ImpressumBlock label="Angaben gemäß § 5 DDG">
+                Billard Club Frankfurt 1912 e.V.<br />
+                Musterstraße 1<br />
+                60000 Frankfurt am Main
+              </ImpressumBlock>
+
+              <ImpressumBlock label="Vertreten durch">
+                Max Mustermann, 1. Vorsitzender
+              </ImpressumBlock>
+
+              <ImpressumBlock label="Kontakt">
+                E-Mail: <a href="mailto:info@bcfrankfurt.de" style={{ color: "var(--brass-500)", textDecoration: "none" }}>info@bcfrankfurt.de</a><br />
+                Telefon: +49 (0) 69 000000
+              </ImpressumBlock>
+
+              <ImpressumBlock label="Registereintrag">
+                Eingetragen im Vereinsregister<br />
+                Registergericht: Amtsgericht Frankfurt am Main<br />
+                Vereinsregisternummer: VR 00000
+              </ImpressumBlock>
+
+              <ImpressumBlock label="Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV">
+                Max Mustermann<br />
+                Musterstraße 1<br />
+                60000 Frankfurt am Main
+              </ImpressumBlock>
+
+              <div style={{ paddingTop: 4 }}>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 10 }}>
+                  Datenschutz
+                </div>
+                <div style={{ fontFamily: "var(--font-sans)", fontSize: 14, color: "var(--bone-200)", lineHeight: 1.7 }}>
+                  Informationen zur Verarbeitung personenbezogener Daten findest du in unserer{" "}
+                  <a href="/datenschutz" style={{ color: "var(--brass-500)", textDecoration: "underline", textUnderlineOffset: 3 }}>
+                    Datenschutzerklärung
+                  </a>.
+                </div>
+              </div>
+
+            </div>
           </div>
         </div>
 

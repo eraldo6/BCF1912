@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useTranslation } from "./translation-context";
-import { Arrow, ArrowOut, PoolTableHero, ScrollCue } from "./visuals";
+import { Arrow, ArrowOut, PoolTableHero, ScrollCue, DownloadIcon } from "./visuals";
 import DOMPurify from "dompurify";
 
 /* Sections — broken down for maintainability */
@@ -10,14 +10,26 @@ import DOMPurify from "dompurify";
 export const Nav = () => {
   const { t } = useTranslation();
   const [scrolled, setScrolled] = React.useState(false);
+  const [isHome, setIsHome] = React.useState(false);
+
   React.useEffect(() => {
+    setIsHome(window.location.pathname === "/");
     const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const navLink = (anchor) => isHome ? anchor : `/${anchor}`;
+
+  const handleNavClick = (e, anchor) => {
+    if (!isHome) return;
+    e.preventDefault();
+    document.querySelector(anchor)?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <nav className={`nav ${scrolled ? "scrolled" : ""}`}>
-      <a href="#top" className="nav-logo">
+      <a href={isHome ? "#top" : "/"} className="nav-logo">
         <img
           src="https://bcfrankfurt.de/wp-content/uploads/2018/02/BCF-Wappen_qu-200x200.png"
           alt="BC Frankfurt 1912"
@@ -26,11 +38,11 @@ export const Nav = () => {
         <span>BC Frankfurt <em style={{ fontStyle: "italic", color: "var(--brass-500)", fontWeight: 400 }}>1912</em> e.V.</span>
       </a>
       <ul className="nav-links">
-        <li><a href="#news">News</a></li>
-        <li><a href="/calendar">{t("nav.games")}</a></li>
-        <li><a href="#about">{t("nav.disciplines")}</a></li>
-        <li><a href="#experience">{t("nav.experience")}</a></li>
-        <li><a href="#contact">{t("nav.visit")}</a></li>
+        <li><a href={navLink("#news")} onClick={e => handleNavClick(e, "#news")}>News</a></li>
+        <li><a href={navLink("#kalender")} onClick={e => handleNavClick(e, "#kalender")}>{t("nav.games")}</a></li>
+        <li><a href={navLink("#about")} onClick={e => handleNavClick(e, "#about")}>{t("nav.disciplines")}</a></li>
+        <li><a href={navLink("#experience")} onClick={e => handleNavClick(e, "#experience")}>{t("nav.experience")}</a></li>
+        <li><a href={navLink("#contact")} onClick={e => handleNavClick(e, "#contact")}>{t("nav.visit")}</a></li>
       </ul>
       <div className="nav-cta">
         <LangPicker />
@@ -150,15 +162,15 @@ export const Hero = ({ images = [] }) => {
           <div className="hero-stats reveal in-view delay-4">
           <div ref={jahreRef}>
             <div className="hero-stat-num">{jahre}</div>
-            <div className="hero-stat-label">Jahre</div>
+            <div className="hero-stat-label">{t("hero.stat.jahre")}</div>
           </div>
           <div ref={disziplinenRef}>
             <div className="hero-stat-num">{disziplinen}</div>
-            <div className="hero-stat-label">Disziplinen</div>
+            <div className="hero-stat-label">{t("hero.stat.disziplinen")}</div>
           </div>
           <div ref={mitgliederRef}>
             <div className="hero-stat-num">{mitglieder}</div>
-            <div className="hero-stat-label">Mitglieder</div>
+            <div className="hero-stat-label">{t("hero.stat.mitglieder")}</div>
           </div>
         </div>
         </div>
@@ -534,6 +546,18 @@ export const Membership = () => {
           </div>
         ))}
       </div>
+
+      {/* Download buttons */}
+      <div className="reveal" style={{ marginTop: 60, display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "flex-end" }}>
+        <a href="/aufnahmeantrag.pdf" download className="member-download-btn">
+          <span className="download-arrow"><DownloadIcon size={22} /></span>
+          <span style={{ fontFamily: "var(--font-sans)", fontSize: 18, fontWeight: 500, color: "var(--bone-200)" }}>{t("membership.docs.aufnahme.title")}</span>
+        </a>
+        <a href="/vereinssatzung.pdf" download className="member-download-btn">
+          <span className="download-arrow"><DownloadIcon size={22} /></span>
+          <span style={{ fontFamily: "var(--font-sans)", fontSize: 18, fontWeight: 500, color: "var(--bone-200)" }}>{t("membership.docs.satzung.title")}</span>
+        </a>
+      </div>
     </div>
   </section>
 );
@@ -542,14 +566,35 @@ export const Membership = () => {
 
 const Lightbox = ({ items, index, onClose, onNav }) => {
   const touchX = React.useRef(null);
-  const isOpen = index != null;
+  const savedIndex = React.useRef(index);
+  const [closing, setClosing] = React.useState(false);
+  const [navDir, setNavDir] = React.useState(0);
+  const [imgKey, setImgKey] = React.useState(0);
 
+  if (index != null) savedIndex.current = index;
+
+  const handleClose = React.useCallback(() => setClosing(true), []);
+
+  const handleNav = React.useCallback((d) => {
+    setNavDir(d);
+    setImgKey(k => k + 1);
+    onNav(d);
+  }, [onNav]);
+
+  const handleAnimEnd = React.useCallback((e) => {
+    if (closing && e.target === e.currentTarget && e.animationName === 'lb-fade-out') {
+      setClosing(false);
+      onClose();
+    }
+  }, [closing, onClose]);
+
+  const isOpen = index != null || closing;
   React.useEffect(() => {
     if (!isOpen) return;
     const onKey = (e) => {
-      if (e.key === "Escape") onClose();
-      else if (e.key === "ArrowRight") onNav(1);
-      else if (e.key === "ArrowLeft") onNav(-1);
+      if (e.key === "Escape") handleClose();
+      else if (e.key === "ArrowRight") handleNav(1);
+      else if (e.key === "ArrowLeft") handleNav(-1);
     };
     document.addEventListener("keydown", onKey);
     const prevOverflow = document.body.style.overflow;
@@ -558,30 +603,40 @@ const Lightbox = ({ items, index, onClose, onNav }) => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
     };
-  }, [isOpen, onClose, onNav]);
+  }, [isOpen, handleClose, handleNav]);
 
-  if (index == null) return null;
-  const item = items[index];
+  if (!isOpen) return null;
+  const item = items[savedIndex.current];
+  if (!item) return null;
+
+  const navClass = navDir > 0 ? 'lb-nav-right' : navDir < 0 ? 'lb-nav-left' : 'lb-nav-none';
 
   const onTouchStart = (e) => { touchX.current = e.touches[0].clientX; };
   const onTouchEnd = (e) => {
     if (touchX.current == null) return;
     const dx = e.changedTouches[0].clientX - touchX.current;
-    if (Math.abs(dx) > 50) onNav(dx < 0 ? 1 : -1);
+    if (Math.abs(dx) > 50) handleNav(dx < 0 ? 1 : -1);
     touchX.current = null;
   };
 
   return (
-    <div className="lightbox" role="dialog" aria-modal="true" onClick={onClose}
-         onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
-      <button className="lightbox-close" aria-label="Close" onClick={onClose}>&times;</button>
+    <div className={`lightbox${closing ? ' lightbox-closing' : ''}`}
+         role="dialog" aria-modal="true"
+         onClick={closing ? undefined : handleClose}
+         onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}
+         onAnimationEnd={handleAnimEnd}>
+      <button className="lightbox-close" aria-label="Close" onClick={closing ? undefined : handleClose}>&times;</button>
       <button className="lightbox-arrow lightbox-prev" aria-label="Previous"
-              onClick={(e) => { e.stopPropagation(); onNav(-1); }}>&#8249;</button>
+              onClick={(e) => { e.stopPropagation(); if (!closing) handleNav(-1); }}>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
       <figure className="lightbox-figure" onClick={(e) => e.stopPropagation()}>
-        <img className="lightbox-img" src={item.img} alt={item.caption} />
+        <img key={imgKey} className={`lightbox-img ${navClass}`} src={item.img} alt={item.caption} />
       </figure>
       <button className="lightbox-arrow lightbox-next" aria-label="Next"
-              onClick={(e) => { e.stopPropagation(); onNav(1); }}>&#8250;</button>
+              onClick={(e) => { e.stopPropagation(); if (!closing) handleNav(1); }}>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
     </div>
   );
 };
@@ -699,7 +754,7 @@ export const ClubSection = ({ images = [], hideGallery = false }) => {
       {/* Sportbetrieb CTA */}
       <div style={{ display: "flex", justifyContent: "center", padding: "40px 0 8px" }}>
         <a href="/sportbetrieb" className="btn btn-ghost" style={{ padding: "12px 22px", fontSize: 12 }}>
-          Zum Sportbetrieb &amp; unseren Mannschaften <ArrowOut size={11} />
+          {t("club.toSportsbetrieb")} <ArrowOut size={11} />
         </a>
       </div>
 
@@ -727,7 +782,7 @@ export const ClubSection = ({ images = [], hideGallery = false }) => {
 };
 
 // ─── Tournaments (CueScore Live-Fetch) ────────────────────────────────────────
-// Ausgelagert nach lib/cuescore-tournament-importScript.js — Nice-to-Haves #30
+// Ausgelagert nach lib/potential-cuescore-tournament-importScript.js — Nice-to-Haves #30
 
 // ─── News illustrations (dummy) ───────────────────────────────────────────────
 
@@ -1022,12 +1077,12 @@ let col = 0, colH = 0, count = 0;
           <div className="section-eyebrow-row">
             <span className="section-num">{t("news.num")}</span>
             <span className="section-divider" />
-            <span className="eyebrow">News Board</span>
+            <span className="eyebrow">{t("news.eyebrow")}</span>
           </div>
-          <h2 className="section-title" style={{ marginTop: 16 }}>Aktuelles aus <em>dem Verein</em>.</h2>
+          <h2 className="section-title" style={{ marginTop: 16 }}>{t("news.headline1")}<em>{t("news.headline2")}</em>.</h2>
         </div>
         <button onClick={() => document.getElementById("kalender")?.scrollIntoView({ behavior: "smooth" })} className="btn btn-ghost" style={{ padding: "10px 18px", fontSize: 12, display: "inline-flex", alignItems: "center", gap: 6, flexShrink: 0, cursor: "pointer" }}>
-          Kalender <ArrowOut size={12} />
+          {t("news.toCalendar")} <ArrowOut size={12} />
         </button>
       </div>
 
@@ -1082,14 +1137,14 @@ let col = 0, colH = 0, count = 0;
           </div>
 
           <a ref={btnRef} href="/vereinshistorie" className="btn btn-ghost" style={{ padding: "12px 22px", fontSize: 12, alignSelf: "flex-start", flexShrink: 0 }}>
-            Zu unserer Vereinshistorie <ArrowOut size={11} />
+            {t("news.toHistory")} <ArrowOut size={11} />
           </a>
         </div>
 
         {/* Kommende Turniere sidebar */}
         <div ref={sidebarRef} style={{ background: "var(--ink-100)", border: "1px solid var(--ink-300)", borderRadius: 16, padding: "28px 24px", display: "flex", flexDirection: "column" }}>
           <div style={{ fontFamily: "var(--font-display)", fontSize: 24, fontWeight: 400, letterSpacing: "-0.02em", color: "var(--bone-100)", marginBottom: 24, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <span><em style={{ fontStyle: "italic", color: "var(--brass-500)", marginRight: "0.2em" }}>Kommende</em>{" "}Turniere</span>
+            <span><em style={{ fontStyle: "italic", color: "var(--brass-500)", marginRight: "0.2em" }}>{t("tournaments.sidebarItalic")}</em>{" "}{t("tournaments.sidebarTitle")}</span>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" style={{ color: "var(--brass-500)", flexShrink: 0 }}>
               <path d="M7 3h10v7a5 5 0 0 1-10 0V3z"/>
               <path d="M7 7H4a2 2 0 0 0 0 4h3"/>
@@ -1101,16 +1156,16 @@ let col = 0, colH = 0, count = 0;
           <div style={{ display: "flex", flexDirection: "column", gap: 0, flex: 1 }}>
             {(() => {
               const now = new Date();
-              const upcoming = turniere.filter(t => new Date(t.turnierbeginn) >= now);
-              const pastList = turniere.filter(t => new Date(t.turnierbeginn) < now);
+              const upcoming = turniere.filter(tr => new Date(tr.turnierbeginn) >= now);
+              const pastList = turniere.filter(tr => new Date(tr.turnierbeginn) < now);
               const hasPast = pastList.length > 0;
               const maxUpcoming = hasPast ? 3 : 4;
               const upcomingSlots = [...upcoming].sort((a, b) => new Date(b.turnierbeginn) - new Date(a.turnierbeginn));
               while (upcomingSlots.length < maxUpcoming) upcomingSlots.unshift(null);
               const slots = hasPast ? [...upcomingSlots, pastList[0]] : upcomingSlots;
-              return slots.map((t, i) => {
+              return slots.map((tr, i) => {
                 const isLast = i === slots.length - 1;
-                if (!t) return (
+                if (!tr) return (
                   <div key={`ph-${i}`} style={{ padding: "20px 0", borderBottom: isLast ? "none" : "1px solid var(--ink-300)", opacity: 0.18 }}>
                     <div style={{ fontFamily: "var(--font-mono)", letterSpacing: "0.06em", marginBottom: 8 }}>
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -1122,24 +1177,24 @@ let col = 0, colH = 0, count = 0;
                     <a className="turnier-link" style={{ pointerEvents: "none", color: "var(--bone-500)" }}>— <ArrowOut size={11} /></a>
                   </div>
                 );
-                const past = new Date(t.turnierbeginn) < new Date();
-                const uhrzeit = t.turnierbeginn ? new Date(t.turnierbeginn).toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" }) : null;
+                const past = new Date(tr.turnierbeginn) < new Date();
+                const uhrzeit = tr.turnierbeginn ? new Date(tr.turnierbeginn).toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" }) : null;
                 return (
-                  <div key={t.id ?? i} style={{ padding: "20px 0", borderBottom: isLast ? "none" : "1px solid var(--ink-300)" }}>
+                  <div key={tr.id ?? i} style={{ padding: "20px 0", borderBottom: isLast ? "none" : "1px solid var(--ink-300)" }}>
                     <div style={{ fontFamily: "var(--font-mono)", letterSpacing: "0.06em", marginBottom: 8 }}>
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                         <div style={{ fontSize: 13, lineHeight: 1, color: past ? "var(--bone-500)" : "var(--brass-500)", opacity: past ? 0.4 : 1, minWidth: 0, overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis" }}>
-                          {new Date(t.turnierbeginn).toLocaleDateString("de-DE", { day: "2-digit", month: "short" })}
+                          {new Date(tr.turnierbeginn).toLocaleDateString(lang === "DE" ? "de-DE" : "en-GB", { day: "2-digit", month: "short" })}
                           {uhrzeit && <span style={{ color: "var(--bone-500)", marginLeft: 12, fontSize: 12 }}>{uhrzeit}</span>}
-                          <span style={{ color: "var(--bone-500)", marginLeft: 8 }}>· {t.disziplin}</span>
+                          <span style={{ color: "var(--bone-500)", marginLeft: 8 }}>· {tr.disziplin}</span>
                         </div>
-                        {past && <span style={{ fontSize: 11, color: "var(--bone-500)", opacity: 0.5, fontFamily: "var(--font-mono)", letterSpacing: "0.06em", flexShrink: 0, marginLeft: 8 }}>Vergangen</span>}
+                        {past && <span style={{ fontSize: 11, color: "var(--bone-500)", opacity: 0.5, fontFamily: "var(--font-mono)", letterSpacing: "0.06em", flexShrink: 0, marginLeft: 8 }}>{t("tournaments.vergangen")}</span>}
                       </div>
-                      <div style={{ fontSize: 12, lineHeight: 1, color: t.typ === "intern" ? "rgba(248,113,113,0.5)" : "rgba(134,239,172,0.5)", marginTop: 14, fontFamily: "inherit" }}>{t.typ === "intern" ? "Internes Vereinsturnier" : "Öffentliches Hausturnier"}</div>
+                      <div style={{ fontSize: 12, lineHeight: 1, color: tr.typ === "intern" ? "rgba(248,113,113,0.5)" : "rgba(134,239,172,0.5)", marginTop: 14, fontFamily: "inherit" }}>{tr.typ === "intern" ? t("tournaments.intern") : t("tournaments.open")}</div>
                     </div>
-                    <div style={{ fontSize: 17, fontWeight: 400, color: "var(--bone-100)", lineHeight: 1.3, marginBottom: 6, opacity: past ? 0.4 : 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{t.name}</div>
-                    <a href={t.href} target="_blank" rel="noopener" className="turnier-link" style={{}}>
-                      {past ? "Ergebnisse auf CueScore" : "Anmelden auf CueScore"} <ArrowOut size={11} />
+                    <div style={{ fontSize: 17, fontWeight: 400, color: "var(--bone-100)", lineHeight: 1.3, marginBottom: 6, opacity: past ? 0.4 : 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{tr.name}</div>
+                    <a href={tr.href} target="_blank" rel="noopener" className="turnier-link" style={{}}>
+                      {past ? t("tournaments.resultsCuescore") : t("tournaments.registerCuescore")} <ArrowOut size={11} />
                     </a>
                   </div>
                 );
@@ -1147,7 +1202,7 @@ let col = 0, colH = 0, count = 0;
             })()}
           </div>
           <a href="/calendar" className="btn btn-ghost" style={{ marginTop: 20, padding: "9px 14px", fontSize: 11, display: "inline-flex", alignItems: "center", gap: 5, justifyContent: "center" }}>
-            Alle Turniere auf CueScore ansehen <ArrowOut size={11} />
+            {t("tournaments.allOnCuescore")} <ArrowOut size={11} />
           </a>
         </div>
       </div>
@@ -1158,7 +1213,7 @@ let col = 0, colH = 0, count = 0;
         onMouseEnter={e => e.currentTarget.style.opacity = 1}
         onMouseLeave={e => e.currentTarget.style.opacity = 0.7}
       >
-        <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--bone-500)" }}>Zum Kalender</div>
+        <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--bone-500)" }}>{t("news.toCalendarFull")}</div>
         <div style={{ width: 1, height: 40, background: "linear-gradient(to bottom, var(--brass-500), transparent)", position: "relative", overflow: "hidden" }}>
           <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 12, background: "var(--brass-500)", animation: "scroll-cue 3.6s ease-in-out infinite" }} />
         </div>
@@ -1183,7 +1238,7 @@ const KATEGORIE_ICON = {
   "Sonstiges":               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>,
 };
 
-const WEEKDAYS_SHORT = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+// Weekdays generated dynamically via locale (see CalendarSection)
 
 function buildCalendarDays(year, month) {
   const first = new Date(year, month, 1);
@@ -1208,16 +1263,21 @@ function buildCalendarDays(year, month) {
 // ];
 
 export const CalendarSection = ({ veranstaltungen = [] }) => {
+  const { t, lang } = useTranslation();
   const events = veranstaltungen;
   const [current, setCurrent] = React.useState(() => {
-    const t = new Date(); return new Date(t.getFullYear(), t.getMonth(), 1);
+    const now = new Date(); return new Date(now.getFullYear(), now.getMonth(), 1);
   });
   const [selected, setSelected] = React.useState(null);
   const today = new Date();
   const year = current.getFullYear();
   const month = current.getMonth();
   const days = buildCalendarDays(year, month);
-  const monthLabel = current.toLocaleDateString("de-DE", { month: "long", year: "numeric" });
+  const locale = lang === "DE" ? "de-DE" : "en-GB";
+  const monthLabel = current.toLocaleDateString(locale, { month: "long", year: "numeric" });
+  const weekdaysShort = Array.from({ length: 7 }, (_, i) =>
+    new Date(2024, 0, 1 + i).toLocaleDateString(locale, { weekday: "short" })
+  );
   const toKey = (d) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
   const selectedKey = selected ? toKey(new Date(selected)) : null;
   const selectedEvents = selectedKey ? events.filter(e => e.dateKey === selectedKey) : [];
@@ -1279,10 +1339,10 @@ export const CalendarSection = ({ veranstaltungen = [] }) => {
         <div className="section-eyebrow-row">
           <span className="section-num">02</span>
           <span className="section-divider" />
-          <span className="eyebrow">Kalender</span>
+          <span className="eyebrow">{t("nav.games")}</span>
         </div>
-        <h2 className="section-title" style={{ marginTop: 16 }}>Termine &amp; <em>Spielplan.</em></h2>
-        <p style={{ marginTop: 12, fontSize: 15, color: "var(--bone-400)", fontFamily: "var(--font-display)" }}>Ligaspiele und interne Termine des BC Frankfurt 1912.</p>
+        <h2 className="section-title" style={{ marginTop: 16 }}>{t("cal.headline1")} <em>{t("cal.headline2")}</em></h2>
+        <p style={{ marginTop: 12, fontSize: 15, color: "var(--bone-400)", fontFamily: "var(--font-display)" }}>{t("cal.lede")}</p>
       </div>
 
       <div style={{ display: "flex", justifyContent: "center", alignItems: "stretch" }}>
@@ -1306,7 +1366,7 @@ export const CalendarSection = ({ veranstaltungen = [] }) => {
 
         {/* Weekday headers */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 8, marginBottom: 4 }}>
-          {WEEKDAYS_SHORT.map(d => (
+          {weekdaysShort.map(d => (
             <div key={d} style={{ textAlign: "center", fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--bone-500)", padding: 8 }}>{d}</div>
           ))}
         </div>
@@ -1330,7 +1390,8 @@ export const CalendarSection = ({ veranstaltungen = [] }) => {
                     {cellEvents.slice(0, 3).map((ev, ci) => {
                       const barColor = ev.spielart === "Pool" ? "#6fa3e0"
                         : ev.spielart === "Snooker" ? "#6dc98a"
-                        : ev.spielart === "Karambol" ? "#e08080"
+                        : ev.spielart === "Karambol GB" ? "#e08080"
+                        : ev.spielart === "Karambol KB" ? "#e87a8e"
                         : "var(--bone-300)";
                       return (
                         <span key={ci} style={{ display: "flex", alignItems: "center", gap: 3, background: `color-mix(in srgb, ${barColor} 22%, transparent)`, borderRadius: 3, padding: "1px 4px", fontSize: 11, color: barColor, lineHeight: 1.3, flexShrink: 0, overflow: "hidden" }}>
@@ -1358,7 +1419,7 @@ export const CalendarSection = ({ veranstaltungen = [] }) => {
       <div ref={scrollRef} onScroll={handleSidebarScroll} className="no-scrollbar" style={{ position: "absolute", top: 0, right: 0, bottom: 0, width: 340, display: "flex", flexDirection: "column", gap: 12, padding: "12px 0", boxSizing: "border-box", opacity: contentVisible ? 1 : 0, transition: "opacity 0.18s ease", overflowY: "auto", overflowX: "hidden", scrollbarWidth: "none", msOverflowStyle: "none", maskImage: `linear-gradient(to bottom, ${scrollEdge.top ? "black 0px" : "transparent 0px, black 20px"}, ${scrollEdge.bottom ? "black 100%" : "black calc(100% - 20px), transparent 100%"})`, WebkitMaskImage: `linear-gradient(to bottom, ${scrollEdge.top ? "black 0px" : "transparent 0px, black 20px"}, ${scrollEdge.bottom ? "black 100%" : "black calc(100% - 20px), transparent 100%"})` }}>
         {displayNoEvents && (
           <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--bone-500)", fontFamily: "var(--font-mono)", fontSize: 12, letterSpacing: "0.06em", textAlign: "center", padding: 24, border: "1px solid var(--ink-300)", borderRadius: 10, background: "var(--ink-100)" }}>
-            An diesem Tag<br />keine Termine
+            {t("cal.noEvents")}
           </div>
         )}
         {displayEvents.map((ev, i) => {
@@ -1370,7 +1431,8 @@ export const CalendarSection = ({ veranstaltungen = [] }) => {
           const timeTo = ev.termin_ende ? new Date(ev.termin_ende).toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" }) : null;
           const accentColor = ev.spielart === "Pool" ? "#6fa3e0"
             : ev.spielart === "Snooker" ? "#6dc98a"
-            : ev.spielart === "Karambol" ? "#e08080"
+            : ev.spielart === "Karambol GB" ? "#e08080"
+            : ev.spielart === "Karambol KB" ? "#e87a8e"
             : "var(--bone-300)";
 
           const toIcal = (isoStr) => {
@@ -1405,7 +1467,7 @@ export const CalendarSection = ({ veranstaltungen = [] }) => {
               const monate = ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
               return `${d.getDate()} ${monate[d.getMonth()]} ${d.getFullYear()}`;
             })();
-            const zeitStr = ev.ganztaegig ? "Ganztägig" : timeFrom ? `${timeFrom}${timeTo ? ` – ${timeTo}` : ""} Uhr` : "";
+            const zeitStr = ev.ganztaegig ? t("cal.allDay") : timeFrom ? `${timeFrom}${timeTo ? ` – ${timeTo}` : ""}${lang === "DE" ? " Uhr" : ""}` : "";
             const spielartZeile = ev.spielart ? `${ev.spielart} · ${ev.kategorie ?? ""}` : (ev.kategorie ?? "");
             const text = [`BC Frankfurt 1912 — Termin:`, spielartZeile, ev.titel ?? "", `${datumLang}${zeitStr ? `, ${zeitStr}` : ""}`, "", url].join("\n");
             navigator.clipboard.writeText(text).then(() => {
@@ -1419,7 +1481,7 @@ export const CalendarSection = ({ veranstaltungen = [] }) => {
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 6 }}>
               <span style={{ display: "inline-flex", alignItems: "center", gap: 5, background: "var(--ink-200)", border: "1px solid var(--ink-300)", borderRadius: 20, padding: "3px 10px", fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--bone-400)" }}>
                 {KATEGORIE_ICON[ev.kategorie] ?? null}
-                {ev.kategorie}
+                {t(`cal.kategorie.${ev.kategorie}`) || ev.kategorie}
               </span>
               {ev.spielart && (
                 <span style={{ display: "inline-flex", alignItems: "center", gap: 5, background: `color-mix(in srgb, ${accentColor} 12%, transparent)`, border: `1px solid color-mix(in srgb, ${accentColor} 30%, transparent)`, borderRadius: 20, padding: "3px 10px", fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.08em", textTransform: "uppercase", color: accentColor }}>
@@ -1433,7 +1495,7 @@ export const CalendarSection = ({ veranstaltungen = [] }) => {
               {ev.ganztaegig ? (
                 <span>Ganztägig <span style={{ fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: 12 }}>24h</span></span>
               ) : (
-                <span>{timeFrom}{timeTo ? ` – ${timeTo}` : ""} Uhr</span>
+                <span>{timeFrom}{timeTo ? ` – ${timeTo}` : ""}{lang === "DE" ? " Uhr" : ""}</span>
               )}
             </div>
             {/* Share row */}
@@ -1446,7 +1508,7 @@ export const CalendarSection = ({ veranstaltungen = [] }) => {
                   <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
                   <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
                 </svg>
-                Teilen
+                {t("cal.share")}
               </button>
             </div>
             <div style={{ maxHeight: openShareIdx === i ? 160 : 0, overflow: "hidden", opacity: openShareIdx === i ? 1 : 0, transition: "max-height 0.35s ease, opacity 0.2s ease" }}>
@@ -1455,7 +1517,7 @@ export const CalendarSection = ({ veranstaltungen = [] }) => {
                   onMouseEnter={e => e.currentTarget.style.background = "var(--ink-200)"}
                   onMouseLeave={e => e.currentTarget.style.background = "none"}>
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                  {copiedIdx === i ? "Link kopiert!" : "Link kopieren"}
+                  {copiedIdx === i ? t("cal.linkCopied") : t("cal.copyLink")}
                 </button>
                 {googleUrl && (
                   <a href={googleUrl} target="_blank" rel="noopener" style={{ color: "var(--bone-300)", fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.06em", padding: "6px 8px", borderRadius: 6, display: "flex", alignItems: "center", gap: 8, textDecoration: "none", transition: "background 0.15s" }}
@@ -1530,14 +1592,14 @@ export const Contact = () => {
             <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 16 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, color: "var(--bone-300)", fontSize: 15 }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, color: "var(--brass-500)" }}><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 17V8h4a3 3 0 0 1 0 6H9"/></svg>
-                <span>Parkplätze direkt vor Ort</span>
+                <span>{t("contact.parking")}</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 10, color: "var(--bone-300)", fontSize: 15 }}>
                 <svg width="18" height="18" viewBox="0 0 24 24" style={{ flexShrink: 0 }}>
                   <rect x="1" y="1" width="22" height="22" rx="4" fill="#1a3a6b"/>
                   <text x="12" y="18.5" textAnchor="middle" fontSize="15" fontWeight="800" fontFamily="Arial, system-ui, sans-serif" fill="white">U</text>
                 </svg>
-                <span>4 Min. von der U7 (Hessen-Center)</span>
+                <span>{t("contact.transit")}</span>
               </div>
             </div>
           </div>
@@ -1612,7 +1674,7 @@ export const Contact = () => {
             </p>
           </div>
           <a href="/mitgliedschaft" className="btn btn-ghost" style={{ marginTop: 40, padding: "10px 18px", fontSize: 12, display: "inline-flex", alignItems: "center", gap: 6, alignSelf: "flex-start" }}>
-            Alles zur Mitgliedschaft <Arrow size={12} />
+            {t("contact.membershipBtn")} <Arrow size={12} />
           </a>
         </div>
       </div>
@@ -1681,18 +1743,24 @@ export const Footer = () => {
         </div>
         <div className="footer-col footer-nav">
           <ul>
-            <li><a href="#news">News</a></li>
-            <li><a href="/calendar">{t("nav.games")}</a></li>
-            <li><a href="#about">{t("nav.disciplines")}</a></li>
-            <li><a href="#experience">{t("nav.experience")}</a></li>
-            <li><a href="#contact">{t("nav.visit")}</a></li>
-            <li><a href="/impressum">Impressum &amp; Vorstand</a></li>
+            {[["#news","News"],["#kalender",t("nav.games")],["#about",t("nav.disciplines")],["#experience",t("nav.experience")],["#contact",t("nav.visit")]].map(([anchor, label]) => {
+              const onHome = typeof window !== "undefined" && window.location.pathname === "/";
+              return (
+                <li key={anchor}>
+                  <a href={onHome ? anchor : `/${anchor}`} onClick={onHome ? e => { e.preventDefault(); document.querySelector(anchor)?.scrollIntoView({ behavior: "smooth" }); } : undefined}>
+                    {label}
+                  </a>
+                </li>
+              );
+            })}
+            <li><a href="/impressum">{t("footer.legal.imprint")}</a></li>
+            <li><a href="/datenschutz">{t("footer.legal.privacy")}</a></li>
           </ul>
         </div>
       </div>
       <div className="footer-bottom">
         <span>© 1912–{new Date().getFullYear()} · Billard Club Frankfurt e.V.</span>
-        <a href="/admin/login" style={{ color: 'var(--bone-500)', fontSize: '0.75rem', opacity: 0.5 }}>Vorstandslogin</a>
+        <a href="/admin/login" style={{ color: 'var(--bone-500)', fontSize: '0.75rem', opacity: 0.5 }}>{t("footer.boardLogin")}</a>
       </div>
     </div>
   </footer>

@@ -15,7 +15,7 @@ function validateTurnier(formData) {
   const turnierbeginn = str(formData, 'turnierbeginn')
   if (!turnierbeginn) return 'Turnierbeginn ist erforderlich'
   const disziplin = str(formData, 'disziplin')
-  if (!['Pool', 'Karambol', 'Snooker'].includes(disziplin)) return 'Ungültige Disziplin'
+  if (!['Pool', 'Snooker', 'Karambol GB', 'Karambol KB'].includes(disziplin)) return 'Ungültige Disziplin'
   const typ = str(formData, 'typ')
   if (!['offen', 'intern'].includes(typ)) return 'Ungültiger Typ'
   const href = str(formData, 'href', 1000)

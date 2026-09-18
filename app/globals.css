@@ -22,7 +22,10 @@
 .lang-changing .member-tagline,
 .lang-changing .member-tag,
 .lang-changing .discipline-name,
-.lang-changing .discipline-desc {
+.lang-changing .discipline-desc,
+.lang-changing .member-download-btn span,
+.lang-changing .contact-label,
+.lang-changing .contact-email {
   animation: lang-flip 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
@@ -653,7 +656,7 @@ body {
 .btn-arrow {
   width: 14px;
   height: 14px;
-  transition: transform 0.5s var(--ease-out);
+  transition: transform 0.4s var(--ease-out);
 }
 .btn:hover .btn-arrow {
   transform: translateX(6px);
@@ -887,7 +890,7 @@ section {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  transition: all 0.5s var(--ease-out);
+  transition: all 0.4s var(--ease-out);
 }
 
 .nav.scrolled {
@@ -1195,7 +1198,7 @@ section {
   padding: 40px 0;
   border-bottom: 1px solid var(--ink-300);
   align-items: center;
-  transition: all 0.5s var(--ease-out);
+  transition: all 0.4s var(--ease-out);
   cursor: pointer;
   position: relative;
 }
@@ -1236,7 +1239,7 @@ section {
   font-size: 56px;
   font-weight: 400;
   letter-spacing: -0.02em;
-  transition: all 0.5s var(--ease-out);
+  transition: all 0.4s var(--ease-out);
 }
 .discipline-name em {
   font-style: italic;
@@ -1375,7 +1378,7 @@ section {
   padding: 36px;
   position: relative;
   overflow: hidden;
-  transition: all 0.5s var(--ease-out);
+  transition: all 0.4s var(--ease-out);
 }
 
 .exp-card::before {
@@ -1489,7 +1492,7 @@ section {
   display: flex;
   flex-direction: column;
   position: relative;
-  transition: all 0.5s var(--ease-out);
+  transition: all 0.4s var(--ease-out);
   overflow: hidden;
 }
 
@@ -1616,8 +1619,66 @@ section {
   justify-content: space-between;
 }
 
+/* Download buttons */
+.member-download-btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+  padding: 16px 22px;
+  border: 1px solid var(--brass-700);
+  border-radius: var(--radius-lg);
+  background: rgba(17, 17, 20, 0.7);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.35s var(--ease-out), border-color 0.3s, box-shadow 0.35s, background 0.3s;
+  box-shadow: 0 0 32px rgba(43, 127, 255, 0.08), 0 0 0 0px var(--brass-700);
+}
+.member-download-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at top, rgba(43, 127, 255, 0.07), transparent 65%);
+  pointer-events: none;
+  transition: opacity 0.4s;
+  opacity: 1;
+}
+.member-download-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at top, rgba(43, 127, 255, 0.18), transparent 65%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.member-download-btn:hover {
+  transform: translateY(-4px);
+  border-color: var(--brass-500);
+  background: rgba(17, 17, 20, 0.9);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), 0 0 60px rgba(43, 127, 255, 0.18), 0 0 0 1px var(--brass-700);
+}
+.member-download-btn:hover::after { opacity: 1; }
+.member-download-btn:hover .download-arrow {
+  transform: translateY(3px);
+  color: var(--brass-300);
+  filter: drop-shadow(0 0 6px rgba(43, 127, 255, 0.7));
+}
+.download-arrow {
+  color: var(--brass-500);
+  line-height: 1;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s var(--ease-out), color 0.3s, filter 0.3s;
+}
+
 @media (max-width: 900px) {
   .member-grid { grid-template-columns: 1fr; }
+  .membership-contact-grid { grid-template-columns: 1fr !important; gap: 48px !important; }
+  .membership-contact-grid .contact-col-right { padding-top: 0 !important; }
+  .membership-docs-grid { flex-direction: column; }
 }
 
 /* Club discipline strip */
@@ -1658,7 +1719,7 @@ section {
   border-radius: var(--radius-lg);
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.5s var(--ease-out);
+  transition: transform 0.4s var(--ease-out);
   border: 1px solid rgba(245, 241, 232, 0.05);
 }
 
@@ -1734,11 +1795,44 @@ section {
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: lb-zoom 0.32s var(--ease-out);
 }
+
+/* Lightbox open/close keyframes */
 @keyframes lb-zoom {
   from { opacity: 0; transform: scale(0.96); }
-  to { opacity: 1; transform: scale(1); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes lb-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+@keyframes lb-zoom-out {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.94); }
+}
+
+/* Navigation slide keyframes */
+@keyframes lb-slide-right {
+  from { opacity: 0; transform: translateX(48px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes lb-slide-left {
+  from { opacity: 0; transform: translateX(-48px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Image animation classes (applied via React) */
+.lb-nav-none  { animation: lb-zoom        0.4s var(--ease-out); }
+.lb-nav-right { animation: lb-slide-right 0.4s var(--ease-out); }
+.lb-nav-left  { animation: lb-slide-left  0.4s var(--ease-out); }
+
+/* Closing state */
+.lightbox-closing {
+  animation: lb-fade-out 0.4s var(--ease-out) forwards !important;
+  pointer-events: none;
+}
+.lightbox-closing .lightbox-figure {
+  animation: lb-zoom-out 0.4s var(--ease-out) forwards;
 }
 
 .lightbox-img {

@@ -232,6 +232,8 @@ function BeitragModal({ row, onClose, onSuccess, onError, isPending, startTransi
   )
 }
 
+const DATA_COL_COUNT = COLUMNS.filter(c => c.key !== 'veroeffentlicht').length
+
 export function BeitraegeTable({ rows: initialRows, userMap = {} }) {
   const [rows, setRows] = useState(initialRows)
   useEffect(() => { setRows(initialRows) }, [initialRows])
@@ -296,7 +298,7 @@ export function BeitraegeTable({ rows: initialRows, userMap = {} }) {
           <h2 style={{ fontFamily: 'var(--font-display)', color: 'var(--bone-200)', fontSize: '1.4rem', margin: 0 }}>News Beiträge</h2>
           {rows.length > 0 && (
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--bone-500)' }}>
-              {rows.length} {rows.length === 1 ? 'Eintrag' : 'Einträge'}
+              {rows.length} {rows.length === 1 ? 'Eintrag' : 'Einträge'} · {DATA_COL_COUNT} Attribute
             </span>
           )}
         </div>

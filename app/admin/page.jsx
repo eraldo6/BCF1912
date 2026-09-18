@@ -104,7 +104,7 @@ export default async function AdminPage() {
         {error ? (
           <p style={{ color: '#ef4444', fontFamily: 'var(--font-mono)', fontSize: '0.875rem' }}>Fehler: {error.message}</p>
         ) : (
-          <VeranstaltungenTable rows={rows ?? []} userMap={userMap} attributeCount={rows?.[0] ? Object.keys(rows[0]).length : 0} />
+          <VeranstaltungenTable rows={rows ?? []} userMap={userMap} />
         )}
       </div>
     </main>

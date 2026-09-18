@@ -4,12 +4,12 @@ import { useState, useRef, useTransition, useEffect } from 'react'
 import { createTurnier, updateTurnier, toggleTurnierVeroeffentlicht, softDeleteTurnier } from './turniere-actions'
 
 const COLUMNS = [
-  { key: 'veroeffentlicht', label: 'Status' },
+  { key: 'veroeffentlicht', label: 'Status',        width: 90 },
   { key: 'name',            label: 'Name' },
-  { key: 'turnierbeginn',   label: 'Turnierbeginn' },
-  { key: 'disziplin',       label: 'Disziplin' },
-  { key: 'typ',             label: 'Typ' },
-  { key: 'href',            label: 'Link' },
+  { key: 'turnierbeginn',   label: 'Turnierbeginn', width: 250 },
+  { key: 'disziplin',       label: 'Disziplin',     width: 140 },
+  { key: 'typ',             label: 'Typ',            width: 140 },
+  { key: 'href',            label: 'Link',           width: 100 },
 ]
 
 function toDatetimeLocal(iso) {
@@ -114,8 +114,9 @@ function TurnierModal({ row, onClose, onSuccess, onError, isPending, startTransi
               <select name="disziplin" required style={inputStyle} defaultValue={row?.disziplin ?? ''}>
                 <option value="" disabled>— wählen —</option>
                 <option value="Pool">Pool</option>
-                <option value="Karambol">Karambol</option>
                 <option value="Snooker">Snooker</option>
+                <option value="Karambol GB">Karambol GB</option>
+                <option value="Karambol KB">Karambol KB</option>
               </select>
             </div>
 
@@ -162,6 +163,8 @@ function TurnierModal({ row, onClose, onSuccess, onError, isPending, startTransi
     </div>
   )
 }
+
+const DATA_COL_COUNT = COLUMNS.filter(c => c.key !== 'veroeffentlicht').length
 
 export function TurniereTable({ rows: initialRows }) {
   const [rows, setRows] = useState(initialRows)
@@ -213,7 +216,7 @@ export function TurniereTable({ rows: initialRows }) {
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
           <h2 style={{ fontFamily: 'var(--font-display)', color: 'var(--bone-200)', fontSize: '1.4rem', margin: 0 }}>Turniere</h2>
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--bone-500)' }}>
-            {rows.length} {rows.length === 1 ? 'Eintrag' : 'Einträge'}
+            {rows.length} {rows.length === 1 ? 'Eintrag' : 'Einträge'} · {DATA_COL_COUNT} Attribute
           </span>
         </div>
         <button onClick={() => setShowCreate(true)} className="btn btn-brass" style={{ fontSize: '0.875rem' }}>
@@ -248,9 +251,9 @@ export function TurniereTable({ rows: initialRows }) {
           <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--bone-300)' }}>
             <thead>
               <tr>
-                <th style={{ padding: '8px 12px', borderBottom: '1px solid var(--ink-300)' }} />
-                {COLUMNS.map(({ key, label }) => (
-                  <th key={key} onClick={() => handleSort(key)} style={{ textAlign: 'left', padding: '8px 12px', borderBottom: '1px solid var(--ink-300)', color: sortCol === key ? 'var(--bone-200)' : 'var(--bone-500)', whiteSpace: 'nowrap', cursor: 'pointer', userSelect: 'none' }}>
+                <th style={{ padding: '8px 12px', borderBottom: '1px solid var(--ink-300)', width: 64 }} />
+                {COLUMNS.map(({ key, label, width }) => (
+                  <th key={key} onClick={() => handleSort(key)} style={{ textAlign: 'left', padding: '8px 12px', borderBottom: '1px solid var(--ink-300)', color: sortCol === key ? 'var(--bone-200)' : 'var(--bone-500)', whiteSpace: 'nowrap', cursor: 'pointer', userSelect: 'none', width: width ?? undefined }}>
                     {label} {sortCol === key ? (sortDir === 'asc' ? '↑' : '↓') : '↕'}
                   </th>
                 ))}
@@ -290,7 +293,7 @@ export function TurniereTable({ rows: initialRows }) {
                         : key === 'turnierbeginn'
                           ? formatTermin(row[key])
                         : key === 'disziplin'
-                          ? <span style={{ display: 'inline-block', padding: '2px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600, ...(row[key] === 'Pool' ? { background: 'rgba(60,120,200,0.2)', color: '#6fa3e0', border: '1px solid rgba(60,120,200,0.3)' } : row[key] === 'Snooker' ? { background: 'rgba(60,180,100,0.2)', color: '#6dc98a', border: '1px solid rgba(60,180,100,0.3)' } : { background: 'rgba(200,70,70,0.2)', color: '#e08080', border: '1px solid rgba(200,70,70,0.3)' }) }}>
+                          ? <span style={{ display: 'inline-block', padding: '2px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600, ...(row[key] === 'Pool' ? { background: 'rgba(60,120,200,0.2)', color: '#6fa3e0', border: '1px solid rgba(60,120,200,0.3)' } : row[key] === 'Snooker' ? { background: 'rgba(60,180,100,0.2)', color: '#6dc98a', border: '1px solid rgba(60,180,100,0.3)' } : row[key] === 'Karambol KB' ? { background: 'rgba(210,60,90,0.15)', color: '#e87a8e', border: '1px solid rgba(210,60,90,0.25)' } : { background: 'rgba(200,70,70,0.2)', color: '#e08080', border: '1px solid rgba(200,70,70,0.3)' }) }}>
                             {row[key]}
                           </span>
                         : key === 'typ'

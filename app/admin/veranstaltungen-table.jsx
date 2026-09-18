@@ -180,7 +180,8 @@ function VeranstaltungModal({ row, onClose, onSuccess, onError, isPending, start
                 <option value="">— keine —</option>
                 <option value="Pool">Pool</option>
                 <option value="Snooker">Snooker</option>
-                <option value="Karambol">Karambol</option>
+                <option value="Karambol GB">Karambol GB</option>
+                <option value="Karambol KB">Karambol KB</option>
               </select>
             </div>
 
@@ -208,7 +209,7 @@ function VeranstaltungModal({ row, onClose, onSuccess, onError, isPending, start
 
             <div>
               <label style={{ ...labelStyle, color: ganztaegig ? 'var(--bone-600)' : 'var(--bone-300)' }}>
-                Dauer (Stunden) {!ganztaegig && '*'}
+                Dauer (Stunden) oder Ganztägig *
               </label>
               <input
                 name="dauer_stunden"
@@ -311,7 +312,9 @@ function VeranstaltungModal({ row, onClose, onSuccess, onError, isPending, start
   )
 }
 
-export function VeranstaltungenTable({ rows: initialRows, userMap = {}, attributeCount = 0 }) {
+const DATA_COL_COUNT = COLUMNS.filter(c => c.key !== 'veroeffentlicht').length
+
+export function VeranstaltungenTable({ rows: initialRows, userMap = {} }) {
   const [rows, setRows] = useState(initialRows)
   useEffect(() => { setRows(initialRows) }, [initialRows])
   const [sortCol, setSortCol] = useState('termin')
@@ -377,14 +380,14 @@ export function VeranstaltungenTable({ rows: initialRows, userMap = {}, attribut
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '12px' }}>
           <h2 style={{ fontFamily: 'var(--font-display)', color: 'var(--bone-200)', fontSize: '1.4rem', margin: 0 }}>
             Veranstaltungen
           </h2>
           {rows.length > 0 && (
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: 'var(--bone-500)' }}>
-              {rows.length} {rows.length === 1 ? 'Eintrag' : 'Einträge'} · {attributeCount} Attribute
+              {rows.length} {rows.length === 1 ? 'Eintrag' : 'Einträge'} · {DATA_COL_COUNT} Attribute
             </span>
           )}
         </div>
@@ -392,6 +395,9 @@ export function VeranstaltungenTable({ rows: initialRows, userMap = {}, attribut
           + Neuer Termin
         </button>
       </div>
+      <p style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'rgba(255,255,255,0.5)', letterSpacing: '0.03em', marginBottom: '20px' }}>
+        Manuelle Änderungen an VeVeTo-Einträgen werden beim nächsten automatischen Import (täglich morgens) überschrieben.
+      </p>
 
       {toast && (
         <div style={{
@@ -590,9 +596,10 @@ export function VeranstaltungenTable({ rows: initialRows, userMap = {}, attribut
                             borderRadius: '4px',
                             fontSize: '0.75rem',
                             fontWeight: 600,
-                            ...(row[key] === 'Pool'     ? { background: 'rgba(60,120,200,0.2)',  color: '#6fa3e0', border: '1px solid rgba(60,120,200,0.3)' }  :
-                                row[key] === 'Snooker'  ? { background: 'rgba(60,180,100,0.2)',  color: '#6dc98a', border: '1px solid rgba(60,180,100,0.3)' }  :
-                                                          { background: 'rgba(200,70,70,0.2)',   color: '#e08080', border: '1px solid rgba(200,70,70,0.3)' }),
+                            ...(row[key] === 'Pool'          ? { background: 'rgba(60,120,200,0.2)',  color: '#6fa3e0', border: '1px solid rgba(60,120,200,0.3)' }  :
+                                row[key] === 'Snooker'       ? { background: 'rgba(60,180,100,0.2)',  color: '#6dc98a', border: '1px solid rgba(60,180,100,0.3)' }  :
+                                row[key] === 'Karambol KB'   ? { background: 'rgba(210,60,90,0.15)',  color: '#e87a8e', border: '1px solid rgba(210,60,90,0.25)' }   :
+                                                               { background: 'rgba(200,70,70,0.2)',   color: '#e08080', border: '1px solid rgba(200,70,70,0.3)' }),
                           }}>{row[key]}</span>
                       : key === 'quelle'
                         ? <span style={{

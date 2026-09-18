@@ -36,12 +36,12 @@ export default function VereinshistoriePage() {
             <span style={{ color: "var(--bone-500)", display: "inline-flex", flexDirection: "column", gap: 0 }}>
               <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
                 <span style={{ fontSize: 13 }}>←</span>
-                <span>Zurück</span>
+                <span>{t("nav.back")}</span>
               </span>
               <span className="back-underline" style={{ display: "block", height: 1, background: "var(--bone-500)", transformOrigin: "left", transform: "scaleX(0)", transition: "transform 0.25s ease" }} />
             </span>
             <span style={{ color: "var(--bone-700)", fontWeight: 300 }}>/</span>
-            <span style={{ color: "var(--brass-500)" }}>Vereinshistorie</span>
+            <span style={{ color: "var(--brass-500)" }}>{t("history.breadcrumb")}</span>
           </a>
         </div>
 
@@ -74,34 +74,34 @@ export default function VereinshistoriePage() {
             {/* Eyebrow */}
             <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: "var(--brass-500)", marginBottom: 32, display: "flex", alignItems: "center", gap: 12 }}>
               <span style={{ display: "inline-block", width: 24, height: 1, background: "var(--brass-500)" }} />
-              In Arbeit
+              {t("history.eyebrow")}
             </div>
 
             {/* Headline */}
             <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(40px, 6vw, 72px)", fontWeight: 700, color: "var(--bone-100)", lineHeight: 1.05, marginBottom: 28, letterSpacing: "-0.02em" }}>
-              Mehr als ein<br />
-              <em style={{ fontStyle: "italic", color: "var(--brass-500)" }}>Jahrhundert</em><br />
-              wartet auf Euch.
+              {t("history.headline1")}<br />
+              <em style={{ fontStyle: "italic", color: "var(--brass-500)" }}>{t("history.headline2")}</em><br />
+              {t("history.headline3")}
             </h1>
 
             {/* Subtext */}
             <p style={{ fontFamily: "var(--font-sans)", fontSize: 17, color: "var(--bone-500)", lineHeight: 1.7, maxWidth: 480, marginBottom: 48 }}>
-              Wir sammeln gerade Dokumente, Bilder und Berichte aus über 110 Jahren Vereinsgeschichte. Die Chronik erscheint bald hier.
+              {t("history.lede")}
             </p>
 
             {/* Timeline placeholder — muted, gestural */}
             <div style={{ borderLeft: "1px solid var(--ink-400)", paddingLeft: 28, display: "flex", flexDirection: "column", gap: 28 }}>
               {[
-                { year: "1912", label: "Gründung des BC Frankfurt" },
-                { year: "1950er", label: "Aufstieg in der deutschen Billardszene" },
-                { year: "1980er", label: "Erweiterung um Snooker & Karambol" },
-                { year: "Heute", label: "240+ Mitglieder, 3 Disziplinen" },
+                { year: t("history.timeline.today"),     label: t("history.timeline.todaylabel") },
+                { year: t("history.timeline.1980s"),     label: t("history.timeline.1980label") },
+                { year: t("history.timeline.1950s"),     label: t("history.timeline.1950label") },
+                { year: "1912",                          label: t("history.timeline.1912") },
               ].map(({ year, label }, i) => (
-                <div key={i} style={{ display: "flex", gap: 20, alignItems: "flex-start", opacity: i === 3 ? 1 : 0.3 }}>
-                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.14em", color: i === 3 ? "var(--brass-500)" : "var(--bone-500)", minWidth: 56, paddingTop: 2 }}>
+                <div key={i} style={{ display: "flex", gap: 20, alignItems: "flex-start", opacity: i === 0 ? 1 : 0.3 }}>
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.14em", color: i === 0 ? "var(--brass-500)" : "var(--bone-500)", minWidth: 56, paddingTop: 2 }}>
                     {year}
                   </div>
-                  <div style={{ fontFamily: "var(--font-sans)", fontSize: 14, color: i === 3 ? "var(--bone-200)" : "var(--bone-500)", lineHeight: 1.4 }}>
+                  <div style={{ fontFamily: "var(--font-sans)", fontSize: 14, color: i === 0 ? "var(--bone-200)" : "var(--bone-500)", lineHeight: 1.4 }}>
                     {label}
                   </div>
                 </div>
