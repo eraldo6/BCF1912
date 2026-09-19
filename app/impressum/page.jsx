@@ -5,12 +5,18 @@ import { TranslationContext } from "../../components/translation-context";
 import { TRANSLATIONS } from "../../lib/translations";
 import React from "react";
 
-const VORSTAND = [
+const VORSTAND_GESCHAEFTSFUEHREND = [
   { name: "Max Mustermann",   rolle: "1. Vorsitzender" },
   { name: "Erika Musterfrau", rolle: "2. Vorsitzende"  },
   { name: "Hans Beispiel",    rolle: "Kassenwart"       },
+];
+
+const VORSTAND_ERWEITERT = [
   { name: "Maria Beispiel",   rolle: "Sportwart"        },
   { name: "Peter Muster",     rolle: "Schriftführer"    },
+  { name: "Anna Muster",      rolle: "Beisitzerin"      },
+  { name: "Klaus Beispiel",   rolle: "Beisitzer"        },
+  { name: "Sara Musterfrau",  rolle: "Beisitzerin"      },
 ];
 
 function PersonCard({ name, rolle }) {
@@ -56,7 +62,7 @@ function PersonCard({ name, rolle }) {
 function ImpressumBlock({ label, children }) {
   return (
     <div style={{ paddingBottom: 28, borderBottom: "1px solid var(--ink-300)", marginBottom: 28 }}>
-      <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 10 }}>
+      <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 10 }}>
         {label}
       </div>
       <div style={{ fontFamily: "var(--font-sans)", fontSize: 14, color: "var(--bone-200)", lineHeight: 1.7 }}>
@@ -105,7 +111,7 @@ export default function ImpressumPage() {
               <span style={{ color: "var(--brass-500)" }}>{t("nav.impressum")}</span>
             </a>
             <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(40px, 7vw, 88px)", fontWeight: 700, color: "var(--bone-100)", lineHeight: 1.05, letterSpacing: "-0.03em", marginBottom: 16 }}>
-              Impressum &amp;<br /><em style={{ fontStyle: "italic", color: "var(--brass-500)" }}>Vorstand</em>
+              Impressum &amp; <em style={{ fontStyle: "italic", color: "var(--brass-500)" }}>Vorstand</em>
             </h1>
             <p style={{ fontFamily: "var(--font-sans)", fontSize: 15, color: "var(--bone-400)", maxWidth: 480, lineHeight: 1.6 }}>
               Angaben gemäß § 5 DDG. Verantwortlich für den Betrieb dieser Website.
@@ -113,65 +119,91 @@ export default function ImpressumPage() {
           </div>
         </div>
 
-        {/* Vorstand */}
-        <div style={{ padding: "72px 0" }}>
+        {/* Hauptinhalt: Impressum links, Vorstand rechts */}
+        <div style={{ padding: "72px 0 100px" }}>
           <div className="container">
-            <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 32, display: "flex", alignItems: "center", gap: 12 }}>
-              <span style={{ display: "inline-block", width: 20, height: 1, background: "var(--bone-500)", opacity: 0.4 }} />
-              Der Vorstand
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: 20 }}>
-              {VORSTAND.map(p => <PersonCard key={p.name} {...p} />)}
-            </div>
-          </div>
-        </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "64px 80px", alignItems: "start" }}>
 
-        {/* Impressum */}
-        <div style={{ borderTop: "1px solid var(--ink-300)", padding: "72px 0 100px" }}>
-          <div className="container">
-            <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 48, display: "flex", alignItems: "center", gap: 12 }}>
-              <span style={{ display: "inline-block", width: 20, height: 1, background: "var(--bone-500)", opacity: 0.4 }} />
-              Impressum
-            </div>
-
-            <div style={{ maxWidth: 620 }}>
-
-              <ImpressumBlock label="Angaben gemäß § 5 DDG">
-                Billard Club Frankfurt 1912 e.V.<br />
-                Musterstraße 1<br />
-                60000 Frankfurt am Main
-              </ImpressumBlock>
-
-              <ImpressumBlock label="Vertreten durch">
-                Max Mustermann, 1. Vorsitzender
-              </ImpressumBlock>
-
-              <ImpressumBlock label="Kontakt">
-                E-Mail: <a href="mailto:info@bcfrankfurt.de" style={{ color: "var(--brass-500)", textDecoration: "none" }}>info@bcfrankfurt.de</a><br />
-                Telefon: +49 (0) 69 000000
-              </ImpressumBlock>
-
-              <ImpressumBlock label="Registereintrag">
-                Eingetragen im Vereinsregister<br />
-                Registergericht: Amtsgericht Frankfurt am Main<br />
-                Vereinsregisternummer: VR 00000
-              </ImpressumBlock>
-
-              <ImpressumBlock label="Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV">
-                Max Mustermann<br />
-                Musterstraße 1<br />
-                60000 Frankfurt am Main
-              </ImpressumBlock>
-
-              <div style={{ paddingTop: 4 }}>
-                <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 10 }}>
-                  Datenschutz
+              {/* Impressum */}
+              <div>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 13, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 40, display: "flex", alignItems: "center", gap: 12 }}>
+                  <span style={{ display: "inline-block", width: 20, height: 1, background: "var(--bone-500)", opacity: 0.4 }} />
+                  Impressum
                 </div>
-                <div style={{ fontFamily: "var(--font-sans)", fontSize: 14, color: "var(--bone-200)", lineHeight: 1.7 }}>
-                  Informationen zur Verarbeitung personenbezogener Daten findest du in unserer{" "}
-                  <a href="/datenschutz" style={{ color: "var(--brass-500)", textDecoration: "underline", textUnderlineOffset: 3 }}>
-                    Datenschutzerklärung
-                  </a>.
+
+                <ImpressumBlock label="Angaben gemäß § 5 DDG">
+                  Billard Club Frankfurt 1912 e.V.<br />
+                  Borsigallee 45<br />
+                  60388 Frankfurt am Main<br />
+                  Deutschland
+                </ImpressumBlock>
+
+                <ImpressumBlock label="Vertreten durch">
+                  Sydney Schindhelm<br />
+                  <a href="mailto:info@bcfrankfurt.de" style={{ color: "var(--brass-500)", textDecoration: "none" }}>info@bcfrankfurt.de</a>
+                </ImpressumBlock>
+
+                <ImpressumBlock label="Kontakt">
+                  E-Mail: <a href="mailto:info@bcfrankfurt.de" style={{ color: "var(--brass-500)", textDecoration: "none" }}>info@bcfrankfurt.de</a><br />
+                  Telefon: 06109 / 36780
+                </ImpressumBlock>
+
+                <ImpressumBlock label="Registereintrag">
+                  Eingetragen im Vereinsregister<br />
+                  Registergericht: Frankfurt am Main<br />
+                  Vereinsregisternummer: VR 8330
+                </ImpressumBlock>
+
+                <ImpressumBlock label="Bankverbindung">
+                  Bank: Postbank Frankfurt am Main<br />
+                  IBAN: DE13 5001 0060 0376 2416 07<br />
+                  BIC: PBNKDEFFXXX
+                </ImpressumBlock>
+
+                <ImpressumBlock label="Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV">
+                  Sydney Schindhelm<br />
+                  <a href="mailto:info@bcfrankfurt.de" style={{ color: "var(--brass-500)", textDecoration: "none" }}>info@bcfrankfurt.de</a>
+                </ImpressumBlock>
+
+                <ImpressumBlock label="Haftungsausschluss">
+                  Trotz sorgfältiger inhaltlicher Kontrolle übernehmen wir keine Haftung für die Inhalte externer Links. Für den Inhalt der verlinkten Seiten sind ausschließlich deren Betreiber verantwortlich. Alle hier verwendeten Namen, Begriffe, Zeichen und Grafiken können Marken- oder Warenzeichen im Besitze ihrer rechtlichen Eigentümer sein. Die Rechte aller erwähnten und benutzten Marken- und Warenzeichen liegen ausschließlich bei deren Besitzern.
+                </ImpressumBlock>
+
+                <div style={{ paddingTop: 4 }}>
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 10 }}>
+                    Datenschutz
+                  </div>
+                  <div style={{ fontFamily: "var(--font-sans)", fontSize: 14, color: "var(--bone-200)", lineHeight: 1.7 }}>
+                    Informationen zur Verarbeitung personenbezogener Daten findest du in unserer{" "}
+                    <a href="/datenschutz" style={{ color: "var(--brass-500)", textDecoration: "underline", textUnderlineOffset: 3 }}>
+                      Datenschutzerklärung
+                    </a>.
+                  </div>
+                </div>
+              </div>
+
+              {/* Vorstand */}
+              <div>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 13, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 40, display: "flex", alignItems: "center", gap: 12 }}>
+                  <span style={{ display: "inline-block", width: 20, height: 1, background: "var(--bone-500)", opacity: 0.4 }} />
+                  Der Vorstand
+                </div>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--bone-600)", marginBottom: 16 }}>
+                  Geschäftsführender Vorstand
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 40 }}>
+                  {VORSTAND_GESCHAEFTSFUEHREND.map(p => <PersonCard key={p.name} {...p} />)}
+                </div>
+
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--bone-600)", marginBottom: 16 }}>
+                  Erweiterter Vorstand
+                </div>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 16, justifyContent: "center" }}>
+                  {VORSTAND_ERWEITERT.map((p, i) => (
+                    <div key={p.name} style={{ width: "calc(33.333% - 11px)" }}>
+                      <PersonCard {...p} />
+                    </div>
+                  ))}
                 </div>
               </div>
 
