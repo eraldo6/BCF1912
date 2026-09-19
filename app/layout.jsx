@@ -38,7 +38,7 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${cormorant.variable}`}>
       <body>
         <AuthHashRouter />
-        {children}
+        <div id="page-wrap">{children}</div>
       </body>
     </html>
   );

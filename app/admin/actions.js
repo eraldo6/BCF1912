@@ -2,9 +2,25 @@
 
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
+import { headers } from 'next/headers'
 import { createClient } from '../../lib/supabase/server'
+import { checkLoginRateLimit, recordFailedLogin, clearLoginAttempts } from '../../lib/login-rate-limiter'
+
+function getClientIp(headersList) {
+  const xff = headersList.get('x-forwarded-for')
+  if (xff) return xff.split(',')[0].trim()
+  return headersList.get('x-real-ip') ?? 'unknown'
+}
 
 export async function signIn(formData) {
+  const headersList = await headers()
+  const ip = getClientIp(headersList)
+
+  const { allowed, remainingMinutes } = checkLoginRateLimit(ip)
+  if (!allowed) {
+    redirect(`/admin/login?code=rate_limited&minutes=${remainingMinutes}`)
+  }
+
   const email = formData.get('email')
   const password = formData.get('password')
 
@@ -12,9 +28,13 @@ export async function signIn(formData) {
   const { error } = await supabase.auth.signInWithPassword({ email, password })
 
   if (error) {
-    redirect('/admin/login?error=' + encodeURIComponent('Ungültige Anmeldedaten'))
+    recordFailedLogin(ip)
+    // Fixed delay on every failure — makes automated attacks significantly slower
+    await new Promise(r => setTimeout(r, 500))
+    redirect('/admin/login?code=invalid_credentials')
   }
 
+  clearLoginAttempts(ip)
   redirect('/admin')
 }
 

@@ -33,7 +33,7 @@ export default function MitgliedschaftPage() {
     <TranslationContext.Provider value={{ lang, setLang, t }}>
       <Nav />
       <div style={{ paddingTop: 80, background: "var(--ink-050)" }}>
-        <div className="container" style={{ paddingTop: 32 }}>
+        <div className="membership-breadcrumb" style={{ paddingTop: 32 }}>
           <a href="/" style={{ display: "inline-flex", alignItems: "center", gap: 10, fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", textDecoration: "none", opacity: 0.7, transition: "opacity 0.2s" }}
             onMouseEnter={e => { e.currentTarget.style.opacity = 1; e.currentTarget.querySelector(".back-underline").style.transform = "scaleX(1)"; }}
             onMouseLeave={e => { e.currentTarget.style.opacity = 0.7; e.currentTarget.querySelector(".back-underline").style.transform = "scaleX(0)"; }}>
@@ -51,7 +51,7 @@ export default function MitgliedschaftPage() {
         <Membership />
 
         {/* Probetraining */}
-        <div style={{ borderTop: "1px solid var(--ink-300)", padding: "88px 0 100px", background: "var(--ink-000)" }}>
+        <div className="membership-probetraining" style={{ borderTop: "1px solid var(--ink-300)", padding: "88px 0 100px", background: "var(--ink-000)" }}>
           <div className="container">
             <div className="membership-contact-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "80px", alignItems: "start" }}>
 
@@ -72,7 +72,7 @@ export default function MitgliedschaftPage() {
               <div className="contact-col-right" style={{ paddingTop: 60, display: "flex", flexDirection: "column", gap: 16 }}>
                 <a
                   href="mailto:1vorsitzender@bcfrankfurt.de"
-                  style={{ display: "block", padding: "28px 32px", border: "1px solid rgba(245,241,232,0.08)", borderRadius: "var(--radius-lg)", background: "rgba(17,17,20,0.6)", textDecoration: "none", transition: "border-color 0.3s, background 0.3s" }}
+                  className="membership-contact-card" style={{ display: "block", padding: "28px 32px", border: "1px solid rgba(245,241,232,0.08)", borderRadius: "var(--radius-lg)", background: "rgba(17,17,20,0.6)", textDecoration: "none", transition: "border-color 0.3s, background 0.3s" }}
                   onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--brass-500)"; e.currentTarget.style.background = "rgba(17,17,20,0.9)"; }}
                   onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(245,241,232,0.08)"; e.currentTarget.style.background = "rgba(17,17,20,0.6)"; }}
                 >
@@ -86,7 +86,7 @@ export default function MitgliedschaftPage() {
 
                 <a
                   href="mailto:vize-sport@bcfrankfurt.de"
-                  style={{ display: "block", padding: "28px 32px", border: "1px solid rgba(245,241,232,0.08)", borderRadius: "var(--radius-lg)", background: "rgba(17,17,20,0.6)", textDecoration: "none", transition: "border-color 0.3s, background 0.3s" }}
+                  className="membership-contact-card" style={{ display: "block", padding: "28px 32px", border: "1px solid rgba(245,241,232,0.08)", borderRadius: "var(--radius-lg)", background: "rgba(17,17,20,0.6)", textDecoration: "none", transition: "border-color 0.3s, background 0.3s" }}
                   onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--brass-500)"; e.currentTarget.style.background = "rgba(17,17,20,0.9)"; }}
                   onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(245,241,232,0.08)"; e.currentTarget.style.background = "rgba(17,17,20,0.6)"; }}
                 >

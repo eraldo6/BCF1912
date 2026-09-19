@@ -1,9 +1,32 @@
 import Link from 'next/link'
 import { signIn } from '../actions'
 
+// Whitelisted error codes → safe, predefined messages.
+// Unknown or missing codes produce no output — prevents message injection attacks.
+const ERROR_MESSAGES = {
+  invalid_credentials: 'E-Mail oder Passwort falsch.',
+  rate_limited: (minutes) =>
+    `Zu viele Fehlversuche. Bitte warte ${minutes} Minute${minutes === 1 ? '' : 'n'}.`,
+}
+
+const SUCCESS_MESSAGES = {
+  password_set: 'Passwort gesetzt. Bitte einloggen.',
+}
+
 export default async function LoginPage({ searchParams }) {
   const params = await searchParams
-  const error = params?.error
+  const code = params?.code
+  const message = params?.message
+
+  // Validate minutes: must be a positive integer ≤ 60 to prevent crafted scary values
+  const rawMinutes = parseInt(params?.minutes ?? '0', 10)
+  const minutes = Number.isFinite(rawMinutes) ? Math.min(Math.max(rawMinutes, 1), 60) : 1
+
+  const errorText = code === 'rate_limited'
+    ? ERROR_MESSAGES.rate_limited(minutes)
+    : (ERROR_MESSAGES[code] ?? null)
+
+  const successText = SUCCESS_MESSAGES[message] ?? null
 
   return (
     <main style={{
@@ -13,18 +36,9 @@ export default async function LoginPage({ searchParams }) {
       justifyContent: 'center',
       background: 'var(--ink-050)',
     }}>
-      <Link href="/" style={{
-        position: 'fixed',
-        top: '24px',
-        left: '24px',
-        color: 'var(--bone-500)',
-        fontFamily: 'var(--font-mono)',
-        fontSize: '0.7rem',
-        letterSpacing: '0.12em',
-        textTransform: 'uppercase',
-        textDecoration: 'none',
-      }}>
+      <Link href="/" className="admin-back-link">
         ← Zurück zur Startseite
+        <span className="back-underline" />
       </Link>
       <div style={{
         background: 'var(--ink-100)',
@@ -46,9 +60,15 @@ export default async function LoginPage({ searchParams }) {
           BC Frankfurt 1912 — Vorstandszugang
         </p>
 
-        {error && (
+        {successText && (
+          <p style={{ color: '#22c55e', marginBottom: '16px', fontSize: '0.875rem' }}>
+            {successText}
+          </p>
+        )}
+
+        {errorText && (
           <p style={{ color: '#ef4444', marginBottom: '16px', fontSize: '0.875rem' }}>
-            {decodeURIComponent(error)}
+            {errorText}
           </p>
         )}
 

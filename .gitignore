@@ -22,4 +22,4 @@ node_modules/
 .next/
 
 # Environment variables — never commit these
-.env*.local
+.env*

@@ -103,7 +103,7 @@ export const PoolTableHero = ({ tilt = -8 }) => (
 );
 
 export const ScrollCue = () => (
-  <div style={{
+  <div className="scroll-cue" style={{
     position: "absolute",
     bottom: 24,
     left: "50%",

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import ReactDOM from "react-dom";
 import { useTranslation } from "./translation-context";
 import { Arrow, ArrowOut, PoolTableHero, ScrollCue, DownloadIcon } from "./visuals";
 import DOMPurify from "dompurify";
@@ -11,46 +12,88 @@ export const Nav = () => {
   const { t } = useTranslation();
   const [scrolled, setScrolled] = React.useState(false);
   const [isHome, setIsHome] = React.useState(false);
+  const [menuOpen, setMenuOpen] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
 
   React.useEffect(() => {
     setIsHome(window.location.pathname === "/");
+    setMounted(true);
     const onScroll = () => setScrolled(window.scrollY > 60);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  React.useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    document.body.classList.toggle("nav-menu-open", menuOpen);
+    return () => {
+      document.body.style.overflow = "";
+      document.body.classList.remove("nav-menu-open");
+    };
+  }, [menuOpen]);
+
   const navLink = (anchor) => isHome ? anchor : `/${anchor}`;
 
   const handleNavClick = (e, anchor) => {
+    setMenuOpen(false);
     if (!isHome) return;
     e.preventDefault();
     document.querySelector(anchor)?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
-    <nav className={`nav ${scrolled ? "scrolled" : ""}`}>
-      <a href={isHome ? "#top" : "/"} className="nav-logo">
-        <img
-          src="https://bcfrankfurt.de/wp-content/uploads/2018/02/BCF-Wappen_qu-200x200.png"
-          alt="BC Frankfurt 1912"
-          style={{ width: 40, height: 40, objectFit: "contain", filter: "drop-shadow(0 0 12px rgba(218,178,96,0.25))" }}
-        />
-        <span>BC Frankfurt <em style={{ fontStyle: "italic", color: "var(--brass-500)", fontWeight: 400 }}>1912</em> e.V.</span>
-      </a>
-      <ul className="nav-links">
-        <li><a href={navLink("#news")} onClick={e => handleNavClick(e, "#news")}>News</a></li>
-        <li><a href={navLink("#kalender")} onClick={e => handleNavClick(e, "#kalender")}>{t("nav.games")}</a></li>
-        <li><a href={navLink("#about")} onClick={e => handleNavClick(e, "#about")}>{t("nav.disciplines")}</a></li>
-        <li><a href={navLink("#experience")} onClick={e => handleNavClick(e, "#experience")}>{t("nav.experience")}</a></li>
-        <li><a href={navLink("#contact")} onClick={e => handleNavClick(e, "#contact")}>{t("nav.visit")}</a></li>
-      </ul>
-      <div className="nav-cta">
-        <LangPicker />
-        <a href="/mitgliedschaft" className="btn btn-brass" style={{ padding: "10px 20px", fontSize: 12 }}>
-          {t("nav.becomeMember")} <Arrow size={12} />
+    <>
+      <nav className={`nav ${scrolled ? "scrolled" : ""}`}>
+        <a href={isHome ? "#top" : "/"} className="nav-logo" onClick={() => setMenuOpen(false)}>
+          <img
+            src="https://bcfrankfurt.de/wp-content/uploads/2018/02/BCF-Wappen_qu-200x200.png"
+            alt="BC Frankfurt 1912"
+            style={{ width: 40, height: 40, objectFit: "contain", filter: "drop-shadow(0 0 12px rgba(218,178,96,0.25))" }}
+          />
+          <span>BC Frankfurt <em style={{ fontStyle: "italic", color: "var(--brass-500)", fontWeight: 400 }}>1912</em> e.V.</span>
         </a>
-      </div>
-    </nav>
+        <ul className="nav-links">
+          <li><a href={navLink("#news")} onClick={e => handleNavClick(e, "#news")}>News</a></li>
+          <li><a href={navLink("#kalender")} onClick={e => handleNavClick(e, "#kalender")}>{t("nav.games")}</a></li>
+          <li><a href={navLink("#about")} onClick={e => handleNavClick(e, "#about")}>{t("nav.disciplines")}</a></li>
+          <li><a href={navLink("#experience")} onClick={e => handleNavClick(e, "#experience")}>{t("nav.experience")}</a></li>
+          <li><a href={navLink("#contact")} onClick={e => handleNavClick(e, "#contact")}>{t("nav.visit")}</a></li>
+        </ul>
+        <div className="nav-cta">
+          <LangPicker />
+          <a href="/mitgliedschaft" className="btn btn-brass nav-member-btn" style={{ padding: "10px 20px", fontSize: 12 }}>
+            {t("nav.becomeMember")}
+          </a>
+        </div>
+        <button
+          className={`nav-burger${menuOpen ? " open" : ""}`}
+          onClick={() => setMenuOpen(o => !o)}
+          aria-label={menuOpen ? "Menü schließen" : "Menü öffnen"}
+        >
+          <span /><span />
+        </button>
+      </nav>
+
+      {mounted && ReactDOM.createPortal(
+        <>
+          <div className={`nav-blur-overlay${menuOpen ? " open" : ""}`} onClick={() => setMenuOpen(false)} />
+          <div className={`nav-mobile-menu${menuOpen ? " open" : ""}`} aria-hidden={!menuOpen}>
+            <ul>
+              <li><a href={navLink("#news")} onClick={e => handleNavClick(e, "#news")}>News</a></li>
+              <li><a href={navLink("#kalender")} onClick={e => handleNavClick(e, "#kalender")}>{t("nav.games")}</a></li>
+              <li><a href={navLink("#about")} onClick={e => handleNavClick(e, "#about")}>{t("nav.disciplines")}</a></li>
+              <li><a href={navLink("#experience")} onClick={e => handleNavClick(e, "#experience")}>{t("nav.experience")}</a></li>
+              <li><a href={navLink("#contact")} onClick={e => handleNavClick(e, "#contact")}>{t("nav.visit")}</a></li>
+              <li className="nav-mobile-member"><a href="/mitgliedschaft" onClick={() => setMenuOpen(false)}>{t("nav.becomeMember")}</a></li>
+            </ul>
+            <div className="nav-mobile-footer">
+              <LangPicker />
+            </div>
+          </div>
+        </>,
+        document.body
+      )}
+    </>
   );
 };
 
@@ -67,7 +110,7 @@ export const LangPicker = () => {
         border: "1px solid var(--ink-300)",
         background: "transparent",
         color: "var(--bone-300)",
-        cursor: "pointer", display: "flex", alignItems: "center",
+        cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
         fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.1em",
         transition: "border-color 0.2s, color 0.2s",
         overflow: "hidden",
@@ -548,14 +591,14 @@ export const Membership = () => {
       </div>
 
       {/* Download buttons */}
-      <div className="reveal" style={{ marginTop: 60, display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "flex-end" }}>
+      <div className="reveal member-downloads-row" style={{ marginTop: 60, display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "flex-end" }}>
         <a href="/aufnahmeantrag.pdf" download className="member-download-btn">
           <span className="download-arrow"><DownloadIcon size={22} /></span>
-          <span style={{ fontFamily: "var(--font-sans)", fontSize: 18, fontWeight: 500, color: "var(--bone-200)" }}>{t("membership.docs.aufnahme.title")}</span>
+          <span className="member-download-label" style={{ fontFamily: "var(--font-sans)", fontSize: 18, fontWeight: 500, color: "var(--bone-200)" }}>{t("membership.docs.aufnahme.title")}</span>
         </a>
         <a href="/vereinssatzung.pdf" download className="member-download-btn">
           <span className="download-arrow"><DownloadIcon size={22} /></span>
-          <span style={{ fontFamily: "var(--font-sans)", fontSize: 18, fontWeight: 500, color: "var(--bone-200)" }}>{t("membership.docs.satzung.title")}</span>
+          <span className="member-download-label" style={{ fontFamily: "var(--font-sans)", fontSize: 18, fontWeight: 500, color: "var(--bone-200)" }}>{t("membership.docs.satzung.title")}</span>
         </a>
       </div>
     </div>
@@ -966,46 +1009,39 @@ const ArticleModal = ({ item, lang, onClose }) => {
     };
   }, [onClose]);
 
-  return (
-    <div
-      onClick={onClose}
-      style={{ position: "fixed", inset: 0, zIndex: 200, background: "rgba(0,0,0,0.8)", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px 16px", overflowY: "auto" }}
-    >
-      <div
-        onClick={e => e.stopPropagation()}
-        className="article-modal-inner"
-        style={{ background: "var(--ink-100)", border: "1px solid var(--ink-300)", borderRadius: 20, width: "100%", maxWidth: 720, maxHeight: "90vh", overflowY: "auto", display: "flex", flexDirection: "column", scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
+  return ReactDOM.createPortal(
+    <div className="article-modal-backdrop" onClick={onClose}>
+      <div onClick={e => e.stopPropagation()} className="article-modal-inner">
         {item.bild_url && (
-          <div style={{ width: "100%", aspectRatio: "16/9", overflow: "hidden", borderRadius: "20px 20px 0 0", flexShrink: 0 }}>
-            <img src={item.bild_url} alt={item.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          <div className="article-modal-image">
+            <img src={item.bild_url} alt={item.title} />
           </div>
         )}
-        <div style={{ padding: "36px 40px 44px" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--bone-400)", letterSpacing: "0.06em" }}>{formatDate(item.date, lang)}</span>
+        <div className="article-modal-content">
+          <div className="article-modal-header">
+            <span className="article-modal-date">{formatDate(item.date, lang)}</span>
             <button
               onClick={onClose}
+              className="article-modal-close"
               onMouseEnter={e => { e.currentTarget.style.opacity = 1; e.currentTarget.querySelector(".back-underline").style.transform = "scaleX(1)"; }}
               onMouseLeave={e => { e.currentTarget.style.opacity = 0.7; e.currentTarget.querySelector(".back-underline").style.transform = "scaleX(0)"; }}
-              style={{ background: "transparent", border: "none", color: "var(--bone-400)", cursor: "pointer", fontSize: 20, lineHeight: 1, padding: "0 0 0 16px", opacity: 0.7, display: "flex", flexDirection: "column", gap: 3 }}
             >
               ✕
-              <span className="back-underline" style={{ display: "block", height: 1, background: "var(--bone-500)", transformOrigin: "left", transform: "scaleX(0)", transition: "transform 0.25s ease" }} />
+              <span className="back-underline" />
             </button>
           </div>
-          <h2 style={{ fontFamily: "var(--font-display)", fontSize: 32, fontWeight: 400, lineHeight: 1.2, letterSpacing: "-0.02em", color: "var(--bone-100)", margin: "0 0 12px" }}>{item.title}</h2>
-          <p style={{ fontSize: 16, lineHeight: 1.6, color: "var(--bone-300)", margin: "0 0 28px" }}>{item.excerpt}</p>
+          <h2 className="article-modal-title">{item.title}</h2>
+          <p className="article-modal-excerpt">{item.excerpt}</p>
           {item.inhalt && (
             <div
               className="article-body"
-              style={{ borderTop: "1px solid var(--ink-300)", paddingTop: 28 }}
               dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.inhalt) }}
             />
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
@@ -1016,6 +1052,13 @@ export const News = ({ items = [], turniere = [] }) => {
   const rest = sorted.slice(1);
 
   const [openArticle, setOpenArticle] = React.useState(null);
+  const [isMobile, setIsMobile] = React.useState(false);
+  React.useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const sidebarRef = React.useRef(null);
   const featuredRef = React.useRef(null);
@@ -1081,13 +1124,13 @@ let col = 0, colH = 0, count = 0;
           </div>
           <h2 className="section-title" style={{ marginTop: 16 }}>{t("news.headline1")}<em>{t("news.headline2")}</em>.</h2>
         </div>
-        <button onClick={() => document.getElementById("kalender")?.scrollIntoView({ behavior: "smooth" })} className="btn btn-ghost" style={{ padding: "10px 18px", fontSize: 12, display: "inline-flex", alignItems: "center", gap: 6, flexShrink: 0, cursor: "pointer" }}>
+        <button onClick={() => document.getElementById("kalender")?.scrollIntoView({ behavior: "smooth" })} className="btn btn-ghost news-calendar-btn" style={{ padding: "10px 18px", fontSize: 12, alignItems: "center", gap: 6, flexShrink: 0, cursor: "pointer" }}>
           {t("news.toCalendar")} <ArrowOut size={12} />
         </button>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: 16, alignItems: "start" }} className="reveal">
-        <div style={{ display: "flex", flexDirection: "column", gap: 18, height: sidebarHeight ?? undefined }}>
+      <div style={{ display: "grid", gap: 16, alignItems: "start" }} className="reveal news-layout">
+        <div className="news-cards-main" style={{ display: "flex", flexDirection: "column", gap: 18, height: sidebarHeight ?? undefined }}>
           {/* Featured card */}
           {featured && (
             featured.bild_url ? (
@@ -1095,24 +1138,24 @@ let col = 0, colH = 0, count = 0;
                 <div style={{ position: "absolute", inset: 0, backgroundImage: `url('${featured.bild_url}')`, backgroundSize: "cover", backgroundPosition: "center" }} />
                 <div className="news-card-overlay" />
                 <div style={{ position: "absolute", inset: 0, padding: "32px 36px", display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 10 }}>
-                  <span style={{ fontFamily: "var(--font-mono)", fontSize: 15, color: "rgba(255,255,255,0.7)", letterSpacing: "0.06em" }}>{formatDate(featured.date, lang)}</span>
-                  <h3 style={{ fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 400, lineHeight: 1.2, letterSpacing: "-0.02em", color: "var(--bone-100)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{featured.title}</h3>
-                  <p style={{ fontSize: 14, lineHeight: 1.65, color: "rgba(255,255,255,0.6)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{featured.excerpt}</p>
+                  <span className="featured-date" style={{ fontFamily: "var(--font-mono)", fontSize: 15, color: "rgba(255,255,255,0.7)", letterSpacing: "0.06em" }}>{formatDate(featured.date, lang)}</span>
+                  <h3 className="featured-title" style={{ fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 400, lineHeight: 1.2, letterSpacing: "-0.02em", color: "var(--bone-100)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{featured.title}</h3>
+                  <p className="featured-excerpt" style={{ fontSize: 14, lineHeight: 1.65, color: "rgba(255,255,255,0.6)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{featured.excerpt}</p>
                 </div>
               </div>
             ) : (
               <div ref={featuredRef} className="news-card" onClick={() => setOpenArticle(featured)} style={{ borderRadius: 16, overflow: "hidden", flexShrink: 0, background: "linear-gradient(135deg, var(--ink-200) 0%, var(--ink-100) 100%)", padding: "28px 36px", display: "flex", flexDirection: "column", gap: 10, cursor: "pointer" }}>
-                <span style={{ fontFamily: "var(--font-mono)", fontSize: 15, color: "var(--bone-400)", letterSpacing: "0.06em" }}>{formatDate(featured.date, lang)}</span>
-                <h3 style={{ fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 400, lineHeight: 1.2, letterSpacing: "-0.02em", color: "var(--bone-100)", margin: 0 }}>{featured.title}</h3>
-                <p style={{ fontSize: 14, lineHeight: 1.65, color: "var(--bone-400)", margin: 0 }}>{featured.excerpt}</p>
+                <span className="featured-date" style={{ fontFamily: "var(--font-mono)", fontSize: 15, color: "var(--bone-400)", letterSpacing: "0.06em" }}>{formatDate(featured.date, lang)}</span>
+                <h3 className="featured-title" style={{ fontFamily: "var(--font-display)", fontSize: 28, fontWeight: 400, lineHeight: 1.2, letterSpacing: "-0.02em", color: "var(--bone-100)", margin: 0 }}>{featured.title}</h3>
+                <p className="featured-excerpt" style={{ fontSize: 14, lineHeight: 1.65, color: "var(--bone-400)", margin: 0 }}>{featured.excerpt}</p>
               </div>
             )
           )}
 
           {/* Card grid — fills remaining space, columns flow top-to-bottom */}
           <div>
-            <div ref={columnsContainerRef} style={{ columns: 3, columnGap: 18, columnFill: "auto", height: columnsHeight ?? "auto" }}>
-              {visibleRest.map((item, i) => (
+            <div ref={columnsContainerRef} className="news-columns" style={{ columnGap: 18, columnFill: "auto", height: columnsHeight ?? "auto" }}>
+              {(isMobile ? rest.slice(0, 2) : visibleRest).map((item, i) => (
                 <div key={i} className="news-card" onClick={() => setOpenArticle(item)} style={{ borderRadius: 14, overflow: "hidden", position: "relative", breakInside: "avoid", marginBottom: 18, aspectRatio: item.noImage ? undefined : "3/2", cursor: "pointer" }}>
                   {item.noImage ? (
                     <div style={{ background: "linear-gradient(135deg, var(--ink-200) 0%, var(--ink-100) 100%)", padding: "20px 22px", height: "100%", boxSizing: "border-box", display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 7 }}>
@@ -1136,7 +1179,7 @@ let col = 0, colH = 0, count = 0;
             </div>
           </div>
 
-          <a ref={btnRef} href="/vereinshistorie" className="btn btn-ghost" style={{ padding: "12px 22px", fontSize: 12, alignSelf: "flex-start", flexShrink: 0 }}>
+          <a ref={btnRef} href="/vereinshistorie" className="btn btn-ghost news-history-btn" style={{ padding: "12px 22px", fontSize: 12, alignSelf: "flex-start", flexShrink: 0 }}>
             {t("news.toHistory")} <ArrowOut size={11} />
           </a>
         </div>
@@ -1209,6 +1252,7 @@ let col = 0, colH = 0, count = 0;
 
       <button
         onClick={() => document.getElementById("kalender")?.scrollIntoView({ behavior: "smooth" })}
+        className="news-to-calendar-cue"
         style={{ position: "absolute", bottom: 64, left: "50%", transform: "translateX(-50%)", background: "none", border: "none", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", gap: 12, padding: 0, opacity: 0.7, transition: "opacity 0.2s", zIndex: 10, pointerEvents: "all" }}
         onMouseEnter={e => e.currentTarget.style.opacity = 1}
         onMouseLeave={e => e.currentTarget.style.opacity = 0.7}
@@ -1288,6 +1332,13 @@ export const CalendarSection = ({ veranstaltungen = [] }) => {
   const [openShareIdx, setOpenShareIdx] = React.useState(null);
   const [copiedIdx, setCopiedIdx] = React.useState(null);
   const scrollRef = React.useRef(null);
+  const [isMobile, setIsMobile] = React.useState(false);
+  React.useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   React.useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -1346,16 +1397,16 @@ export const CalendarSection = ({ veranstaltungen = [] }) => {
       </div>
 
       <div style={{ display: "flex", justifyContent: "center", alignItems: "stretch" }}>
-      <div style={{ flex: "0 0 840px", maxWidth: 840 }}>
+      <div className="cal-grid-col" style={{ flex: "0 0 840px", maxWidth: 840 }}>
         {/* Month nav */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24, padding: "16px 24px", background: "var(--ink-100)", borderRadius: 12, border: "1px solid var(--ink-300)" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: isMobile ? 12 : 24, padding: isMobile ? "10px 16px" : "16px 24px", background: "var(--ink-100)", borderRadius: isMobile ? 20 : 12, border: "1px solid var(--ink-300)" }}>
           <button onClick={() => setCurrent(new Date(year, month - 1, 1))}
             style={{ background: "transparent", border: "none", color: "var(--bone-400)", padding: "6px 8px", cursor: "pointer", lineHeight: 1, transition: "color 0.2s", display: "flex", alignItems: "center" }}
             onMouseEnter={e => e.currentTarget.style.color = "var(--brass-500)"}
             onMouseLeave={e => e.currentTarget.style.color = "var(--bone-400)"}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
           </button>
-          <span style={{ fontFamily: "var(--font-display)", fontSize: 24, color: "var(--bone-100)", fontWeight: 400 }}>{monthLabel}</span>
+          <span style={{ fontFamily: "var(--font-display)", fontSize: isMobile ? 18 : 24, color: "var(--bone-100)", fontWeight: 400 }}>{monthLabel}</span>
           <button onClick={() => setCurrent(new Date(year, month + 1, 1))}
             style={{ background: "transparent", border: "none", color: "var(--bone-400)", padding: "6px 8px", cursor: "pointer", lineHeight: 1, transition: "color 0.2s", display: "flex", alignItems: "center" }}
             onMouseEnter={e => e.currentTarget.style.color = "var(--brass-500)"}
@@ -1365,14 +1416,14 @@ export const CalendarSection = ({ veranstaltungen = [] }) => {
         </div>
 
         {/* Weekday headers */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 8, marginBottom: 4 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: isMobile ? 2 : 8, marginBottom: isMobile ? 0 : 4 }}>
           {weekdaysShort.map(d => (
-            <div key={d} style={{ textAlign: "center", fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--bone-500)", padding: 8 }}>{d}</div>
+            <div key={d} style={{ textAlign: "center", fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--bone-500)", padding: isMobile ? "4px 0" : 8 }}>{d}</div>
           ))}
         </div>
 
         {/* Day cells */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 8 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: isMobile ? 2 : 8 }}>
           {days.map((date, i) => {
             if (!date) return <div key={`e-${i}`} />;
             const isToday = date.toDateString() === today.toDateString();
@@ -1382,17 +1433,33 @@ export const CalendarSection = ({ veranstaltungen = [] }) => {
               if (b.ganztaegig !== a.ganztaegig) return (b.ganztaegig ? 1 : 0) - (a.ganztaegig ? 1 : 0);
               return new Date(a.termin) - new Date(b.termin);
             });
+            const isSelected = selected === date.toDateString();
+            const getDotColor = (ev) => ev.spielart === "Pool" ? "#6fa3e0"
+              : ev.spielart === "Snooker" ? "#6dc98a"
+              : ev.spielart === "Karambol GB" ? "#e08080"
+              : ev.spielart === "Karambol KB" ? "#e87a8e"
+              : "var(--bone-300)";
+            if (isMobile) return (
+              <div key={i} onClick={() => setSelected(s => s === date.toDateString() ? null : date.toDateString())} style={{ aspectRatio: "1", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 3, background: "transparent", border: "none", opacity: isPast && !isSelected ? 0.3 : 1, cursor: "pointer" }}>
+                <div style={{ width: 30, height: 30, display: "flex", alignItems: "center", justifyContent: "center", borderRadius: "50%", background: isSelected ? "var(--brass-500)" : "transparent", border: isToday && !isSelected ? "1.5px solid var(--bone-400)" : "none", color: isSelected ? "var(--ink-000)" : isToday ? "var(--bone-100)" : "var(--bone-400)", fontFamily: "var(--font-sans)", fontSize: 13, fontWeight: isToday || isSelected ? 700 : 400 }}>
+                  {date.getDate()}
+                </div>
+                {cellEvents.length > 0 && (
+                  <div style={{ display: "flex", gap: 2, justifyContent: "center" }}>
+                    {cellEvents.slice(0, 3).map((ev, ci) => (
+                      <span key={ci} style={{ width: 4, height: 4, borderRadius: "50%", background: getDotColor(ev), display: "inline-block", flexShrink: 0 }} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
             return (
-              <div key={i} onClick={() => setSelected(s => s === date.toDateString() ? null : date.toDateString())} style={{ aspectRatio: "1", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-start", gap: 5, padding: "8px 4px 5px", background: "var(--ink-100)", border: selected === date.toDateString() ? "2px solid var(--brass-500)" : isToday ? "2px solid var(--bone-300)" : "1px solid var(--ink-300)", borderRadius: 8, color: selected === date.toDateString() ? "var(--brass-500)" : isToday ? "var(--bone-100)" : "var(--bone-300)", fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: isToday || selected === date.toDateString() ? 700 : 400, opacity: isPast && selected !== date.toDateString() ? 0.25 : 1, cursor: "pointer", overflow: "hidden" }}>
+              <div key={i} onClick={() => setSelected(s => s === date.toDateString() ? null : date.toDateString())} style={{ aspectRatio: "1", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-start", gap: 5, padding: "8px 4px 5px", background: "var(--ink-100)", border: isSelected ? "2px solid var(--brass-500)" : isToday ? "2px solid var(--bone-300)" : "1px solid var(--ink-300)", borderRadius: 8, color: isSelected ? "var(--brass-500)" : isToday ? "var(--bone-100)" : "var(--bone-300)", fontFamily: "var(--font-sans)", fontSize: 14, fontWeight: isToday || isSelected ? 700 : 400, opacity: isPast && !isSelected ? 0.25 : 1, cursor: "pointer", overflow: "hidden" }}>
                 <span>{date.getDate()}</span>
                 {cellEvents.length > 0 && (
                   <div style={{ display: "flex", flexDirection: "column", gap: 2, width: "100%", overflow: "hidden" }}>
                     {cellEvents.slice(0, 3).map((ev, ci) => {
-                      const barColor = ev.spielart === "Pool" ? "#6fa3e0"
-                        : ev.spielart === "Snooker" ? "#6dc98a"
-                        : ev.spielart === "Karambol GB" ? "#e08080"
-                        : ev.spielart === "Karambol KB" ? "#e87a8e"
-                        : "var(--bone-300)";
+                      const barColor = getDotColor(ev);
                       return (
                         <span key={ci} style={{ display: "flex", alignItems: "center", gap: 3, background: `color-mix(in srgb, ${barColor} 22%, transparent)`, borderRadius: 3, padding: "1px 4px", fontSize: 11, color: barColor, lineHeight: 1.3, flexShrink: 0, overflow: "hidden" }}>
                           {KATEGORIE_ICON[ev.kategorie] && <span style={{ flexShrink: 0, display: "flex" }}>{KATEGORIE_ICON[ev.kategorie]}</span>}
@@ -1414,8 +1481,8 @@ export const CalendarSection = ({ veranstaltungen = [] }) => {
 
       </div>
 
-      {/* Events sidebar — outer controls width slide, inner is absolute to take flex-stretched height without inflating it */}
-      <div style={{ flex: "0 0 auto", width: selected ? 372 : 0, overflow: "hidden", opacity: selected ? 1 : 0, position: "relative", transition: "width 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease" }}>
+      {/* Events sidebar — desktop only */}
+      <div className="cal-sidebar-desktop" style={{ flex: "0 0 auto", width: selected ? 372 : 0, overflow: "hidden", opacity: selected ? 1 : 0, position: "relative", transition: "width 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease" }}>
       <div ref={scrollRef} onScroll={handleSidebarScroll} className="no-scrollbar" style={{ position: "absolute", top: 0, right: 0, bottom: 0, width: 340, display: "flex", flexDirection: "column", gap: 12, padding: "12px 0", boxSizing: "border-box", opacity: contentVisible ? 1 : 0, transition: "opacity 0.18s ease", overflowY: "auto", overflowX: "hidden", scrollbarWidth: "none", msOverflowStyle: "none", maskImage: `linear-gradient(to bottom, ${scrollEdge.top ? "black 0px" : "transparent 0px, black 20px"}, ${scrollEdge.bottom ? "black 100%" : "black calc(100% - 20px), transparent 100%"})`, WebkitMaskImage: `linear-gradient(to bottom, ${scrollEdge.top ? "black 0px" : "transparent 0px, black 20px"}, ${scrollEdge.bottom ? "black 100%" : "black calc(100% - 20px), transparent 100%"})` }}>
         {displayNoEvents && (
           <div style={{ height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--bone-500)", fontFamily: "var(--font-mono)", fontSize: 12, letterSpacing: "0.06em", textAlign: "center", padding: 24, border: "1px solid var(--ink-300)", borderRadius: 10, background: "var(--ink-100)" }}>
@@ -1542,6 +1609,128 @@ export const CalendarSection = ({ veranstaltungen = [] }) => {
       </div>
 
       </div>
+
+      {/* Mobile event list — shown below grid on small screens */}
+      {isMobile && (
+        <div style={{ marginTop: 24, opacity: contentVisible ? 1 : 0, transition: "opacity 0.18s ease" }}>
+          {selected && displayNoEvents && (
+            <div style={{ textAlign: "center", color: "var(--bone-500)", fontFamily: "var(--font-mono)", fontSize: 12, letterSpacing: "0.06em", padding: "32px 24px", border: "1px solid var(--ink-300)", borderRadius: 10, background: "var(--ink-100)" }}>
+              {t("cal.noEvents")}
+            </div>
+          )}
+          {!selected && (
+            <div style={{ textAlign: "center", color: "var(--bone-500)", fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.08em", padding: "28px 0" }}>
+              {lang === "DE" ? "Tag auswählen" : "Select a day"}
+            </div>
+          )}
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {displayEvents.map((ev, i) => {
+              const now = new Date();
+              const evPast = ev.ganztaegig
+                ? new Date((ev.dateKey ?? "") + "T23:59:59") < now
+                : ev.termin_ende ? new Date(ev.termin_ende) < now : ev.termin ? new Date(ev.termin) < now : false;
+              const timeFrom = ev.termin ? new Date(ev.termin).toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" }) : null;
+              const timeTo = ev.termin_ende ? new Date(ev.termin_ende).toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" }) : null;
+              const accentColor = ev.spielart === "Pool" ? "#6fa3e0"
+                : ev.spielart === "Snooker" ? "#6dc98a"
+                : ev.spielart === "Karambol GB" ? "#e08080"
+                : ev.spielart === "Karambol KB" ? "#e87a8e"
+                : "var(--bone-300)";
+              const toIcal = (isoStr) => {
+                const d = new Date(isoStr);
+                return d.getFullYear() + String(d.getMonth()+1).padStart(2,"0") + String(d.getDate()).padStart(2,"0") + "T" + String(d.getHours()).padStart(2,"0") + String(d.getMinutes()).padStart(2,"0") + "00";
+              };
+              const googleUrl = (() => {
+                if (!ev.termin) return null;
+                const start = ev.ganztaegig ? (ev.dateKey ?? "").replace(/-/g,"") : toIcal(ev.termin);
+                const end = ev.ganztaegig
+                  ? (() => { const d = new Date((ev.dateKey ?? "") + "T00:00:00"); d.setDate(d.getDate()+1); return d.getFullYear() + String(d.getMonth()+1).padStart(2,"0") + String(d.getDate()).padStart(2,"0"); })()
+                  : ev.termin_ende ? toIcal(ev.termin_ende) : toIcal(ev.termin);
+                return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(ev.titel ?? "")}&dates=${start}/${end}`;
+              })();
+              const downloadIcs = () => {
+                const start = ev.ganztaegig ? (ev.dateKey ?? "").replace(/-/g,"") : toIcal(ev.termin);
+                const end = ev.ganztaegig
+                  ? (() => { const d = new Date((ev.dateKey ?? "") + "T00:00:00"); d.setDate(d.getDate()+1); return d.getFullYear() + String(d.getMonth()+1).padStart(2,"0") + String(d.getDate()).padStart(2,"0"); })()
+                  : ev.termin_ende ? toIcal(ev.termin_ende) : toIcal(ev.termin);
+                const dtProp = ev.ganztaegig ? "DATE" : "DATE-TIME";
+                const ics = `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//BCF1912//DE\r\nBEGIN:VEVENT\r\nDTSTART;VALUE=${dtProp}:${start}\r\nDTEND;VALUE=${dtProp}:${end}\r\nSUMMARY:${(ev.titel ?? "").replace(/\n/g,"\\n")}\r\nEND:VEVENT\r\nEND:VCALENDAR`;
+                const blob = new Blob([ics], { type: "text/calendar" });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a"); a.href = url; a.download = "termin.ics"; a.click();
+                URL.revokeObjectURL(url);
+              };
+              const shareLink = () => {
+                const url = `${window.location.origin}${window.location.pathname}?datum=${ev.dateKey ?? ""}`;
+                const datumLang = (() => {
+                  if (!ev.dateKey) return "";
+                  const d = new Date(ev.dateKey + "T00:00:00");
+                  const monate = ["Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember"];
+                  return `${d.getDate()} ${monate[d.getMonth()]} ${d.getFullYear()}`;
+                })();
+                const zeitStr = ev.ganztaegig ? t("cal.allDay") : timeFrom ? `${timeFrom}${timeTo ? ` – ${timeTo}` : ""}${lang === "DE" ? " Uhr" : ""}` : "";
+                const spielartZeile = ev.spielart ? `${ev.spielart} · ${ev.kategorie ?? ""}` : (ev.kategorie ?? "");
+                const text = [`BC Frankfurt 1912 — Termin:`, spielartZeile, ev.titel ?? "", `${datumLang}${zeitStr ? `, ${zeitStr}` : ""}`, "", url].join("\n");
+                navigator.clipboard.writeText(text).then(() => {
+                  setCopiedIdx(i);
+                  setTimeout(() => setCopiedIdx(c => c === i ? null : c), 2000);
+                });
+              };
+              return (
+                <div key={i} style={{ background: "var(--ink-100)", border: "1px solid var(--ink-300)", ...(ev.ganztaegig ? { borderTop: `3px solid ${accentColor}` } : { borderLeft: `3px solid ${accentColor}` }), borderRadius: 10, padding: "10px 14px", display: "flex", flexDirection: "column", gap: 6, opacity: evPast ? 0.4 : 1 }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 6 }}>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: 4, background: "var(--ink-200)", border: "1px solid var(--ink-300)", borderRadius: 20, padding: "2px 8px", fontFamily: "var(--font-mono)", fontSize: 9, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--bone-400)" }}>
+                      {KATEGORIE_ICON[ev.kategorie] ?? null}
+                      {t(`cal.kategorie.${ev.kategorie}`) || ev.kategorie}
+                    </span>
+                    {ev.spielart && (
+                      <span style={{ display: "inline-flex", alignItems: "center", gap: 4, background: `color-mix(in srgb, ${accentColor} 12%, transparent)`, border: `1px solid color-mix(in srgb, ${accentColor} 30%, transparent)`, borderRadius: 20, padding: "2px 8px", fontFamily: "var(--font-mono)", fontSize: 9, letterSpacing: "0.08em", textTransform: "uppercase", color: accentColor }}>
+                        <span style={{ width: 4, height: 4, borderRadius: "50%", background: accentColor, display: "inline-block", flexShrink: 0 }} />
+                        {ev.spielart}
+                      </span>
+                    )}
+                  </div>
+                  <div style={{ fontFamily: "var(--font-display)", fontSize: 14, fontWeight: 600, color: "var(--bone-100)", lineHeight: 1.3 }}>{ev.titel}</div>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 6 }}>
+                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--bone-400)" }}>
+                      {ev.ganztaegig ? <span>Ganztägig</span> : <span>{timeFrom}{timeTo ? ` – ${timeTo}` : ""}{lang === "DE" ? " Uhr" : ""}</span>}
+                    </div>
+                    <button
+                      onClick={() => setOpenShareIdx(s => s === i ? null : i)}
+                      style={{ flexShrink: 0, background: "none", border: "none", cursor: "pointer", color: openShareIdx === i ? "var(--bone-300)" : "var(--bone-500)", padding: "2px 0", display: "flex", alignItems: "center", gap: 5, fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.06em" }}
+                    >
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                      </svg>
+                      {t("cal.share")}
+                    </button>
+                  </div>
+                  <div style={{ maxHeight: openShareIdx === i ? 160 : 0, overflow: "hidden", opacity: openShareIdx === i ? 1 : 0, transition: "max-height 0.35s ease, opacity 0.2s ease" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 2, borderTop: "1px solid var(--ink-300)", paddingTop: 10 }}>
+                      <button onClick={shareLink} style={{ background: "none", border: "none", cursor: "pointer", color: copiedIdx === i ? "var(--brass-500)" : "var(--bone-300)", fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.06em", padding: "6px 8px", borderRadius: 6, textAlign: "left", display: "flex", alignItems: "center", gap: 8, transition: "background 0.15s" }}>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                        {copiedIdx === i ? t("cal.linkCopied") : t("cal.copyLink")}
+                      </button>
+                      {googleUrl && (
+                        <a href={googleUrl} target="_blank" rel="noopener" style={{ color: "var(--bone-300)", fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.06em", padding: "6px 8px", borderRadius: 6, display: "flex", alignItems: "center", gap: 8, textDecoration: "none", transition: "background 0.15s" }}>
+                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                          Google Calendar
+                        </a>
+                      )}
+                      <button onClick={downloadIcs} style={{ background: "none", border: "none", cursor: "pointer", color: "var(--bone-300)", fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.06em", padding: "6px 8px", borderRadius: 6, textAlign: "left", display: "flex", alignItems: "center", gap: 8, transition: "background 0.15s" }}>
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Apple / Outlook (.ics)
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
     </div>
   </section>
   );
@@ -1577,7 +1766,7 @@ export const Contact = () => {
             />
           </div>
 
-          <div style={{ display: "flex", gap: 12, marginBottom: 32 }}>
+          <div className="contact-map-btns" style={{ display: "flex", gap: 12, marginBottom: 32 }}>
             <a href="https://www.google.com/maps/dir/?api=1&destination=Borsigallee+45+Frankfurt" target="_blank" rel="noopener" className="btn btn-brass" style={{ padding: "12px 20px", fontSize: 12 }}>
               {t("contact.getDirections")} <ArrowOut />
             </a>
@@ -1589,7 +1778,7 @@ export const Contact = () => {
           <div className="contact-info-block">
             <h4>{t("contact.address.title")}</h4>
             <p>Borsigallee 45<br />60388 Frankfurt am Main</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 16 }}>
+            <div className="contact-transit-list" style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 16 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, color: "var(--bone-300)", fontSize: 15 }}>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, color: "var(--brass-500)" }}><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 17V8h4a3 3 0 0 1 0 6H9"/></svg>
                 <span>{t("contact.parking")}</span>
@@ -1655,7 +1844,7 @@ export const Contact = () => {
                 color: "var(--brass-500)",
                 textDecoration: "none",
                 fontFamily: "var(--font-mono)",
-                fontSize: "14px",
+                fontSize: "13px",
                 display: "block",
               }}>
                 info@bcfrankfurt1912.de
@@ -1666,7 +1855,7 @@ export const Contact = () => {
                 color: "var(--brass-500)",
                 textDecoration: "none",
                 fontFamily: "var(--font-mono)",
-                fontSize: "14px",
+                fontSize: "13px",
                 display: "block",
               }}>
                 membership@bcfrankfurt1912.de

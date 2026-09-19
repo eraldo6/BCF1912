@@ -11,9 +11,22 @@ Mobile Layout (Breakpoints, Nav(Hamburger))
 Cookie Banner
 Datenschutz Subpage
 Impressum & Vorstand Subpage
-File Struktur aufräumen + sectionnumbers prüfen + alle Bindestriche aus in DE und EN(ganz am Ende)
+File Struktur aufräumen + sectionnumbers prüfen + alle Bindestriche aus in DE und EN (ganz am Ende)
 
 ## kleinere todos oder bugfixes
+
+maximale passwort vergess anzahl
+Mobile Version:
+
+- readArtikel-fenster auf Handy testen
+- Burger Menu Ausklapp Style ändern in Glass
+- DE Button Navbar
+- Navbar Schriftzug zentriert
+- Subpages anpassen
+- Hero Page: 1912 Schriftzug größer
+- sind die Kalender Punkte in richtiger Farbe
+
+![alt text](image.png) ab wann werden alte veranstalungen so ausgeblendet?
 
 ## With Sydney
 
@@ -26,6 +39,7 @@ Termin Datenbank füllen mit ihm zusammen (Newsbeiträge, Mannschaftstrainings, 
 exisiteren diese Emailadressen?
 sind diese Satzungen noch aktuell? Richtige Satzungen hinterlegen
 mitgliederanzahl auf hero prüfen "240+ Mitglieder"
+cta button von news zu Kalender tauschen?
 
 # GoLive
 
@@ -49,11 +63,8 @@ Cookie und Datenschutz Hinweise einbauen
 Was ist mit Bildrechten? Oder Bausteine der Website oder Programmierbausteine der Website?
 Impressum Seite legalmachen
 Resend eigene Domain verifizieren (E-Mails kommen aktuell von onboarding@resend.dev und landen im Spam — eigene Adresse wie noreply@bcfrankfurt.de einrichten, braucht DNS-Zugriff)
-
-# Weiß nicht ob davor oder danach
-
-mobile version
-Termin teilen Funktion editieren wegen Whatsapp
+mein eigenes Passwort ändern
+HSTS (Strict-Transport-Security) — besser direkt bei Vercel setzen sobald du live bist
 
 # Second release
 
@@ -85,8 +96,18 @@ News-Artikel Detailseiten /beitraege/[slug] (eigene Unterseite pro Artikel bauen
 Galerie-Bilder EXIF-Rotation korrigieren (Handy-Fotos sind manchmal falsch gedreht gespeichert — beim Upload automatisch korrekt ausrichten)
 Scrolling Banner verbessern (Marquee schneller machen und nahtlosen Loop ohne sichtbaren Sprung einbauen)
 Zeilenumsprung wenn auf EN geschaltet -> Upcoming Tournaments
+Termin teilen Funktion editieren wegen Whatsapp
 
 ## Other
 
 Google Eintrag
 Sunday Breakout Poster
+
+## Security
+
+⚠️ Eine bekannte Schwäche bleibt: IP-Spoofing über verteilte Botnetze (viele verschiedene IPs) wird dadurch nicht gestoppt. Das ist die Grenze dieses Ansatzes — dagegen hilft nur CAPTCHA. Für einen internen Club-Admin ist das aber ein realistisch vernachlässigbares Szenario.
+
+⚠️ Cold Starts auf Vercel — ein neuer Lambda-Start setzt den Store zurück. Das ist die inhärente Schwäche von In-Memory bei Serverless. Supabase Auth's eigene Rate Limits sind der Fallback.
+
+dangerouslySetInnerHTML bei Admin prüfen
+dangerouslySetInnerHTML bei News Aritkel Popup Fenster prüfen
