@@ -602,6 +602,24 @@ body {
   opacity: 1;
 }
 
+.btn-konstruieren {
+  cursor: pointer;
+  color: var(--brass-400);
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.btn-konstruieren:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border-color: rgba(255, 255, 255, 0.85) !important;
+  color: var(--ink-300) !important;
+}
+
+.btn-konstruieren:disabled {
+  cursor: not-allowed;
+  color: var(--bone-600);
+  opacity: 0.5;
+}
+
 .turnier-link {
   display: inline-flex;
   align-items: center;

@@ -114,11 +114,33 @@ const labelStyle = {
   display: 'block', color: 'var(--bone-300)', fontSize: '0.8rem', marginBottom: '4px',
 }
 
+const STAFFEL_LABELS = { LL: 'Landesliga', BL: 'Bezirksliga', VL: 'Verbandsliga', OL: 'Oberliga' }
+
 function VeranstaltungModal({ row, onClose, onSuccess, onError, isPending, startTransition }) {
   const isEdit = row != null
   const [saveError, setSaveError] = useState(null)
   const [ganztaegig, setGanztaegig] = useState(row?.ganztaegig ?? false)
   const [terminValue, setTerminValue] = useState(toDatetimeLocal(row?.termin) ?? '')
+  const formRef = useRef(null)
+  const [titelValue, setTitelValue] = useState(row?.titel ?? '')
+
+  function konstruiereTitel() {
+    const fd = new FormData(formRef.current)
+    const spielart  = fd.get('spielart') || ''
+    const kategorie = fd.get('kategorie') || ''
+    const staffel   = fd.get('staffel') || ''
+    const spieltag  = fd.get('spieltag') || ''
+    const heim      = fd.get('heimmannschaft') || ''
+    const gast      = fd.get('gastmannschaft') || ''
+
+    let title = [spielart, kategorie].filter(Boolean).join(' ')
+    if (staffel) title += ' ' + (STAFFEL_LABELS[staffel] || staffel)
+    if (spieltag) title += ` | ${spieltag}. Spieltag`
+    if (heim && gast) title += `: ${heim} vs. ${gast}`
+    else if (heim)    title += `: ${heim}`
+
+    setTitelValue(title)
+  }
 
   const maxDauer = terminValue ? (() => {
     const d = new Date(terminValue)
@@ -159,19 +181,35 @@ function VeranstaltungModal({ row, onClose, onSuccess, onError, isPending, start
           {isEdit ? 'Termin bearbeiten' : 'Neuen Termin anlegen'}
         </h3>
 
-        <form onSubmit={handleSubmit} key={row?.id ?? 'create'}>
+        <form onSubmit={handleSubmit} key={row?.id ?? 'create'} ref={formRef}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
 
             <div style={{ gridColumn: '1 / -1' }}>
               <label style={labelStyle}>Titel *</label>
               <input name="titel" type="text" required style={inputStyle}
                 placeholder="z.B. Pool Heimspiel Landesliga | 1. Spieltag: BC Frankfurt 1912 e.V. 1 vs. Gegnerverein"
-                defaultValue={row?.titel ?? ''} />
-              <p style={{ color: 'var(--bone-500)', fontSize: '0.75rem', marginTop: '4px' }}>
+                value={titelValue} onChange={e => setTitelValue(e.target.value)} />
+              <p style={{ color: 'var(--bone-500)', fontSize: '0.75rem', margin: '4px 0 6px', lineHeight: 1.6 }}>
                 Heimspiele folgen diesem Muster:<br />
                 <span style={{ color: 'var(--bone-400)' }}>&lt;Spielart&gt; &lt;Kategorie&gt; &lt;Staffel&gt; | &lt;x&gt;. Spieltag: &lt;Heim&gt; vs. &lt;Gast&gt;</span><br />
                 <span style={{ color: 'var(--bone-600)' }}>Pool Heimspiel Landesliga | 1. Spieltag: BC Frankfurt 1912 e.V. 1 vs. Gegnerverein</span>
               </p>
+              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                  <button
+                    type="button"
+                    onClick={konstruiereTitel}
+                    disabled={titelValue !== ''}
+                    className="btn-konstruieren"
+                    style={{ ...inputStyle, width: 'auto', fontSize: '0.875rem', whiteSpace: 'nowrap' }}
+                  >
+                    Titel aus Feldern konstruieren
+                  </button>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--bone-600)', textAlign: 'left', lineHeight: 1.5 }}>
+                    Verwendet: Spielart, Kategorie, Staffel,<br />Spieltag, Heim- und Gastmannschaft
+                  </span>
+                </div>
+              </div>
             </div>
 
             <div>
