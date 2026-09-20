@@ -14,7 +14,6 @@ File Struktur aufräumen + sectionnumbers prüfen + alle Bindestriche aus in DE 
 
 ## kleinere todos oder bugfixes
 
-maximale passwort vergess anzahl
 Mobile Version:
 
 - readArtikel-fenster auf Handy testen
@@ -43,11 +42,9 @@ Impressum & Vorstand Subpage ergänzen
 
 klappt alles mit den Admin Accounts?
 learn about Vercel Analysis Interface, how does it work?
-vercel einrichten
+vercel einrichten, Wie viel wird das kosten
 env vars einrichten
-dns umzeigen
-wie läuft das jetzt gerade? Wie kriegen wird die Url?
-Wie viel wird das kosten
+dns umzeigen, wie läuft das jetzt gerade? Wie kriegen wird die Url?
 Cronjob aktivieren
 darf ich überhaupt fetchen?
 SSL Zertifikat
