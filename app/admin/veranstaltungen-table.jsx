@@ -195,18 +195,18 @@ function VeranstaltungModal({ row, onClose, onSuccess, onError, isPending, start
                 <span style={{ color: 'var(--bone-600)' }}>Pool Heimspiel Landesliga | 1. Spieltag: BC Frankfurt 1912 e.V. 1 vs. Gegnerverein</span>
               </p>
               <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
                   <button
                     type="button"
                     onClick={konstruiereTitel}
                     disabled={titelValue !== ''}
                     className="btn-konstruieren"
-                    style={{ ...inputStyle, width: 'auto', fontSize: '0.875rem', whiteSpace: 'nowrap' }}
+                    style={{ ...inputStyle, width: 'auto', fontSize: '0.875rem', whiteSpace: 'nowrap', flexShrink: 0 }}
                   >
                     Titel aus Feldern konstruieren
                   </button>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--bone-600)', textAlign: 'left', lineHeight: 1.5 }}>
-                    Verwendet: Spielart, Kategorie, Staffel,<br />Spieltag, Heim- und Gastmannschaft
+                  <span style={{ fontSize: '0.75rem', color: 'var(--bone-600)', lineHeight: 1.5 }}>
+                    Verwendet: Spielart, Kategorie, Staffel, Spieltag, Heim- und Gastmannschaft
                   </span>
                 </div>
               </div>

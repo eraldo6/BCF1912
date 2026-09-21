@@ -1,12 +1,15 @@
 import Link from 'next/link'
 import { signIn } from '../actions'
+import { LoginButton } from './login-button'
 
 // Whitelisted error codes → safe, predefined messages.
 // Unknown or missing codes produce no output — prevents message injection attacks.
 const ERROR_MESSAGES = {
-  invalid_credentials: 'E-Mail oder Passwort falsch.',
+  invalid_credentials: (remaining) => remaining > 0
+    ? `E-Mail oder Passwort falsch. Noch ${remaining} Versuch${remaining === 1 ? '' : 'e'} verbleibend.`
+    : 'E-Mail oder Passwort falsch. Konto ist jetzt gesperrt.',
   rate_limited: (minutes) =>
-    `Zu viele Fehlversuche. Bitte warte ${minutes} Minute${minutes === 1 ? '' : 'n'}.`,
+    `Zu viele Fehlversuche. Bitte warte noch ${minutes} Minute${minutes === 1 ? '' : 'n'}.`,
 }
 
 const SUCCESS_MESSAGES = {
@@ -22,9 +25,14 @@ export default async function LoginPage({ searchParams }) {
   const rawMinutes = parseInt(params?.minutes ?? '0', 10)
   const minutes = Number.isFinite(rawMinutes) ? Math.min(Math.max(rawMinutes, 1), 60) : 1
 
+  const rawRemaining = parseInt(params?.remaining ?? '5', 10)
+  const remaining = Number.isFinite(rawRemaining) ? Math.min(Math.max(rawRemaining, 0), 5) : 0
+
   const errorText = code === 'rate_limited'
     ? ERROR_MESSAGES.rate_limited(minutes)
-    : (ERROR_MESSAGES[code] ?? null)
+    : code === 'invalid_credentials'
+      ? ERROR_MESSAGES.invalid_credentials(remaining)
+      : null
 
   const successText = SUCCESS_MESSAGES[message] ?? null
 
@@ -123,13 +131,7 @@ export default async function LoginPage({ searchParams }) {
               }}
             />
           </div>
-          <button
-            type="submit"
-            className="btn btn-brass"
-            style={{ width: '100%', justifyContent: 'center' }}
-          >
-            Einloggen
-          </button>
+          <LoginButton />
         </form>
       </div>
     </main>

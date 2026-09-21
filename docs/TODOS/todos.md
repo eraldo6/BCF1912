@@ -9,9 +9,6 @@
 
 ## kleinere todos oder bugfixes
 
-Mitgliedschaft Subpage gestalten -> BCF Files hinterlegen (Satzung, Datenschutzerklärung)
-"text aus felder generieren" anders positionieren
-
 ## With Sydney
 
 text content drüber schauen und bearbeiten
@@ -46,6 +43,7 @@ muss ich Datenschutzerklärung und Cookie nochmal aktualisieren? (auch Übersetz
 Was sind klassische Dinge für eine Abfindung
 Email Crawler
 Datenverarbeitung (veveto fetch import, verweise auf cuescore seite per link, fonts)
+Mitgliedschaft Subpage gestalten -> BCF Files hinterlegen (Satzung, Datenschutzerklärung)
 File Struktur aufräumen + sectionnumbers prüfen + alle Bindestriche aus in DE und EN (ganz am Ende)
 
 # Second release
