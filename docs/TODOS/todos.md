@@ -81,6 +81,7 @@ Scrolling Bug (von Subpage direkt auf Navbarlink)
 ![alt text](image.png) ab wann werden alte veranstalungen so ausgeblendet?
 Lade Animation (UI Feedback) beim Einloggon
 Mobile Version: Burger Menu Ausklapp Style ändern in Glass
+Mobile Version: kalender animationen
 
 ## Other
 

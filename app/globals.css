@@ -2698,6 +2698,16 @@ section {
   to { transform: translateX(-50%); }
 }
 
+@keyframes cal-stagger-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes cal-stagger-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(14px); }
+}
+
 @media (max-width: 768px) {
   .scroll-cue {
     bottom: 80px !important;
