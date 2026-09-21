@@ -24,6 +24,9 @@ Mobile Version:
 - Hero Page: 1912 Schriftzug größer
 - sind die Kalender Punkte in richtiger Farbe
 - Email Crawler
+  Claude mobile textsize regel
+  alle Bindestriche raus aus den texten (DE und EN)
+  text aus felder generieren anders positionieren
 
 ## With Sydney
 
@@ -37,15 +40,15 @@ exisiteren diese Emailadressen?
 sind diese Satzungen noch aktuell? Richtige Satzungen hinterlegen
 mitgliederanzahl auf hero prüfen "240+ Mitglieder"
 Impressum & Vorstand Subpage ergänzen
+News Beiträge füllen
+sind die karambol termine rot
+Admin Accounts einrichten
+Datenverarbeitung (veveto fetch import, verweise auf cuescore seite per link, fonts)
 
 # GoLive
 
-klappt alles mit den Admin Accounts?
-learn about Vercel Analysis Interface, how does it work?
-vercel einrichten, Wie viel wird das kosten
-env vars einrichten
+Storage
 dns umzeigen, wie läuft das jetzt gerade? Wie kriegen wird die Url?
-Cronjob aktivieren
 darf ich überhaupt fetchen?
 SSL Zertifikat
 XML Sitemaps und robots.txt (Was ist das?)
@@ -56,7 +59,8 @@ Impressum Seite legalmachen
 Resend eigene Domain verifizieren (E-Mails kommen aktuell von onboarding@resend.dev und landen im Spam — eigene Adresse wie noreply@bcfrankfurt.de einrichten, braucht DNS-Zugriff)
 mein eigenes Passwort ändern
 HSTS (Strict-Transport-Security) — besser direkt bei Vercel setzen sobald du live bist
-Datenschutzerklärung aktualisieren
+muss ich Datenschutzerklärung und Cookie nochmal aktualisieren?
+Was sind klassische Dinge für eine Abfindung
 
 # Second release
 
@@ -91,6 +95,7 @@ Zeilenumsprung wenn auf EN geschaltet -> Upcoming Tournaments
 Termin teilen Funktion editieren wegen Whatsapp
 Scrolling Bug (von Subpage direkt auf Navbarlink)
 ![alt text](image.png) ab wann werden alte veranstalungen so ausgeblendet?
+Lade Animation (UI Feedback) beim Einloggon
 
 ## Other
 
