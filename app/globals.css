@@ -1196,6 +1196,14 @@ section {
     font-size: clamp(48px, 12vw, 96px);
   }
 
+  .hero-title .historical {
+    font-size: 48px;
+  }
+
+  .nav-logo {
+    font-size: 22px;
+  }
+
   .hero-subtitle {
     font-size: 16px;
   }
@@ -1886,14 +1894,14 @@ section {
     gap: 12px;
     padding: 6px 20px 16px;
     scrollbar-width: none;
-    -webkit-mask-image: linear-gradient(to right, black 0%, black 78%, transparent 100%);
-    mask-image: linear-gradient(to right, black 0%, black 78%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, black 0%, black 88%, transparent 100%);
+    mask-image: linear-gradient(to right, black 0%, black 88%, transparent 100%);
   }
 
   .member-grid::-webkit-scrollbar { display: none; }
 
   .member-card {
-    flex: 0 0 82vw;
+    flex: 0 0 80vw;
     scroll-snap-align: start;
     padding: 24px 20px;
   }
@@ -2019,8 +2027,11 @@ section {
     bottom: 0;
     width: 78vw;
     max-width: 320px;
-    background: rgba(8, 8, 16, 0.7);
+    background: rgba(8, 8, 16, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-left: 1px solid rgba(255, 255, 255, 0.07);
+    background-image: radial-gradient(ellipse at 100% 100%, color-mix(in srgb, var(--felt-700) 55%, transparent) 0%, transparent 65%);
     z-index: 99;
     display: flex;
     flex-direction: column;
@@ -2687,6 +2698,16 @@ section {
   to { transform: translateX(-50%); }
 }
 
+@keyframes cal-stagger-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes cal-stagger-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(14px); }
+}
+
 @media (max-width: 768px) {
   .scroll-cue {
     bottom: 80px !important;
@@ -2925,3 +2946,10 @@ section {
 .admin-scroll::-webkit-scrollbar-track  { background: var(--ink-300); border-radius: 3px; }
 .admin-scroll::-webkit-scrollbar-thumb  { background: #555049; border-radius: 3px; }
 .admin-scroll::-webkit-scrollbar-thumb:hover { background: var(--bone-200); }
+
+/* Cookie banner — Mobile Safari bottom toolbar offset */
+@media (max-width: 768px) {
+  .cookie-banner-root {
+    bottom: 80px !important;
+  }
+}

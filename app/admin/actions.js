@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { createClient } from '../../lib/supabase/server'
-import { checkLoginRateLimit, recordFailedLogin, clearLoginAttempts } from '../../lib/login-rate-limiter'
+import { checkLoginRateLimit, recordFailedLogin, clearLoginAttempts, getRemainingAttempts } from '../../lib/login-rate-limiter'
 
 function getClientIp(headersList) {
   const xff = headersList.get('x-forwarded-for')
@@ -31,7 +31,8 @@ export async function signIn(formData) {
     recordFailedLogin(ip)
     // Fixed delay on every failure — makes automated attacks significantly slower
     await new Promise(r => setTimeout(r, 500))
-    redirect('/admin/login?code=invalid_credentials')
+    const remaining = getRemainingAttempts(ip)
+    redirect(`/admin/login?code=invalid_credentials&remaining=${remaining}`)
   }
 
   clearLoginAttempts(ip)

@@ -1333,6 +1333,7 @@ export const CalendarSection = ({ veranstaltungen = [] }) => {
   const [copiedIdx, setCopiedIdx] = React.useState(null);
   const scrollRef = React.useRef(null);
   const [isMobile, setIsMobile] = React.useState(false);
+  const [mobileExiting, setMobileExiting] = React.useState(false);
   React.useEffect(() => {
     const check = () => setIsMobile(window.innerWidth <= 768);
     check();
@@ -1363,9 +1364,22 @@ export const CalendarSection = ({ veranstaltungen = [] }) => {
 
   React.useEffect(() => {
     if (!selectedKey) {
-      const t = setTimeout(() => { setDisplayEvents([]); setDisplayNoEvents(false); setContentVisible(true); }, 450);
-      return () => clearTimeout(t);
+      const count = displayEvents.length + (displayNoEvents ? 1 : 0);
+      if (count > 0) {
+        setMobileExiting(true);
+        const exitMs = (count - 1) * 20 + 420;
+        const t = setTimeout(() => {
+          setMobileExiting(false);
+          setDisplayEvents([]);
+          setDisplayNoEvents(false);
+        }, exitMs);
+        return () => { clearTimeout(t); setMobileExiting(false); };
+      }
+      setDisplayEvents([]);
+      setDisplayNoEvents(false);
+      return;
     }
+    setMobileExiting(false);
     setContentVisible(false);
     setOpenShareIdx(null);
     const t = setTimeout(() => {
@@ -1612,14 +1626,14 @@ export const CalendarSection = ({ veranstaltungen = [] }) => {
 
       {/* Mobile event list — shown below grid on small screens */}
       {isMobile && (
-        <div style={{ marginTop: 24, opacity: contentVisible ? 1 : 0, transition: "opacity 0.18s ease" }}>
+        <div style={{ marginTop: 24, opacity: mobileExiting ? 1 : contentVisible ? 1 : 0, transition: (!mobileExiting && !contentVisible) ? "opacity 0.18s ease" : "none" }}>
           {selected && displayNoEvents && (
-            <div style={{ textAlign: "center", color: "var(--bone-500)", fontFamily: "var(--font-mono)", fontSize: 12, letterSpacing: "0.06em", padding: "32px 24px", border: "1px solid var(--ink-300)", borderRadius: 10, background: "var(--ink-100)" }}>
+            <div style={{ textAlign: "center", color: "var(--bone-500)", fontFamily: "var(--font-mono)", fontSize: 12, letterSpacing: "0.06em", padding: "32px 24px", border: "1px solid var(--ink-300)", borderRadius: 10, background: "var(--ink-100)", animation: mobileExiting ? "cal-stagger-out 0.3s ease-out both" : "cal-stagger-in 0.38s cubic-bezier(0.16,1,0.3,1) both" }}>
               {t("cal.noEvents")}
             </div>
           )}
-          {!selected && (
-            <div style={{ textAlign: "center", color: "var(--bone-500)", fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.08em", padding: "28px 0" }}>
+          {!selected && displayEvents.length === 0 && (
+            <div style={{ textAlign: "center", color: "var(--bone-500)", fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.08em", padding: "28px 0", animation: "cal-stagger-in 0.3s ease-out both" }}>
               {lang === "DE" ? "Tag auswählen" : "Select a day"}
             </div>
           )}
@@ -1677,7 +1691,8 @@ export const CalendarSection = ({ veranstaltungen = [] }) => {
                 });
               };
               return (
-                <div key={i} style={{ background: "var(--ink-100)", border: "1px solid var(--ink-300)", ...(ev.ganztaegig ? { borderTop: `3px solid ${accentColor}` } : { borderLeft: `3px solid ${accentColor}` }), borderRadius: 10, padding: "10px 14px", display: "flex", flexDirection: "column", gap: 6, opacity: evPast ? 0.4 : 1 }}>
+                <div key={i} style={{ animation: mobileExiting ? `cal-stagger-out 0.28s cubic-bezier(0.4,0,1,1) ${(displayEvents.length - 1 - i) * 20 + 100}ms both` : `cal-stagger-in 0.38s cubic-bezier(0.16,1,0.3,1) ${i * 70}ms both` }}>
+                <div style={{ background: "var(--ink-100)", border: "1px solid var(--ink-300)", ...(ev.ganztaegig ? { borderTop: `3px solid ${accentColor}` } : { borderLeft: `3px solid ${accentColor}` }), borderRadius: 10, padding: "10px 14px", display: "flex", flexDirection: "column", gap: 6, opacity: evPast ? 0.4 : 1 }}>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 6 }}>
                     <span style={{ display: "inline-flex", alignItems: "center", gap: 4, background: "var(--ink-200)", border: "1px solid var(--ink-300)", borderRadius: 20, padding: "2px 8px", fontFamily: "var(--font-mono)", fontSize: 9, letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--bone-400)" }}>
                       {KATEGORIE_ICON[ev.kategorie] ?? null}
@@ -1724,6 +1739,7 @@ export const CalendarSection = ({ veranstaltungen = [] }) => {
                       </button>
                     </div>
                   </div>
+                </div>
                 </div>
               );
             })}

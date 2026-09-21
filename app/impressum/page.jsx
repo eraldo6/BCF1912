@@ -120,12 +120,22 @@ export default function ImpressumPage() {
         </div>
 
         {/* Hauptinhalt: Impressum links, Vorstand rechts */}
-        <div style={{ padding: "72px 0 100px" }}>
+        <style>{`
+          @media (max-width: 768px) {
+            .impressum-grid { grid-template-columns: 1fr !important; }
+            .impressum-col-impressum { order: 2; }
+            .impressum-col-vorstand { order: 1; }
+            .vorstand-geschaeftsfuehrend { display: flex !important; flex-wrap: wrap; justify-content: center; }
+            .vorstand-geschaeftsfuehrend > * { width: calc(50% - 8px); }
+            .vorstand-erweitert > div { width: calc(50% - 8px) !important; }
+          }
+        `}</style>
+        <div style={{ padding: "clamp(36px, 6vw, 72px) 0 100px" }}>
           <div className="container">
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "64px 80px", alignItems: "start" }}>
+            <div className="impressum-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "64px 80px", alignItems: "start" }}>
 
               {/* Impressum */}
-              <div>
+              <div className="impressum-col-impressum">
                 <div style={{ fontFamily: "var(--font-mono)", fontSize: 13, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 40, display: "flex", alignItems: "center", gap: 12 }}>
                   <span style={{ display: "inline-block", width: 20, height: 1, background: "var(--bone-500)", opacity: 0.4 }} />
                   Impressum
@@ -183,7 +193,7 @@ export default function ImpressumPage() {
               </div>
 
               {/* Vorstand */}
-              <div>
+              <div className="impressum-col-vorstand">
                 <div style={{ fontFamily: "var(--font-mono)", fontSize: 13, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 40, display: "flex", alignItems: "center", gap: 12 }}>
                   <span style={{ display: "inline-block", width: 20, height: 1, background: "var(--bone-500)", opacity: 0.4 }} />
                   Der Vorstand
@@ -191,14 +201,14 @@ export default function ImpressumPage() {
                 <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--bone-600)", marginBottom: 16 }}>
                   Geschäftsführender Vorstand
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 40 }}>
+                <div className="vorstand-geschaeftsfuehrend" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 40 }}>
                   {VORSTAND_GESCHAEFTSFUEHREND.map(p => <PersonCard key={p.name} {...p} />)}
                 </div>
 
                 <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--bone-600)", marginBottom: 16 }}>
                   Erweiterter Vorstand
                 </div>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 16, justifyContent: "center" }}>
+                <div className="vorstand-erweitert" style={{ display: "flex", flexWrap: "wrap", gap: 16, justifyContent: "center" }}>
                   {VORSTAND_ERWEITERT.map((p, i) => (
                     <div key={p.name} style={{ width: "calc(33.333% - 11px)" }}>
                       <PersonCard {...p} />
