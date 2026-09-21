@@ -74,9 +74,9 @@ export default function DatenschutzPage() {
         </div>
 
         {/* Inhalt */}
-        <div style={{ padding: "72px 0 100px" }}>
+        <div style={{ padding: "clamp(36px, 6vw, 72px) 0 100px" }}>
           <div className="container">
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 80px", alignItems: "start" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 340px), 1fr))", gap: "0 80px", alignItems: "start" }}>
 
               {/* Linke Spalte */}
               <div>

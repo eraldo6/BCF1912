@@ -12,16 +12,13 @@ export function CookieBanner() {
     try {
       const saved = localStorage.getItem("bcf_lang");
       if (saved) setLang(saved);
-    } catch {}
+      if (!localStorage.getItem("bcf_cookie_notice")) setVisible(true);
+    } catch {
+      setVisible(true);
+    }
   }, []);
 
   const tr = (key, fallback) => TRANSLATIONS[lang]?.[key] || fallback;
-
-  useEffect(() => {
-    try {
-      if (!localStorage.getItem("bcf_cookie_notice")) setVisible(true);
-    } catch {}
-  }, []);
 
   function dismiss() {
     try { localStorage.setItem("bcf_cookie_notice", "1"); } catch {}
@@ -41,11 +38,10 @@ export function CookieBanner() {
   const circ = 2 * Math.PI * r;
 
   return (
-    <div style={{
+    <div className="cookie-banner-root" style={{
       position: "fixed",
       bottom: 24,
       left: "50%",
-      transform: "translateX(-50%)",
       zIndex: 9999,
       display: "flex",
       alignItems: "center",
@@ -57,19 +53,15 @@ export function CookieBanner() {
       boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
       maxWidth: "calc(100vw - 32px)",
       width: "max-content",
-      animation: closing
-        ? "cookie-slide-down 0.15s cubic-bezier(0.4,0,1,1) forwards"
-        : "cookie-slide-up 0.35s cubic-bezier(0.16,1,0.3,1) both",
+      opacity: closing ? 0 : 1,
+      transform: closing
+        ? "translateX(-50%) translateY(32px)"
+        : "translateX(-50%) translateY(0)",
+      transition: closing
+        ? "opacity 0.15s ease, transform 0.15s ease"
+        : "none",
     }}>
       <style>{`
-        @keyframes cookie-slide-up {
-          from { opacity: 0; transform: translateX(-50%) translateY(16px); }
-          to   { opacity: 1; transform: translateX(-50%) translateY(0); }
-        }
-        @keyframes cookie-slide-down {
-          from { opacity: 1; transform: translateX(-50%) translateY(0); }
-          to   { opacity: 0; transform: translateX(-50%) translateY(40px); }
-        }
         .cookie-close:hover .cookie-x { color: var(--bone-100) !important; }
         .cookie-close:hover { background: var(--ink-300) !important; }
         @keyframes cookie-countdown {

@@ -4,29 +4,13 @@
 
 ## Bigger sections
 
-Mitgliedschaft Subpage gestalten -> BCF Files hinterlegen (Satzung, Datenschutzerklärung)
 (Eraldo) Disziplinen Section gestalten
 (Eraldo) Vereinsheim Section gestalten
-Mobile Layout (Breakpoints, Nav(Hamburger))
-Cookie Banner
-Datenschutz Subpage
-File Struktur aufräumen + sectionnumbers prüfen + alle Bindestriche aus in DE und EN (ganz am Ende)
 
 ## kleinere todos oder bugfixes
 
-Mobile Version:
-
-- readArtikel-fenster auf Handy testen
-- Burger Menu Ausklapp Style ändern in Glass
-- DE Button Navbar
-- Navbar Schriftzug zentriert
-- Subpages anpassen
-- Hero Page: 1912 Schriftzug größer
-- sind die Kalender Punkte in richtiger Farbe
-- Email Crawler
-  Claude mobile textsize regel
-  alle Bindestriche raus aus den texten (DE und EN)
-  text aus felder generieren anders positionieren
+Mitgliedschaft Subpage gestalten -> BCF Files hinterlegen (Satzung, Datenschutzerklärung)
+"text aus felder generieren" anders positionieren
 
 ## With Sydney
 
@@ -43,7 +27,6 @@ Impressum & Vorstand Subpage ergänzen
 News Beiträge füllen
 sind die karambol termine rot
 Admin Accounts einrichten
-Datenverarbeitung (veveto fetch import, verweise auf cuescore seite per link, fonts)
 
 # GoLive
 
@@ -59,8 +42,11 @@ Impressum Seite legalmachen
 Resend eigene Domain verifizieren (E-Mails kommen aktuell von onboarding@resend.dev und landen im Spam — eigene Adresse wie noreply@bcfrankfurt.de einrichten, braucht DNS-Zugriff)
 mein eigenes Passwort ändern
 HSTS (Strict-Transport-Security) — besser direkt bei Vercel setzen sobald du live bist
-muss ich Datenschutzerklärung und Cookie nochmal aktualisieren?
+muss ich Datenschutzerklärung und Cookie nochmal aktualisieren? (auch Übersetzung)
 Was sind klassische Dinge für eine Abfindung
+Email Crawler
+Datenverarbeitung (veveto fetch import, verweise auf cuescore seite per link, fonts)
+File Struktur aufräumen + sectionnumbers prüfen + alle Bindestriche aus in DE und EN (ganz am Ende)
 
 # Second release
 
@@ -96,6 +82,7 @@ Termin teilen Funktion editieren wegen Whatsapp
 Scrolling Bug (von Subpage direkt auf Navbarlink)
 ![alt text](image.png) ab wann werden alte veranstalungen so ausgeblendet?
 Lade Animation (UI Feedback) beim Einloggon
+Mobile Version: Burger Menu Ausklapp Style ändern in Glass
 
 ## Other
 

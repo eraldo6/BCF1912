@@ -1196,6 +1196,14 @@ section {
     font-size: clamp(48px, 12vw, 96px);
   }
 
+  .hero-title .historical {
+    font-size: 48px;
+  }
+
+  .nav-logo {
+    font-size: 22px;
+  }
+
   .hero-subtitle {
     font-size: 16px;
   }
@@ -2019,7 +2027,9 @@ section {
     bottom: 0;
     width: 78vw;
     max-width: 320px;
-    background: rgba(8, 8, 16, 0.7);
+    background: rgba(8, 8, 16, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-left: 1px solid rgba(255, 255, 255, 0.07);
     z-index: 99;
     display: flex;
@@ -2925,3 +2935,10 @@ section {
 .admin-scroll::-webkit-scrollbar-track  { background: var(--ink-300); border-radius: 3px; }
 .admin-scroll::-webkit-scrollbar-thumb  { background: #555049; border-radius: 3px; }
 .admin-scroll::-webkit-scrollbar-thumb:hover { background: var(--bone-200); }
+
+/* Cookie banner — Mobile Safari bottom toolbar offset */
+@media (max-width: 768px) {
+  .cookie-banner-root {
+    bottom: 80px !important;
+  }
+}
