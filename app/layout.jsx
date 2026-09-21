@@ -1,6 +1,7 @@
 import { Space_Grotesk, JetBrains_Mono, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { AuthHashRouter } from "./components/auth-hash-router";
+import { Analytics } from "@vercel/analytics/next";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -38,6 +39,7 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${cormorant.variable}`}>
       <body>
         <AuthHashRouter />
+        <Analytics />
         <div id="page-wrap">{children}</div>
       </body>
     </html>
