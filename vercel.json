@@ -1,8 +1,1 @@
-{
-  "_crons": [
-    {
-      "path": "/api/cron/sync-veveto",
-      "schedule": "0 3 * * *"
-    }
-  ]
-}
+{}
