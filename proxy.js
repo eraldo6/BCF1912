@@ -2,6 +2,15 @@ import { createServerClient } from '@supabase/ssr'
 import { NextResponse } from 'next/server'
 
 export async function proxy(request) {
+  const { pathname } = request.nextUrl
+
+  // Maintenance-Modus: alle Seiten außer /admin, /api und /maintenance umleiten
+  if (process.env.MAINTENANCE_MODE === 'true') {
+    if (!pathname.startsWith('/admin') && !pathname.startsWith('/api') && pathname !== '/maintenance') {
+      return NextResponse.rewrite(new URL('/maintenance', request.url))
+    }
+  }
+
   let supabaseResponse = NextResponse.next({ request })
 
   const supabase = createServerClient(
@@ -27,7 +36,6 @@ export async function proxy(request) {
 
   // getUser() validates the JWT server-side — safer than getSession()
   const { data: { user } } = await supabase.auth.getUser()
-  const { pathname } = request.nextUrl
 
   if (!user && pathname.startsWith('/admin') && pathname !== '/admin/login' && pathname !== '/admin/update-password') {
     const url = request.nextUrl.clone()
@@ -45,5 +53,5 @@ export async function proxy(request) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.png$).*)'],
 }
