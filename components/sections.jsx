@@ -444,7 +444,7 @@ export const Experience = () => {
       <div className="experience-grid reveal">
         <div className="exp-card exp-card-tables" style={{ padding: 0, overflow: "hidden" }}>
           <img
-            src="/images/floor-plan.png"
+            src="/images/floor-plan.jpg"
             alt="Club floor plan with 10 match-grade tables"
             style={{
               width: "100%",
@@ -1285,6 +1285,148 @@ const KATEGORIE_ICON = {
 
 // Weekdays generated dynamically via locale (see CalendarSection)
 
+/* Farbcodes für die Disziplin-Badges — analog zu /spiele. */
+const UPCOMING_DISCIPLINE_COLOR = {
+  Pool: "#6fa3e0",
+  Snooker: "#6dc98a",
+  "Karambol GB": "#e08080",
+  "Karambol KB": "#e87a8e",
+};
+
+const UPCOMING_STAFFEL_LABEL = { LL: "Landesliga", BL: "Bezirksliga", VL: "Verbandsliga", OL: "Oberliga" };
+
+function upcomingEvents(events, limit = 5) {
+  const now = Date.now();
+  return events
+    .filter(ev => {
+      const end = ev.termin_ende ? new Date(ev.termin_ende) : null;
+      const start = new Date(ev.termin);
+      const ref = end || start;
+      return ref.getTime() >= now;
+    })
+    .sort((a, b) => new Date(a.termin) - new Date(b.termin))
+    .slice(0, limit);
+}
+
+function UpcomingRow({ ev, t, lang }) {
+  const color = UPCOMING_DISCIPLINE_COLOR[ev.spielart] || "var(--bone-300)";
+  const staffelLabel = ev.staffel ? UPCOMING_STAFFEL_LABEL[ev.staffel] || ev.staffel : null;
+  const kategorieLabel = ev.kategorie ? (t(`cal.kategorie.${ev.kategorie}`) || ev.kategorie) : null;
+  const showTeams = ev.heimmannschaft && ev.gastmannschaft && ev.kategorie === "Heimspiel";
+
+  const d = new Date(ev.termin);
+  const locale = lang === "EN" ? "en-GB" : "de-DE";
+  const dayNum = String(d.getDate()).padStart(2, "0");
+  const monthShort = new Intl.DateTimeFormat(locale, { month: "short" }).format(d);
+  const weekday = new Intl.DateTimeFormat(locale, { weekday: "short" }).format(d);
+  const time = ev.ganztaegig ? t("cal.allDay") : `${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
+  const venue = ev.austragungsort || t("spiele.tba");
+
+  return (
+    <a
+      href="/spiele"
+      className="match-card upcoming-row"
+      style={{
+        display: "grid",
+        gridTemplateColumns: "auto auto 1fr auto",
+        alignItems: "center",
+        gap: 20,
+        padding: "16px 22px",
+        borderLeft: `3px solid ${color}`,
+        textDecoration: "none",
+        color: "inherit",
+      }}
+    >
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", minWidth: 56 }}>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 22, color: "var(--bone-100)", lineHeight: 1 }}>{dayNum}</span>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--bone-400)", marginTop: 4 }}>
+          {monthShort} · {weekday}
+        </span>
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 6, minWidth: 92 }}>
+        {ev.spielart && (
+          <span
+            className="tc-badge"
+            style={{
+              background: `color-mix(in oklch, ${color} 16%, transparent)`,
+              color,
+              border: `1px solid color-mix(in oklch, ${color} 40%, transparent)`,
+            }}
+          >
+            {ev.spielart}
+          </span>
+        )}
+        {staffelLabel && (
+          <span
+            className="tc-badge"
+            style={{ background: "var(--ink-100)", color: "var(--bone-400)", border: "1px solid var(--ink-300)" }}
+          >
+            {ev.staffel}
+          </span>
+        )}
+      </div>
+
+      <div style={{ minWidth: 0 }}>
+        {showTeams ? (
+          <div className="match-teams" style={{ margin: 0, gap: 4 }}>
+            <div className="match-team"><span className="team-name" style={{ fontWeight: 500 }}>{ev.heimmannschaft}</span></div>
+            <div className="match-team"><span className="team-name" style={{ color: "var(--bone-300)" }}>{ev.gastmannschaft}</span></div>
+          </div>
+        ) : (
+          <div style={{ fontFamily: "var(--font-display)", fontSize: 16, color: "var(--bone-100)", lineHeight: 1.3 }}>
+            {ev.titel || kategorieLabel}
+          </div>
+        )}
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4, minWidth: 140 }}>
+        <span className="tc-date">{time}</span>
+        <span className="tc-venue" style={{ fontSize: 12, textAlign: "right" }}>{venue}</span>
+      </div>
+    </a>
+  );
+}
+
+export const UpcomingEventsSection = ({ veranstaltungen = [] }) => {
+  const { t, lang } = useTranslation();
+  const items = React.useMemo(() => upcomingEvents(veranstaltungen, 5), [veranstaltungen]);
+
+  return (
+    <section className="section" id="kalender" style={{ background: "linear-gradient(to bottom, var(--ink-050) 0%, transparent 120px), radial-gradient(ellipse at 15% -10%, color-mix(in srgb, var(--felt-700) 70%, transparent) 0%, var(--ink-050) 55%, var(--ink-000) 100%)" }}>
+      <div className="container">
+        <div style={{ marginBottom: 32 }}>
+          <div className="section-eyebrow-row">
+            <span className="section-num">02</span>
+            <span className="section-divider" />
+            <span className="eyebrow">{t("nav.games")}</span>
+          </div>
+          <h2 className="section-title" style={{ marginTop: 16 }}>{t("cal.headline1")} <em>{t("cal.headline2")}</em></h2>
+          <p style={{ marginTop: 12, fontSize: 15, color: "var(--bone-400)", fontFamily: "var(--font-display)", maxWidth: 640 }}>{t("cal.lede")}</p>
+        </div>
+
+        {items.length === 0 ? (
+          <div style={{ padding: "60px 0", textAlign: "center", color: "var(--bone-400)", fontFamily: "var(--font-display)", fontSize: 15 }}>
+            {t("spiele.empty")}
+          </div>
+        ) : (
+          <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 32 }}>
+            {items.map(ev => (
+              <UpcomingRow key={ev.id} ev={ev} t={t} lang={lang} />
+            ))}
+          </div>
+        )}
+
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <a href="/spiele" className="btn btn-brass" style={{ padding: "12px 28px", fontSize: 13 }}>
+            {t("cal.allMatches")} →
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 function buildCalendarDays(year, month) {
   const first = new Date(year, month, 1);
   const last = new Date(year, month + 1, 0);
@@ -1813,10 +1955,7 @@ export const Contact = () => {
           <div className="contact-info-block">
             <h4>{t("contact.contact.title")}</h4>
             <p style={{ marginBottom: 8 }}>
-              <ObfuscatedEmail u="info" d="bcfrankfurt1912" t="de" style={{ color: "var(--brass-500)", textDecoration: "none" }} />
-            </p>
-            <p>
-              <ObfuscatedEmail u="membership" d="bcfrankfurt1912" t="de" style={{ color: "var(--brass-500)", textDecoration: "none" }} />
+              <ObfuscatedEmail u="1vorsitzender" d="bcfrankfurt" t="de" style={{ color: "var(--brass-500)", textDecoration: "none" }} />
             </p>
           </div>
         </div>
@@ -1853,10 +1992,7 @@ export const Contact = () => {
               marginBottom: 16,
             }}>{t("contact.membershipInquiries")}</h5>
             <p style={{ marginBottom: 12 }}>
-              <ObfuscatedEmail u="info" d="bcfrankfurt1912" t="de" style={{ color: "var(--brass-500)", textDecoration: "none", fontFamily: "var(--font-mono)", fontSize: "13px", display: "block" }} />
-            </p>
-            <p>
-              <ObfuscatedEmail u="membership" d="bcfrankfurt1912" t="de" style={{ color: "var(--brass-500)", textDecoration: "none", fontFamily: "var(--font-mono)", fontSize: "13px", display: "block" }} />
+              <ObfuscatedEmail u="1vorsitzender" d="bcfrankfurt" t="de" style={{ color: "var(--brass-500)", textDecoration: "none", fontFamily: "var(--font-mono)", fontSize: "13px", display: "block" }} />
             </p>
           </div>
           <a href="/mitgliedschaft" className="btn btn-ghost" style={{ marginTop: 40, padding: "10px 18px", fontSize: 12, display: "inline-flex", alignItems: "center", gap: 6, alignSelf: "flex-start" }}>

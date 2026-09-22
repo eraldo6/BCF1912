@@ -9,6 +9,12 @@ export default function sitemap() {
       priority: 1.0,
     },
     {
+      url: `${BASE_URL}/spiele`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
+    {
       url: `${BASE_URL}/mitgliedschaft`,
       lastModified: new Date(),
       changeFrequency: 'monthly',

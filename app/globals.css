@@ -1227,6 +1227,10 @@ section {
     display: none;
   }
 
+  .spiele-day-grid {
+    grid-template-columns: 1fr !important;
+  }
+
   .hero-cta .btn {
     padding: 12px 20px;
     font-size: 12px;

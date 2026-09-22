@@ -30,7 +30,7 @@ lib/
   translations.js  # EN/DE copy, as { EN: {...}, DE: {...} }
 
 public/
-  images/, data/   # Static files served as-is (e.g. /images/floor-plan.png)
+  images/, data/   # Static files served as-is (e.g. /images/floor-plan.jpg)
 
 docs/              # Project documentation — see below
 archive/           # Superseded files kept for reference, not part of the live app

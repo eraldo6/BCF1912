@@ -14,6 +14,7 @@ import {
   Membership,
   News,
   CalendarSection,
+  UpcomingEventsSection,
   Contact,
   Footer,
 } from "./sections";
@@ -103,7 +104,7 @@ export const AppContent = ({ galleryImages = [], newsItems = [], turniere = [], 
         <Hero images={galleryImages} />
         <Marquee />
         <News items={newsItems} turniere={turniere} />
-        <CalendarSection veranstaltungen={veranstaltungen} />
+        <UpcomingEventsSection veranstaltungen={veranstaltungen} />
         <ClubSection images={galleryImages} hideGallery />
         <Experience />
         <Gallery images={galleryImages} />

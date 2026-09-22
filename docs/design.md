@@ -58,5 +58,5 @@ Files no longer part of the live app — but judged worth keeping as reference �
 
 ## Known follow-ups, explicitly out of scope for now
 
-- `public/images/floor-plan.png` has its table-layout labels baked into the image (English text, not translatable, not crisp at all sizes). Flagged for replacement with a coded HTML/CSS or SVG diagram — separate task from the framework migration.
+- `public/images/floor-plan.jpg` has its table-layout labels baked into the image (English text, not translatable, not crisp at all sizes). Flagged for replacement with a coded HTML/CSS or SVG diagram — separate task from the framework migration.
 - `components/games.jsx` is converted but not currently rendered anywhere, same as before the migration.
