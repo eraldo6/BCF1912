@@ -9,6 +9,8 @@
 
 ## kleinere todos oder bugfixes
 
+schreib noch im admin dashboard täglich um 3 Uhr aktualisiert bei Veranstaltungen Tabelle
+
 ## With Sydney
 
 text content drüber schauen und bearbeiten
@@ -22,27 +24,13 @@ sind diese Satzungen noch aktuell? Richtige Satzungen hinterlegen
 mitgliederanzahl auf hero prüfen "240+ Mitglieder"
 Impressum & Vorstand Subpage ergänzen
 News Beiträge füllen
-sind die karambol termine rot
 Admin Accounts einrichten
 
 # GoLive
 
-Storage
-dns umzeigen, wie läuft das jetzt gerade? Wie kriegen wird die Url?
-darf ich überhaupt fetchen?
-SSL Zertifikat
-XML Sitemaps und robots.txt (Was ist das?)
-Privater Storage-Bucket für Entwurfs-bilder (Aktuell sind Bilder unveröffentlichter Beiträge über direkte URL abrufbar)
-Cookie und Datenschutz Hinweise einbauen
-Was ist mit Bildrechten? Oder Bausteine der Website oder Programmierbausteine der Website?
-Impressum Seite legalmachen
-Resend eigene Domain verifizieren (E-Mails kommen aktuell von onboarding@resend.dev und landen im Spam — eigene Adresse wie noreply@bcfrankfurt.de einrichten, braucht DNS-Zugriff)
-mein eigenes Passwort ändern
-HSTS (Strict-Transport-Security) — besser direkt bei Vercel setzen sobald du live bist
 muss ich Datenschutzerklärung und Cookie nochmal aktualisieren? (auch Übersetzung)
-Was sind klassische Dinge für eine Abfindung
-Email Crawler
-Datenverarbeitung (veveto fetch import, verweise auf cuescore seite per link, fonts)
+Datenverarbeitung (veveto fetch import, verweise auf cuescore seite per link, fonts, Was ist mit Bildrechten? Oder Bausteine der Website oder Programmierbausteine der Website?, muss unter jedes Foto der Quelle, wer dieses Bild geschossen und wer es bearbeitet hat?)
+mein eigenes Passwort ändern
 Mitgliedschaft Subpage gestalten -> BCF Files hinterlegen (Satzung, Datenschutzerklärung)
 File Struktur aufräumen + sectionnumbers prüfen + alle Bindestriche aus in DE und EN (ganz am Ende)
 
@@ -63,6 +51,8 @@ Admin Dashboard: DE/EN Übersetzung
 Was ist Seo? How do i use it the best way? How can i integrate it more?
 
 ## little things
+
+Privater Storage-Bucket für Entwurfsbilder — drafts/ Ordner + RLS-Policy, damit unveröffentlichte Bilder nicht öffentlich abrufbar sind
 
 Admin Dashboard: Veranstaltungen Tabelle in Termine umbenennen
 Admin Dashboard: Austragungsort kann anders eingetragen werden, hat aber keine Auswirkungen
@@ -96,3 +86,11 @@ Sunday Breakout Poster
 
 dangerouslySetInnerHTML bei Admin prüfen
 dangerouslySetInnerHTML bei News Aritkel Popup Fenster prüfen
+
+Nach Go-Live: https://bcfrankfurt.de einmal selbst im Browser aufrufen → HSTS wird aktiviert, danach sind alle Nutzerbesuche abgesichert
+Bildquell beschriftung
+
+SEO testen
+
+Was sind klassische Dinge für eine Abfindung
+HSTS (Strict-Transport-Security) — besser direkt bei Vercel setzen sobald du live bist

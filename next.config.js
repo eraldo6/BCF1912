@@ -11,6 +11,8 @@ const securityHeaders = [
   { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), payment=()' },
   // Legacy XSS filter for older browsers
   { key: 'X-XSS-Protection', value: '1; mode=block' },
+  // Force HTTPS for 1 year, include subdomains
+  { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains' },
 ]
 
 const nextConfig = {

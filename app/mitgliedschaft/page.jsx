@@ -70,33 +70,25 @@ export default function MitgliedschaftPage() {
 
               {/* Right: contacts */}
               <div className="contact-col-right" style={{ paddingTop: 60, display: "flex", flexDirection: "column", gap: 16 }}>
-                <a
-                  href="mailto:1vorsitzender@bcfrankfurt.de"
-                  className="membership-contact-card" style={{ display: "block", padding: "28px 32px", border: "1px solid rgba(245,241,232,0.08)", borderRadius: "var(--radius-lg)", background: "rgba(17,17,20,0.6)", textDecoration: "none", transition: "border-color 0.3s, background 0.3s" }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--brass-500)"; e.currentTarget.style.background = "rgba(17,17,20,0.9)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(245,241,232,0.08)"; e.currentTarget.style.background = "rgba(17,17,20,0.6)"; }}
-                >
-                  <div className="contact-label" style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 10 }}>
-                    {t("membership.contact.label1")}
-                  </div>
-                  <div className="contact-email" style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--brass-500)", letterSpacing: "0.04em" }}>
-                    1vorsitzender@bcfrankfurt.de
-                  </div>
-                </a>
-
-                <a
-                  href="mailto:vize-sport@bcfrankfurt.de"
-                  className="membership-contact-card" style={{ display: "block", padding: "28px 32px", border: "1px solid rgba(245,241,232,0.08)", borderRadius: "var(--radius-lg)", background: "rgba(17,17,20,0.6)", textDecoration: "none", transition: "border-color 0.3s, background 0.3s" }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--brass-500)"; e.currentTarget.style.background = "rgba(17,17,20,0.9)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(245,241,232,0.08)"; e.currentTarget.style.background = "rgba(17,17,20,0.6)"; }}
-                >
-                  <div className="contact-label" style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 10 }}>
-                    {t("membership.contact.label2")}
-                  </div>
-                  <div className="contact-email" style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--brass-500)", letterSpacing: "0.04em" }}>
-                    vize-sport@bcfrankfurt.de
-                  </div>
-                </a>
+                {[
+                  { u: "1vorsitzender", d: "bcfrankfurt", t: "de", label: t("membership.contact.label1") },
+                  { u: "vize-sport",    d: "bcfrankfurt", t: "de", label: t("membership.contact.label2") },
+                ].map(({ u, d, t: tld, label }) => (
+                  <a
+                    key={u}
+                    href={`mailto:${u}@${d}.${tld}`}
+                    className="membership-contact-card" style={{ display: "block", padding: "28px 32px", border: "1px solid rgba(245,241,232,0.08)", borderRadius: "var(--radius-lg)", background: "rgba(17,17,20,0.6)", textDecoration: "none", transition: "border-color 0.3s, background 0.3s" }}
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--brass-500)"; e.currentTarget.style.background = "rgba(17,17,20,0.9)"; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(245,241,232,0.08)"; e.currentTarget.style.background = "rgba(17,17,20,0.6)"; }}
+                  >
+                    <div className="contact-label" style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 10 }}>
+                      {label}
+                    </div>
+                    <div className="contact-email" style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--brass-500)", letterSpacing: "0.04em" }}>
+                      {u}@{d}.{tld}
+                    </div>
+                  </a>
+                ))}
               </div>
 
             </div>

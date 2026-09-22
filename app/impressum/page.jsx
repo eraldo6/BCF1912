@@ -1,6 +1,7 @@
 "use client";
 
 import { Nav, Footer } from "../../components/sections";
+import { ObfuscatedEmail } from "../../components/obfuscated-email";
 import { TranslationContext } from "../../components/translation-context";
 import { TRANSLATIONS } from "../../lib/translations";
 import React from "react";
@@ -150,11 +151,11 @@ export default function ImpressumPage() {
 
                 <ImpressumBlock label="Vertreten durch">
                   Sydney Schindhelm<br />
-                  <a href="mailto:info@bcfrankfurt.de" style={{ color: "var(--brass-500)", textDecoration: "none" }}>info@bcfrankfurt.de</a>
+                  <ObfuscatedEmail u="info" d="bcfrankfurt" t="de" style={{ color: "var(--brass-500)", textDecoration: "none" }} />
                 </ImpressumBlock>
 
                 <ImpressumBlock label="Kontakt">
-                  E-Mail: <a href="mailto:info@bcfrankfurt.de" style={{ color: "var(--brass-500)", textDecoration: "none" }}>info@bcfrankfurt.de</a><br />
+                  E-Mail: <ObfuscatedEmail u="info" d="bcfrankfurt" t="de" style={{ color: "var(--brass-500)", textDecoration: "none" }} /><br />
                   Telefon: 06109 / 36780
                 </ImpressumBlock>
 
@@ -172,7 +173,7 @@ export default function ImpressumPage() {
 
                 <ImpressumBlock label="Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV">
                   Sydney Schindhelm<br />
-                  <a href="mailto:info@bcfrankfurt.de" style={{ color: "var(--brass-500)", textDecoration: "none" }}>info@bcfrankfurt.de</a>
+                  <ObfuscatedEmail u="info" d="bcfrankfurt" t="de" style={{ color: "var(--brass-500)", textDecoration: "none" }} />
                 </ImpressumBlock>
 
                 <ImpressumBlock label="Haftungsausschluss">

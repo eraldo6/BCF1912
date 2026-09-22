@@ -3,6 +3,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { useTranslation } from "./translation-context";
+import { ObfuscatedEmail } from "./obfuscated-email";
 import { Arrow, ArrowOut, PoolTableHero, ScrollCue, DownloadIcon } from "./visuals";
 import DOMPurify from "dompurify";
 
@@ -1812,14 +1813,10 @@ export const Contact = () => {
           <div className="contact-info-block">
             <h4>{t("contact.contact.title")}</h4>
             <p style={{ marginBottom: 8 }}>
-              <a href="mailto:info@bcfrankfurt1912.de" style={{ color: "var(--brass-500)", textDecoration: "none" }}>
-                info@bcfrankfurt1912.de
-              </a>
+              <ObfuscatedEmail u="info" d="bcfrankfurt1912" t="de" style={{ color: "var(--brass-500)", textDecoration: "none" }} />
             </p>
             <p>
-              <a href="mailto:membership@bcfrankfurt1912.de" style={{ color: "var(--brass-500)", textDecoration: "none" }}>
-                membership@bcfrankfurt1912.de
-              </a>
+              <ObfuscatedEmail u="membership" d="bcfrankfurt1912" t="de" style={{ color: "var(--brass-500)", textDecoration: "none" }} />
             </p>
           </div>
         </div>
@@ -1856,26 +1853,10 @@ export const Contact = () => {
               marginBottom: 16,
             }}>{t("contact.membershipInquiries")}</h5>
             <p style={{ marginBottom: 12 }}>
-              <a href="mailto:info@bcfrankfurt1912.de" style={{
-                color: "var(--brass-500)",
-                textDecoration: "none",
-                fontFamily: "var(--font-mono)",
-                fontSize: "13px",
-                display: "block",
-              }}>
-                info@bcfrankfurt1912.de
-              </a>
+              <ObfuscatedEmail u="info" d="bcfrankfurt1912" t="de" style={{ color: "var(--brass-500)", textDecoration: "none", fontFamily: "var(--font-mono)", fontSize: "13px", display: "block" }} />
             </p>
             <p>
-              <a href="mailto:membership@bcfrankfurt1912.de" style={{
-                color: "var(--brass-500)",
-                textDecoration: "none",
-                fontFamily: "var(--font-mono)",
-                fontSize: "13px",
-                display: "block",
-              }}>
-                membership@bcfrankfurt1912.de
-              </a>
+              <ObfuscatedEmail u="membership" d="bcfrankfurt1912" t="de" style={{ color: "var(--brass-500)", textDecoration: "none", fontFamily: "var(--font-mono)", fontSize: "13px", display: "block" }} />
             </p>
           </div>
           <a href="/mitgliedschaft" className="btn btn-ghost" style={{ marginTop: 40, padding: "10px 18px", fontSize: 12, display: "inline-flex", alignItems: "center", gap: 6, alignSelf: "flex-start" }}>

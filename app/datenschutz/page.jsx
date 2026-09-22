@@ -1,6 +1,7 @@
 "use client";
 
 import { Nav, Footer } from "../../components/sections";
+import { ObfuscatedEmail } from "../../components/obfuscated-email";
 import { TranslationContext } from "../../components/translation-context";
 import { TRANSLATIONS } from "../../lib/translations";
 import React from "react";
@@ -86,7 +87,7 @@ export default function DatenschutzPage() {
                   60388 Frankfurt am Main<br />
                   Deutschland</P>
                   <P>
-                    E-Mail: <A href="mailto:info@bcfrankfurt.de">info@bcfrankfurt.de</A><br />
+                    E-Mail: <ObfuscatedEmail u="info" d="bcfrankfurt" t="de" /><br />
                     Telefon: 06109 / 36780
                   </P>
                   <P>Vertretungsberechtigte Person: Sydney Schindhelm</P>
