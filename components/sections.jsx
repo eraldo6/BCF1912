@@ -4,7 +4,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { useTranslation } from "./translation-context";
 import { ObfuscatedEmail } from "./obfuscated-email";
-import { Arrow, ArrowOut, PoolTableHero, ScrollCue, DownloadIcon } from "./visuals";
+import { Arrow, ArrowOut, PoolTableHero, ScrollCue } from "./visuals";
 import DOMPurify from "dompurify";
 
 /* Sections — broken down for maintainability */
@@ -195,11 +195,11 @@ export const Hero = ({ images = [] }) => {
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingBottom: 32, borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
           <div className="hero-cta reveal in-view delay-3">
-            <a href="#contact" className="btn btn-brass">
-              {lang === "DE" ? "Vereinsheim besuchen" : "Visit us"} <ArrowOut />
+            <a href="#news" className="btn btn-brass">
+              News Board <ArrowOut />
             </a>
-            <a href="#news" className="btn btn-ghost">
-              News Board <Arrow />
+            <a href="#gallery" className="btn btn-ghost">
+              {lang === "DE" ? "Galerie" : "Gallery"} <Arrow />
             </a>
           </div>
 
@@ -509,48 +509,54 @@ export const Experience = () => {
 
 const getPlans = (t) => [
   {
-    tag: t("membership.student.tag"),
-    name: t("membership.student.name"),
-    price: "20",
-    period: t("membership.period"),
-    tagline: t("membership.student.tagline"),
-    features: [
-      t("membership.student.feat1"),
-      t("membership.student.feat2"),
-      t("membership.student.feat3"),
-      t("membership.student.feat4"),
-    ],
-    cta: t("membership.student.cta"),
-    featured: false,
-  },
-  {
     tag: t("membership.regular.tag"),
     name: t("membership.regular.name"),
     price: "40",
     period: t("membership.period"),
+    kaution: t("membership.regular.kaution"),
     tagline: t("membership.regular.tagline"),
     features: [
       t("membership.regular.feat1"),
       t("membership.regular.feat2"),
       t("membership.regular.feat3"),
       t("membership.regular.feat4"),
+      t("membership.regular.feat5"),
     ],
     cta: t("membership.regular.cta"),
     featured: true,
   },
   {
-    tag: t("membership.family.tag"),
-    name: t("membership.family.name"),
-    price: "40",
+    tag: t("membership.student.tag"),
+    name: t("membership.student.name"),
+    price: "20",
     period: t("membership.period"),
-    tagline: t("membership.family.tagline"),
+    kaution: t("membership.student.kaution"),
+    tagline: t("membership.student.tagline"),
     features: [
-      t("membership.family.feat1"),
-      t("membership.family.feat2"),
-      t("membership.family.feat3"),
-      t("membership.family.feat4"),
+      t("membership.student.feat1"),
+      t("membership.student.feat2"),
+      t("membership.student.feat3"),
+      t("membership.student.feat4"),
+      t("membership.student.feat5"),
     ],
-    cta: t("membership.family.cta"),
+    cta: t("membership.student.cta"),
+    featured: false,
+  },
+  {
+    tag: t("membership.junior.tag"),
+    name: t("membership.junior.name"),
+    price: "10",
+    period: t("membership.period"),
+    kaution: t("membership.junior.kaution"),
+    tagline: t("membership.junior.tagline"),
+    features: [
+      t("membership.junior.feat1"),
+      t("membership.junior.feat2"),
+      t("membership.junior.feat3"),
+      t("membership.junior.feat4"),
+      t("membership.junior.feat5"),
+    ],
+    cta: t("membership.junior.cta"),
     featured: false,
   },
 ];
@@ -580,28 +586,18 @@ export const Membership = () => {
               <span className="member-price-num">{p.price}</span>
               <span className="member-price-period">{p.period}</span>
             </div>
-            <p className="member-tagline">{p.tagline}</p>
+            <div className="member-kaution">{p.kaution}</div>
             <ul className="member-features">
               {p.features.map(f => <li key={f}>{f}</li>)}
             </ul>
-            <a href="#contact" className={`btn ${p.featured ? "btn-brass" : "btn-ghost"} member-cta`}>
+            <a href="#" onClick={e => { e.preventDefault(); window.location.href = `mailto:${"1vorsitzender"}@${"bcfrankfurt"}.${"de"},${"vize-sport"}@${"bcfrankfurt"}.${"de"}`; }} className={`btn ${p.featured ? "btn-brass" : "btn-ghost"} member-cta`}>
               {p.cta} <Arrow />
             </a>
           </div>
         ))}
       </div>
 
-      {/* Download buttons */}
-      <div className="reveal member-downloads-row" style={{ marginTop: 60, display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "flex-end" }}>
-        <a href="/aufnahmeantrag.pdf" download className="member-download-btn">
-          <span className="download-arrow"><DownloadIcon size={22} /></span>
-          <span className="member-download-label" style={{ fontFamily: "var(--font-sans)", fontSize: 18, fontWeight: 500, color: "var(--bone-200)" }}>{t("membership.docs.aufnahme.title")}</span>
-        </a>
-        <a href="/vereinssatzung.pdf" download className="member-download-btn">
-          <span className="download-arrow"><DownloadIcon size={22} /></span>
-          <span className="member-download-label" style={{ fontFamily: "var(--font-sans)", fontSize: 18, fontWeight: 500, color: "var(--bone-200)" }}>{t("membership.docs.satzung.title")}</span>
-        </a>
-      </div>
+
     </div>
   </section>
 );
@@ -700,7 +696,7 @@ export const Gallery = ({ images = [] }) => {
   }, [items.length]);
 
   return (
-  <section className="section" id="gallery" style={{ paddingTop: 0 }}>
+  <section className="section" id="gallery" style={{ paddingTop: 0, scrollMarginTop: 80 }}>
     <div className="container">
       <div className="reveal" style={{ marginBottom: 48 }}>
         <h2 className="section-title" style={{ fontSize: "clamp(42px, 5vw, 80px)" }} dangerouslySetInnerHTML={{ __html: t("gallery.title") }} />

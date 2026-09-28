@@ -34,6 +34,7 @@ export default function MitgliedschaftPage() {
       <Nav />
       <div style={{ paddingTop: 80, background: "var(--ink-050)" }}>
         <div className="membership-breadcrumb" style={{ paddingTop: 32 }}>
+          <div className="container">
           <a href="/" style={{ display: "inline-flex", alignItems: "center", gap: 10, fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", textDecoration: "none", opacity: 0.7, transition: "opacity 0.2s" }}
             onMouseEnter={e => { e.currentTarget.style.opacity = 1; e.currentTarget.querySelector(".back-underline").style.transform = "scaleX(1)"; }}
             onMouseLeave={e => { e.currentTarget.style.opacity = 0.7; e.currentTarget.querySelector(".back-underline").style.transform = "scaleX(0)"; }}>
@@ -47,11 +48,12 @@ export default function MitgliedschaftPage() {
             <span style={{ color: "var(--bone-700)", fontWeight: 300 }}>/</span>
             <span style={{ color: "var(--brass-500)" }}>{t("nav.membership")}</span>
           </a>
+          </div>
         </div>
         <Membership />
 
         {/* Probetraining */}
-        <div className="membership-probetraining" style={{ borderTop: "1px solid var(--ink-300)", padding: "88px 0 100px", background: "var(--ink-000)" }}>
+        <div id="ansprechpartner" className="membership-probetraining" style={{ borderTop: "1px solid var(--ink-300)", padding: "88px 0 100px", background: "var(--ink-000)" }}>
           <div className="container">
             <div className="membership-contact-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "80px", alignItems: "start" }}>
 
@@ -63,13 +65,12 @@ export default function MitgliedschaftPage() {
                 <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(30px, 3.5vw, 52px)", fontWeight: 400, color: "var(--bone-100)", lineHeight: 1.1, letterSpacing: "-0.02em", marginBottom: 28 }}>
                   {t("membership.contact.headline1")}<br /><em style={{ fontStyle: "italic", color: "var(--brass-500)" }}>{t("membership.contact.headline2")}</em>
                 </h2>
-                <p style={{ fontFamily: "var(--font-sans)", fontSize: 15, color: "var(--bone-400)", lineHeight: 1.8, maxWidth: 460 }}>
-                  {t("membership.contact.desc")}
-                </p>
+                <p style={{ fontFamily: "var(--font-display)", fontSize: "clamp(18px, 2vw, 26px)", fontWeight: 400, color: "var(--bone-300)", lineHeight: 1.35, letterSpacing: "-0.01em", maxWidth: 520 }} dangerouslySetInnerHTML={{ __html: t("membership.contact.desc") }} />
               </div>
 
               {/* Right: contacts */}
               <div className="contact-col-right" style={{ paddingTop: 60, display: "flex", flexDirection: "column", gap: 16 }}>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 13, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 4 }}>Ansprechpartner</div>
                 {[
                   { u: "1vorsitzender", d: "bcfrankfurt", t: "de", label: t("membership.contact.label1") },
                   { u: "vize-sport",    d: "bcfrankfurt", t: "de", label: t("membership.contact.label2") },
@@ -84,7 +85,7 @@ export default function MitgliedschaftPage() {
                     <div className="contact-label" style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 10 }}>
                       {label}
                     </div>
-                    <div className="contact-email" style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--brass-500)", letterSpacing: "0.04em" }}>
+                    <div className="contact-email" style={{ fontFamily: "var(--font-mono)", fontSize: 14, color: "var(--brass-500)", letterSpacing: "0.04em" }}>
                       {u}@{d}.{tld}
                     </div>
                   </a>
