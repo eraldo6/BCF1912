@@ -523,6 +523,7 @@ const getPlans = (t) => [
       t("membership.regular.feat5"),
     ],
     cta: t("membership.regular.cta"),
+    subject: "Mitgliedschaft%20Einzel%20Anfrage%20%7C%20BC%20Frankfurt%201912%20e.V.",
     featured: true,
   },
   {
@@ -540,6 +541,7 @@ const getPlans = (t) => [
       t("membership.student.feat5"),
     ],
     cta: t("membership.student.cta"),
+    subject: "Mitgliedschaft%20Student%20Anfrage%20%7C%20BC%20Frankfurt%201912%20e.V.",
     featured: false,
   },
   {
@@ -557,6 +559,7 @@ const getPlans = (t) => [
       t("membership.junior.feat5"),
     ],
     cta: t("membership.junior.cta"),
+    subject: "Mitgliedschaft%20Sch%C3%BCler%20Anfrage%20%7C%20BC%20Frankfurt%201912%20e.V.",
     featured: false,
   },
 ];
@@ -590,7 +593,7 @@ export const Membership = () => {
             <ul className="member-features">
               {p.features.map(f => <li key={f}>{f}</li>)}
             </ul>
-            <a href="#" onClick={e => { e.preventDefault(); window.location.href = `mailto:${"1vorsitzender"}@${"bcfrankfurt"}.${"de"},${"vize-sport"}@${"bcfrankfurt"}.${"de"}`; }} className={`btn ${p.featured ? "btn-brass" : "btn-ghost"} member-cta`}>
+            <a href="#" onClick={e => { e.preventDefault(); window.location.href = `mailto:${"1vorsitzender"}@${"bcfrankfurt"}.${"de"},${"vize-sport"}@${"bcfrankfurt"}.${"de"}?subject=${p.subject}`; }} className={`btn ${p.featured ? "btn-brass" : "btn-ghost"} member-cta`}>
               {p.cta} <Arrow />
             </a>
           </div>

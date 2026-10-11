@@ -59,7 +59,7 @@ export default function MitgliedschaftPage() {
 
               {/* Left: text */}
               <div>
-                <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--brass-500)", marginBottom: 28 }}>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 14, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--brass-500)", marginBottom: 28 }}>
                   {t("membership.contact.eyebrow")}
                 </div>
                 <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(30px, 3.5vw, 52px)", fontWeight: 400, color: "var(--bone-100)", lineHeight: 1.1, letterSpacing: "-0.02em", marginBottom: 28 }}>
@@ -68,28 +68,36 @@ export default function MitgliedschaftPage() {
                 <p style={{ fontFamily: "var(--font-display)", fontSize: "clamp(18px, 2vw, 26px)", fontWeight: 400, color: "var(--bone-300)", lineHeight: 1.35, letterSpacing: "-0.01em", maxWidth: 520 }} dangerouslySetInnerHTML={{ __html: t("membership.contact.desc") }} />
               </div>
 
-              {/* Right: contacts */}
-              <div className="contact-col-right" style={{ paddingTop: 60, display: "flex", flexDirection: "column", gap: 16 }}>
-                <div style={{ fontFamily: "var(--font-mono)", fontSize: 13, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 4 }}>Ansprechpartner</div>
+              {/* Right: contacts + CTA */}
+              <div className="contact-col-right" style={{ paddingTop: 60, display: "flex", flexDirection: "column", gap: 16, maxWidth: 360 }}>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 13, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 4 }}>{t("membership.contact.contacts")}</div>
                 {[
                   { u: "1vorsitzender", d: "bcfrankfurt", t: "de", label: t("membership.contact.label1") },
                   { u: "vize-sport",    d: "bcfrankfurt", t: "de", label: t("membership.contact.label2") },
                 ].map(({ u, d, t: tld, label }) => (
-                  <a
+                  <div
                     key={u}
-                    href={`mailto:${u}@${d}.${tld}`}
-                    className="membership-contact-card" style={{ display: "block", padding: "28px 32px", border: "1px solid rgba(245,241,232,0.08)", borderRadius: "var(--radius-lg)", background: "rgba(17,17,20,0.6)", textDecoration: "none", transition: "border-color 0.3s, background 0.3s" }}
+                    className="membership-contact-card" style={{ padding: "28px 32px", border: "1px solid rgba(245,241,232,0.08)", borderRadius: "var(--radius-lg)", background: "rgba(17,17,20,0.6)", transition: "border-color 0.3s, background 0.3s" }}
                     onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--brass-500)"; e.currentTarget.style.background = "rgba(17,17,20,0.9)"; }}
                     onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(245,241,232,0.08)"; e.currentTarget.style.background = "rgba(17,17,20,0.6)"; }}
                   >
-                    <div className="contact-label" style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 10 }}>
+                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 10 }}>
                       {label}
                     </div>
-                    <div className="contact-email" style={{ fontFamily: "var(--font-mono)", fontSize: 14, color: "var(--brass-500)", letterSpacing: "0.04em" }}>
+                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 14, color: "var(--brass-500)", letterSpacing: "0.04em", wordBreak: "break-all" }}>
                       {u}@{d}.{tld}
                     </div>
-                  </a>
+                  </div>
                 ))}
+                <a
+                  href="#"
+                  onClick={e => { e.preventDefault(); window.location.href = `mailto:${"1vorsitzender"}@${"bcfrankfurt"}.${"de"},${"vize-sport"}@${"bcfrankfurt"}.${"de"}?subject=Probetraining%20Anfrage%20%7C%20BC%20Frankfurt%201912%20e.V.`; }}
+                  className="btn btn-brass"
+                  style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginTop: 8 }}
+                >
+                  {t("membership.contact.cta")}
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+                </a>
               </div>
 
             </div>
