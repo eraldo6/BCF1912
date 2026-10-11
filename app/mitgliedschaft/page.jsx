@@ -34,6 +34,7 @@ export default function MitgliedschaftPage() {
       <Nav />
       <div style={{ paddingTop: 80, background: "var(--ink-050)" }}>
         <div className="membership-breadcrumb" style={{ paddingTop: 32 }}>
+          <div className="container">
           <a href="/" style={{ display: "inline-flex", alignItems: "center", gap: 10, fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", textDecoration: "none", opacity: 0.7, transition: "opacity 0.2s" }}
             onMouseEnter={e => { e.currentTarget.style.opacity = 1; e.currentTarget.querySelector(".back-underline").style.transform = "scaleX(1)"; }}
             onMouseLeave={e => { e.currentTarget.style.opacity = 0.7; e.currentTarget.querySelector(".back-underline").style.transform = "scaleX(0)"; }}>
@@ -47,48 +48,56 @@ export default function MitgliedschaftPage() {
             <span style={{ color: "var(--bone-700)", fontWeight: 300 }}>/</span>
             <span style={{ color: "var(--brass-500)" }}>{t("nav.membership")}</span>
           </a>
+          </div>
         </div>
         <Membership />
 
         {/* Probetraining */}
-        <div className="membership-probetraining" style={{ borderTop: "1px solid var(--ink-300)", padding: "88px 0 100px", background: "var(--ink-000)" }}>
+        <div id="ansprechpartner" className="membership-probetraining" style={{ borderTop: "1px solid var(--ink-300)", padding: "88px 0 100px", background: "var(--ink-000)" }}>
           <div className="container">
             <div className="membership-contact-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "80px", alignItems: "start" }}>
 
               {/* Left: text */}
               <div>
-                <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--brass-500)", marginBottom: 28 }}>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 14, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--brass-500)", marginBottom: 28 }}>
                   {t("membership.contact.eyebrow")}
                 </div>
                 <h2 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(30px, 3.5vw, 52px)", fontWeight: 400, color: "var(--bone-100)", lineHeight: 1.1, letterSpacing: "-0.02em", marginBottom: 28 }}>
                   {t("membership.contact.headline1")}<br /><em style={{ fontStyle: "italic", color: "var(--brass-500)" }}>{t("membership.contact.headline2")}</em>
                 </h2>
-                <p style={{ fontFamily: "var(--font-sans)", fontSize: 15, color: "var(--bone-400)", lineHeight: 1.8, maxWidth: 460 }}>
-                  {t("membership.contact.desc")}
-                </p>
+                <p style={{ fontFamily: "var(--font-display)", fontSize: "clamp(18px, 2vw, 26px)", fontWeight: 400, color: "var(--bone-300)", lineHeight: 1.35, letterSpacing: "-0.01em", maxWidth: 520 }} dangerouslySetInnerHTML={{ __html: t("membership.contact.desc") }} />
               </div>
 
-              {/* Right: contacts */}
-              <div className="contact-col-right" style={{ paddingTop: 60, display: "flex", flexDirection: "column", gap: 16 }}>
+              {/* Right: contacts + CTA */}
+              <div className="contact-col-right" style={{ paddingTop: 60, display: "flex", flexDirection: "column", gap: 16, maxWidth: 360 }}>
+                <div style={{ fontFamily: "var(--font-mono)", fontSize: 13, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 4 }}>{t("membership.contact.contacts")}</div>
                 {[
                   { u: "1vorsitzender", d: "bcfrankfurt", t: "de", label: t("membership.contact.label1") },
                   { u: "vize-sport",    d: "bcfrankfurt", t: "de", label: t("membership.contact.label2") },
                 ].map(({ u, d, t: tld, label }) => (
-                  <a
+                  <div
                     key={u}
-                    href={`mailto:${u}@${d}.${tld}`}
-                    className="membership-contact-card" style={{ display: "block", padding: "28px 32px", border: "1px solid rgba(245,241,232,0.08)", borderRadius: "var(--radius-lg)", background: "rgba(17,17,20,0.6)", textDecoration: "none", transition: "border-color 0.3s, background 0.3s" }}
+                    className="membership-contact-card" style={{ padding: "28px 32px", border: "1px solid rgba(245,241,232,0.08)", borderRadius: "var(--radius-lg)", background: "rgba(17,17,20,0.6)", transition: "border-color 0.3s, background 0.3s" }}
                     onMouseEnter={e => { e.currentTarget.style.borderColor = "var(--brass-500)"; e.currentTarget.style.background = "rgba(17,17,20,0.9)"; }}
                     onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(245,241,232,0.08)"; e.currentTarget.style.background = "rgba(17,17,20,0.6)"; }}
                   >
-                    <div className="contact-label" style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 10 }}>
+                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--bone-500)", marginBottom: 10 }}>
                       {label}
                     </div>
-                    <div className="contact-email" style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--brass-500)", letterSpacing: "0.04em" }}>
+                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 14, color: "var(--brass-500)", letterSpacing: "0.04em", wordBreak: "break-all" }}>
                       {u}@{d}.{tld}
                     </div>
-                  </a>
+                  </div>
                 ))}
+                <a
+                  href="#"
+                  onClick={e => { e.preventDefault(); window.location.href = `mailto:${"1vorsitzender"}@${"bcfrankfurt"}.${"de"},${"vize-sport"}@${"bcfrankfurt"}.${"de"}?subject=Probetraining%20Anfrage%20%7C%20BC%20Frankfurt%201912%20e.V.`; }}
+                  className="btn btn-brass"
+                  style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginTop: 8 }}
+                >
+                  {t("membership.contact.cta")}
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+                </a>
               </div>
 
             </div>
