@@ -157,7 +157,7 @@ export const Hero = ({ images = [] }) => {
   const [slideIndex, setSlideIndex] = React.useState(0);
   const [jahre, jahreRef] = useCountUp(114, 2200);
   const [disziplinen, disziplinenRef] = useCountUp(3, 1400);
-  const [mitglieder, mitgliederRef] = useCountUp(240, 2600, "+");
+  const [mitglieder, mitgliederRef] = useCountUp(150, 2600, "+");
   React.useEffect(() => {
     const onScroll = () => setParallax(window.scrollY * 0.5);
     window.addEventListener("scroll", onScroll);
@@ -293,7 +293,7 @@ export const About = () => {
               <div className="about-stat-label">Years active</div>
             </div>
             <div className="about-stat">
-              <div className="about-stat-num">240+</div>
+              <div className="about-stat-num">150+</div>
               <div className="about-stat-label">Members</div>
             </div>
             <div className="about-stat">
@@ -1045,6 +1045,28 @@ const ArticleModal = ({ item, lang, onClose }) => {
   );
 };
 
+const NewsCard = ({ item, lang, onClick }) => (
+  <div className="news-card" onClick={onClick} style={{ borderRadius: 14, overflow: "hidden", position: "relative", marginBottom: 18, aspectRatio: item.noImage ? undefined : "3/2", cursor: "pointer" }}>
+    {item.noImage ? (
+      <div style={{ background: "linear-gradient(135deg, var(--ink-200) 0%, var(--ink-100) 100%)", padding: "20px 22px", height: "100%", boxSizing: "border-box", display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 7 }}>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--bone-400)", letterSpacing: "0.06em" }}>{formatDate(item.date, lang)}</span>
+        <h4 style={{ fontFamily: "var(--font-display)", fontSize: 17, fontWeight: 400, lineHeight: 1.3, color: "var(--bone-100)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{item.title}</h4>
+        <p style={{ fontSize: 13, lineHeight: 1.6, color: "rgba(255,255,255,0.55)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}>{item.excerpt}</p>
+      </div>
+    ) : (
+      <>
+        <div style={{ position: "absolute", inset: 0, backgroundImage: `url('${item.bild_url}')`, backgroundSize: "cover", backgroundPosition: "center" }} />
+        <div className="news-card-overlay" />
+        <div style={{ position: "absolute", inset: 0, padding: "20px 22px", display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 7 }}>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "rgba(255,255,255,0.7)", letterSpacing: "0.06em" }}>{formatDate(item.date, lang)}</span>
+          <h4 style={{ fontFamily: "var(--font-display)", fontSize: 17, fontWeight: 400, lineHeight: 1.3, color: "var(--bone-100)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{item.title}</h4>
+          <p style={{ fontSize: 13, lineHeight: 1.6, color: "rgba(255,255,255,0.55)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{item.excerpt}</p>
+        </div>
+      </>
+    )}
+  </div>
+);
+
 export const News = ({ items = [], turniere = [] }) => {
   const { t, lang } = useTranslation();
   const sorted = [...items].sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -1068,12 +1090,13 @@ export const News = ({ items = [], turniere = [] }) => {
   const [columnsHeight, setColumnsHeight] = React.useState(null);
   const [colWidth, setColWidth] = React.useState(null);
 
-  // Simulate CSS columns column-fill:auto using measured column width for accurate image card heights
-  const visibleRest = React.useMemo(() => {
+  // Distribute items into 3 columns (column-fill:auto: fill col 0 first, then col 1, then col 2)
+  const columns3 = React.useMemo(() => {
     const ch = columnsHeight ?? 260;
     const colW = colWidth ?? 300;
-    const imageCardH = Math.round(colW * (2 / 3)) + 18; // aspect-ratio 3/2 + marginBottom
-let col = 0, colH = 0, count = 0;
+    const imageCardH = Math.round(colW * (2 / 3)) + 18;
+    const cols = [[], [], []];
+    let col = 0, colH = 0;
     for (const item of rest) {
       const h = item.noImage ? 150 : imageCardH;
       if (colH + h > ch) {
@@ -1081,10 +1104,10 @@ let col = 0, colH = 0, count = 0;
         if (col >= 3) break;
         colH = 0;
       }
+      cols[col].push(item);
       colH += h;
-      count++;
     }
-    return rest.slice(0, count);
+    return cols;
   }, [rest, columnsHeight, colWidth]);
 
   React.useEffect(() => {
@@ -1152,31 +1175,25 @@ let col = 0, colH = 0, count = 0;
             )
           )}
 
-          {/* Card grid — fills remaining space, columns flow top-to-bottom */}
+          {/* Card grid — 3 separate flex columns (fixes Safari compositing bug with CSS columns) */}
           <div>
-            <div ref={columnsContainerRef} className="news-columns" style={{ columnGap: 18, columnFill: "auto", height: columnsHeight ?? "auto" }}>
-              {(isMobile ? rest.slice(0, 2) : visibleRest).map((item, i) => (
-                <div key={i} className="news-card" onClick={() => setOpenArticle(item)} style={{ borderRadius: 14, overflow: "hidden", position: "relative", breakInside: "avoid", marginBottom: 18, aspectRatio: item.noImage ? undefined : "3/2", cursor: "pointer" }}>
-                  {item.noImage ? (
-                    <div style={{ background: "linear-gradient(135deg, var(--ink-200) 0%, var(--ink-100) 100%)", padding: "20px 22px", height: "100%", boxSizing: "border-box", display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 7 }}>
-                      <span style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--bone-400)", letterSpacing: "0.06em" }}>{formatDate(item.date, lang)}</span>
-                      <h4 style={{ fontFamily: "var(--font-display)", fontSize: 17, fontWeight: 400, lineHeight: 1.3, color: "var(--bone-100)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{item.title}</h4>
-                      <p style={{ fontSize: 13, lineHeight: 1.6, color: "rgba(255,255,255,0.55)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}>{item.excerpt}</p>
-                    </div>
-                  ) : (
-                    <>
-                      <div style={{ position: "absolute", inset: 0, backgroundImage: `url('${item.bild_url}')`, backgroundSize: "cover", backgroundPosition: "center" }} />
-                      <div className="news-card-overlay" />
-                      <div style={{ position: "absolute", inset: 0, padding: "20px 22px", display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 7 }}>
-                        <span style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "rgba(255,255,255,0.7)", letterSpacing: "0.06em" }}>{formatDate(item.date, lang)}</span>
-                        <h4 style={{ fontFamily: "var(--font-display)", fontSize: 17, fontWeight: 400, lineHeight: 1.3, color: "var(--bone-100)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{item.title}</h4>
-                        <p style={{ fontSize: 13, lineHeight: 1.6, color: "rgba(255,255,255,0.55)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{item.excerpt}</p>
-                      </div>
-                    </>
-                  )}
-                </div>
-              ))}
-            </div>
+            {isMobile ? (
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                {rest.slice(0, 2).map((item, i) => (
+                  <NewsCard key={i} item={item} lang={lang} onClick={() => setOpenArticle(item)} />
+                ))}
+              </div>
+            ) : (
+              <div ref={columnsContainerRef} style={{ display: "flex", gap: 18, alignItems: "flex-start", height: columnsHeight ?? "auto" }}>
+                {columns3.map((colItems, ci) => (
+                  <div key={ci} style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+                    {colItems.map((item, i) => (
+                      <NewsCard key={i} item={item} lang={lang} onClick={() => setOpenArticle(item)} />
+                    ))}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <a ref={btnRef} href="/vereinshistorie" className="btn btn-ghost news-history-btn" style={{ padding: "12px 22px", fontSize: 12, alignSelf: "flex-start", flexShrink: 0 }}>
@@ -1236,9 +1253,14 @@ let col = 0, colH = 0, count = 0;
                       <div style={{ fontSize: 12, lineHeight: 1, color: tr.typ === "intern" ? "rgba(248,113,113,0.5)" : "rgba(134,239,172,0.5)", marginTop: 14, fontFamily: "inherit" }}>{tr.typ === "intern" ? t("tournaments.intern") : t("tournaments.open")}</div>
                     </div>
                     <div style={{ fontSize: 17, fontWeight: 400, color: "var(--bone-100)", lineHeight: 1.3, marginBottom: 6, opacity: past ? 0.4 : 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{tr.name}</div>
-                    <a href={tr.href} target="_blank" rel="noopener" className="turnier-link" style={{}}>
-                      {past ? t("tournaments.resultsCuescore") : t("tournaments.registerCuescore")} <ArrowOut size={11} />
-                    </a>
+                    {tr.href
+                      ? <a href={tr.href} target="_blank" rel="noopener" className="turnier-link" style={{}}>
+                          {past ? t("tournaments.resultsCuescore") : t("tournaments.registerCuescore")} <ArrowOut size={11} />
+                        </a>
+                      : <span className="turnier-link" style={{ opacity: 0.4, cursor: "default", pointerEvents: "none" }}>
+                          {t("tournaments.linkSoon")}
+                        </span>
+                    }
                   </div>
                 );
               });

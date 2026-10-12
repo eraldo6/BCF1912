@@ -1257,22 +1257,11 @@ section {
     height: auto !important;
   }
 
-  .news-columns {
-    columns: unset !important;
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 18px !important;
-    height: auto !important;
-  }
 }
 
 /* News section layout */
 .news-layout {
   grid-template-columns: 1fr 320px;
-}
-
-.news-columns {
-  columns: 3;
 }
 
 /* About section */
@@ -2976,6 +2965,7 @@ section {
 .admin-scroll::-webkit-scrollbar-track  { background: var(--ink-300); border-radius: 3px; }
 .admin-scroll::-webkit-scrollbar-thumb  { background: #555049; border-radius: 3px; }
 .admin-scroll::-webkit-scrollbar-thumb:hover { background: var(--bone-200); }
+.admin-scroll-hidden::-webkit-scrollbar { display: none; }
 
 /* Cookie banner — Mobile Safari bottom toolbar offset */
 @media (max-width: 768px) {

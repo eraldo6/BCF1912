@@ -367,10 +367,12 @@ export function VeranstaltungenTable({ rows: initialRows, userMap = {} }) {
     const t = setTimeout(() => setToast(null), 3000)
     return () => clearTimeout(t)
   }, [toast])
+
   const [isPending, startTransition] = useTransition()
   const topRef = useRef(null)
   const bottomRef = useRef(null)
   const tableRef = useRef(null)
+  const isSyncing = useRef(false)
 
   if (rows.length === 0) {
     return (
@@ -413,8 +415,7 @@ export function VeranstaltungenTable({ rows: initialRows, userMap = {} }) {
     })
   }
 
-  const syncTop = () => { if (bottomRef.current) bottomRef.current.scrollLeft = topRef.current.scrollLeft }
-  const syncBottom = () => { if (topRef.current) topRef.current.scrollLeft = bottomRef.current.scrollLeft }
+  const syncTop = () => { if (isSyncing.current) return; isSyncing.current = true; if (bottomRef.current) bottomRef.current.scrollLeft = topRef.current.scrollLeft; requestAnimationFrame(() => { isSyncing.current = false }) }
 
   return (
     <div>
@@ -488,7 +489,7 @@ export function VeranstaltungenTable({ rows: initialRows, userMap = {} }) {
       </div>
 
       {/* Tabelle */}
-      <div ref={bottomRef} onScroll={syncBottom} className="admin-scroll" style={{ overflowX: 'auto' }}>
+      <div ref={bottomRef} style={{ overflowX: 'hidden' }}>
         <table
           style={{
             width: '100%',
