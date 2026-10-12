@@ -372,7 +372,6 @@ export function VeranstaltungenTable({ rows: initialRows, userMap = {} }) {
   const topRef = useRef(null)
   const bottomRef = useRef(null)
   const tableRef = useRef(null)
-  const isSyncing = useRef(false)
 
   if (rows.length === 0) {
     return (
@@ -415,7 +414,7 @@ export function VeranstaltungenTable({ rows: initialRows, userMap = {} }) {
     })
   }
 
-  const syncTop = () => { if (isSyncing.current) return; isSyncing.current = true; if (bottomRef.current) bottomRef.current.scrollLeft = topRef.current.scrollLeft; requestAnimationFrame(() => { isSyncing.current = false }) }
+  const syncTop = () => { if (bottomRef.current) bottomRef.current.scrollLeft = topRef.current.scrollLeft }
 
   return (
     <div>

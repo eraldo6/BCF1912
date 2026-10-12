@@ -1090,22 +1090,19 @@ export const News = ({ items = [], turniere = [] }) => {
   const [columnsHeight, setColumnsHeight] = React.useState(null);
   const [colWidth, setColWidth] = React.useState(null);
 
-  // Distribute items into 3 columns (column-fill:auto: fill col 0 first, then col 1, then col 2)
+  // Distribute items round-robin across 3 columns (item 0→col0, 1→col1, 2→col2, 3→col0, …)
   const columns3 = React.useMemo(() => {
     const ch = columnsHeight ?? 260;
     const colW = colWidth ?? 300;
     const imageCardH = Math.round(colW * (2 / 3)) + 18;
     const cols = [[], [], []];
-    let col = 0, colH = 0;
-    for (const item of rest) {
-      const h = item.noImage ? 150 : imageCardH;
-      if (colH + h > ch) {
-        col++;
-        if (col >= 3) break;
-        colH = 0;
-      }
-      cols[col].push(item);
-      colH += h;
+    const colHeights = [0, 0, 0];
+    for (let i = 0; i < rest.length; i++) {
+      const ci = i % 3;
+      const h = rest[i].noImage ? 150 : imageCardH;
+      if (colHeights[ci] + h > ch) break;
+      cols[ci].push(rest[i]);
+      colHeights[ci] += h;
     }
     return cols;
   }, [rest, columnsHeight, colWidth]);
@@ -1266,7 +1263,7 @@ export const News = ({ items = [], turniere = [] }) => {
               });
             })()}
           </div>
-          <a href="/calendar" className="btn btn-ghost" style={{ marginTop: 20, padding: "9px 14px", fontSize: 11, display: "inline-flex", alignItems: "center", gap: 5, justifyContent: "center" }}>
+          <a href="/calendar" className="btn btn-ghost" style={{ marginTop: 20, padding: "9px 14px", fontSize: 11, display: "inline-flex", alignItems: "center", gap: 5, justifyContent: "center", whiteSpace: "nowrap" }}>
             {t("tournaments.allOnCuescore")} <ArrowOut size={11} />
           </a>
         </div>

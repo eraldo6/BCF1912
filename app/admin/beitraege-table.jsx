@@ -247,7 +247,6 @@ export function BeitraegeTable({ rows: initialRows, userMap = {} }) {
   const topRef = useRef(null)
   const bottomRef = useRef(null)
   const tableRef = useRef(null)
-  const isSyncing = useRef(false)
 
   useEffect(() => {
     if (!toast) return
@@ -283,7 +282,7 @@ export function BeitraegeTable({ rows: initialRows, userMap = {} }) {
     })
   }
 
-  const syncTop = () => { if (isSyncing.current) return; isSyncing.current = true; if (bottomRef.current) bottomRef.current.scrollLeft = topRef.current.scrollLeft; requestAnimationFrame(() => { isSyncing.current = false }) }
+  const syncTop = () => { if (bottomRef.current) bottomRef.current.scrollLeft = topRef.current.scrollLeft }
 
   return (
     <div>
