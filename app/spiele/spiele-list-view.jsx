@@ -18,6 +18,11 @@ function disciplineColor(spielart) {
   return DISCIPLINE_COLOR[spielart] || "var(--bone-300)";
 }
 
+/* True when a team name belongs to BC Frankfurt (home club). */
+function isBcf(teamName) {
+  return typeof teamName === "string" && /frankfurt\s*1912/i.test(teamName);
+}
+
 function disciplineGroup(spielart) {
   if (!spielart) return null;
   if (spielart.startsWith("Karambol")) return "Karambol";
@@ -163,10 +168,26 @@ function Row({ ev, t, lang, past }) {
         {showTeams ? (
           <div className="match-teams" style={{ margin: 0, gap: 4 }}>
             <div className="match-team">
-              <span className="team-name" style={{ fontWeight: 500 }}>{ev.heimmannschaft}</span>
+              <span
+                className="team-name"
+                style={{
+                  fontWeight: isBcf(ev.heimmannschaft) ? 700 : 500,
+                  color: isBcf(ev.heimmannschaft) ? "var(--brass-500)" : "var(--bone-100)",
+                }}
+              >
+                {ev.heimmannschaft}
+              </span>
             </div>
             <div className="match-team">
-              <span className="team-name" style={{ color: "var(--bone-300)" }}>{ev.gastmannschaft}</span>
+              <span
+                className="team-name"
+                style={{
+                  fontWeight: isBcf(ev.gastmannschaft) ? 700 : 400,
+                  color: isBcf(ev.gastmannschaft) ? "var(--brass-500)" : "var(--bone-300)",
+                }}
+              >
+                {ev.gastmannschaft}
+              </span>
             </div>
           </div>
         ) : (

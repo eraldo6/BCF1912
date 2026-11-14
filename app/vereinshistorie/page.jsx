@@ -3,7 +3,57 @@
 import { Nav, Footer } from "../../components/sections";
 import { TranslationContext } from "../../components/translation-context";
 import { TRANSLATIONS } from "../../lib/translations";
+import { VEREINSGESCHICHTE, CHRONIK, CHRONIK_ERAS } from "../../lib/chronik";
 import React from "react";
+
+function YearCard({ entry, side }) {
+  return (
+    <div className="erfolge-row" data-side={side}>
+      {side === "left" && (
+        <div className="erfolge-item reveal" style={{ textAlign: "right" }}>
+          <YearBody entry={entry} align="right" />
+        </div>
+      )}
+      <div className="erfolge-node" />
+      {side === "right" && (
+        <div className="erfolge-item reveal">
+          <YearBody entry={entry} align="left" />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function YearBody({ entry }) {
+  return (
+    <>
+      <div
+        style={{
+          fontFamily: "var(--font-display)",
+          fontSize: 28,
+          fontWeight: 700,
+          color: "var(--brass-500)",
+          letterSpacing: "-0.02em",
+          lineHeight: 1,
+          marginBottom: 10,
+        }}
+      >
+        {entry.year}
+      </div>
+      <p
+        style={{
+          fontFamily: "var(--font-sans)",
+          fontSize: 14,
+          color: "var(--bone-300)",
+          lineHeight: 1.6,
+          margin: 0,
+        }}
+      >
+        {entry.text}
+      </p>
+    </>
+  );
+}
 
 export default function VereinshistoriePage() {
   const [lang, setLang] = React.useState("DE");
@@ -18,7 +68,23 @@ export default function VereinshistoriePage() {
     r.style.setProperty("--brass-900", "oklch(0.42 0.08 215)");
   }, []);
 
+  React.useEffect(() => {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("in-view"); });
+    }, { threshold: 0.08, rootMargin: "0px 0px -40px 0px" });
+    document.querySelectorAll(".reveal").forEach(el => obs.observe(el));
+    return () => obs.disconnect();
+  }, [lang]);
+
   const t = (key) => TRANSLATIONS[lang]?.[key] || key;
+
+  const narrative = VEREINSGESCHICHTE[lang] || VEREINSGESCHICHTE.DE;
+  const chronik = CHRONIK[lang] || CHRONIK.DE;
+
+  const scrollToEra = (key) => (e) => {
+    e.preventDefault();
+    document.getElementById(`era-${key}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   return (
     <TranslationContext.Provider value={{ lang, setLang, t }}>
@@ -45,69 +111,141 @@ export default function VereinshistoriePage() {
           </a>
         </div>
 
-        {/* Sloth hero */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 72, paddingBottom: 48, textAlign: "center" }}>
-          <style>{`
-            @keyframes sloth-sway {
-              0%   { transform: rotate(-4deg) translateY(0px); }
-              50%  { transform: rotate(4deg) translateY(-6px); }
-              100% { transform: rotate(-4deg) translateY(0px); }
-            }
-            @keyframes sloth-hang {
-              0%   { transform: scaleY(1); }
-              50%  { transform: scaleY(0.96); }
-              100% { transform: scaleY(1); }
-            }
-          `}</style>
-          <div style={{ fontSize: "clamp(80px, 14vw, 140px)", lineHeight: 1, animation: "sloth-sway 4s ease-in-out infinite", transformOrigin: "top center", display: "inline-block" }}>
-            🦥
+        {/* Hero */}
+        <div className="container" style={{ paddingTop: 64, paddingBottom: 48 }}>
+          <div
+            className="reveal"
+            style={{
+              fontFamily: "var(--font-mono)",
+              fontSize: 11,
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              color: "var(--brass-500)",
+              marginBottom: 24,
+              display: "flex",
+              alignItems: "center",
+              gap: 12,
+            }}
+          >
+            <span style={{ display: "inline-block", width: 24, height: 1, background: "var(--brass-500)" }} />
+            {t("history.eyebrow")}
           </div>
-          <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(36px, 7vw, 96px)", fontWeight: 700, color: "var(--bone-100)", letterSpacing: "-0.03em", lineHeight: 1, marginTop: 32, marginBottom: 0 }}>
-            Under<br /><em style={{ fontStyle: "italic", color: "var(--brass-500)" }}>Construction</em>
+
+          <h1
+            className="reveal delay-1"
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(40px, 6.5vw, 80px)",
+              fontWeight: 700,
+              color: "var(--bone-100)",
+              lineHeight: 1.04,
+              marginTop: 0,
+              marginBottom: 24,
+              letterSpacing: "-0.03em",
+            }}
+          >
+            {t("history.headline1")}{" "}
+            <em style={{ fontStyle: "italic", color: "var(--brass-500)" }}>
+              {t("history.headline2")}
+            </em>{" "}
+            {t("history.headline3")}
           </h1>
+
+          <p
+            className="reveal delay-2"
+            style={{
+              fontFamily: "var(--font-sans)",
+              fontSize: 17,
+              color: "var(--bone-400)",
+              lineHeight: 1.6,
+              maxWidth: 640,
+              margin: 0,
+            }}
+          >
+            {t("history.lede")}
+          </p>
         </div>
 
-        {/* Under Construction Content */}
-        <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", padding: "0 24px 100px" }}>
-          <div style={{ maxWidth: 640, width: "100%", textAlign: "left" }}>
+        {/* Narrative */}
+        <div className="container" style={{ paddingTop: 24, paddingBottom: 48 }}>
+          <div className="eyebrow" style={{ marginBottom: 24, color: "var(--brass-500)", fontSize: 11 }}>
+            {t("history.narrative.title")}
+          </div>
+          <div style={{ maxWidth: 680, display: "flex", flexDirection: "column", gap: 22 }}>
+            {narrative.map((para, i) => (
+              <p
+                key={i}
+                className="reveal"
+                style={{
+                  fontFamily: "var(--font-sans)",
+                  fontSize: 16,
+                  color: "var(--bone-300)",
+                  lineHeight: 1.72,
+                  margin: 0,
+                }}
+              >
+                {para}
+              </p>
+            ))}
+          </div>
+        </div>
 
-            {/* Eyebrow */}
-            <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: "var(--brass-500)", marginBottom: 32, display: "flex", alignItems: "center", gap: 12 }}>
-              <span style={{ display: "inline-block", width: 24, height: 1, background: "var(--brass-500)" }} />
-              {t("history.eyebrow")}
+        {/* Chronik */}
+        <div className="container" style={{ paddingTop: 48, paddingBottom: 100 }}>
+          <div style={{ marginBottom: 24 }}>
+            <div className="eyebrow" style={{ marginBottom: 16, color: "var(--brass-500)", fontSize: 11 }}>
+              {t("history.chronik.title")}
             </div>
-
-            {/* Headline */}
-            <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(40px, 6vw, 72px)", fontWeight: 700, color: "var(--bone-100)", lineHeight: 1.05, marginBottom: 28, letterSpacing: "-0.02em" }}>
-              {t("history.headline1")}<br />
-              <em style={{ fontStyle: "italic", color: "var(--brass-500)" }}>{t("history.headline2")}</em><br />
-              {t("history.headline3")}
-            </h1>
-
-            {/* Subtext */}
-            <p style={{ fontFamily: "var(--font-sans)", fontSize: 17, color: "var(--bone-500)", lineHeight: 1.7, maxWidth: 480, marginBottom: 48 }}>
-              {t("history.lede")}
-            </p>
-
-            {/* Timeline placeholder — muted, gestural */}
-            <div style={{ borderLeft: "1px solid var(--ink-400)", paddingLeft: 28, display: "flex", flexDirection: "column", gap: 28 }}>
-              {[
-                { year: t("history.timeline.today"),     label: t("history.timeline.todaylabel") },
-                { year: t("history.timeline.1980s"),     label: t("history.timeline.1980label") },
-                { year: t("history.timeline.1950s"),     label: t("history.timeline.1950label") },
-                { year: "1912",                          label: t("history.timeline.1912") },
-              ].map(({ year, label }, i) => (
-                <div key={i} style={{ display: "flex", gap: 20, alignItems: "flex-start", opacity: i === 0 ? 1 : 0.3 }}>
-                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.14em", color: i === 0 ? "var(--brass-500)" : "var(--bone-500)", minWidth: 56, paddingTop: 2 }}>
-                    {year}
-                  </div>
-                  <div style={{ fontFamily: "var(--font-sans)", fontSize: 14, color: i === 0 ? "var(--bone-200)" : "var(--bone-500)", lineHeight: 1.4 }}>
-                    {label}
-                  </div>
-                </div>
+            {/* Era jump-nav */}
+            <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: 10,
+                  letterSpacing: "0.16em",
+                  textTransform: "uppercase",
+                  color: "var(--bone-500)",
+                }}
+              >
+                {t("history.jumpTo")}
+              </span>
+              {CHRONIK_ERAS.map(era => (
+                <a
+                  key={era.key}
+                  href={`#era-${era.key}`}
+                  onClick={scrollToEra(era.key)}
+                  className="tc-badge"
+                  style={{
+                    background: "var(--ink-100)",
+                    color: "var(--bone-200)",
+                    border: "1px solid var(--ink-300)",
+                    textDecoration: "none",
+                    cursor: "pointer",
+                  }}
+                >
+                  {t(`history.era.${era.key}`)}
+                </a>
               ))}
             </div>
+          </div>
 
+          <div className="erfolge-timeline">
+            {chronik.map((entry, i) => {
+              const era = CHRONIK_ERAS.find(e => entry.year >= e.from && entry.year <= e.to);
+              const prev = i > 0 ? chronik[i - 1] : null;
+              const prevEra = prev ? CHRONIK_ERAS.find(e => prev.year >= e.from && prev.year <= e.to) : null;
+              const startsEra = era && era !== prevEra;
+              return (
+                <React.Fragment key={entry.year}>
+                  {startsEra && (
+                    <div className="chronik-era-sep" id={`era-${era.key}`}>
+                      <span>{t(`history.era.${era.key}`)}</span>
+                    </div>
+                  )}
+                  <YearCard entry={entry} side={i % 2 === 0 ? "left" : "right"} />
+                </React.Fragment>
+              );
+            })}
           </div>
         </div>
 

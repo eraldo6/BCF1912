@@ -2036,6 +2036,10 @@ const YouTubeIcon = ({ size = 18 }) => (
 
 export const Footer = () => {
   const { t } = useTranslation();
+  const [onHome, setOnHome] = React.useState(false);
+  React.useEffect(() => {
+    setOnHome(window.location.pathname === "/");
+  }, []);
   const socialLinks = [
     { label: "Instagram", href: "#", icon: <InstagramIcon /> },
     { label: "Facebook", href: "#", icon: <FacebookIcon /> },
@@ -2066,7 +2070,6 @@ export const Footer = () => {
         <div className="footer-col footer-nav">
           <ul>
             {[["#news","News"],["#kalender",t("nav.games")],["#about",t("nav.disciplines")],["#experience",t("nav.experience")],["#contact",t("nav.visit")]].map(([anchor, label]) => {
-              const onHome = typeof window !== "undefined" && window.location.pathname === "/";
               return (
                 <li key={anchor}>
                   <a href={onHome ? anchor : `/${anchor}`} onClick={onHome ? e => { e.preventDefault(); document.querySelector(anchor)?.scrollIntoView({ behavior: "smooth" }); } : undefined}>
