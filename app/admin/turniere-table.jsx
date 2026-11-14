@@ -130,8 +130,8 @@ function TurnierModal({ row, onClose, onSuccess, onError, isPending, startTransi
             </div>
 
             <div style={{ gridColumn: '1 / -1' }}>
-              <label style={labelStyle}>CueScore-Link *</label>
-              <input name="href" type="url" required style={inputStyle}
+              <label style={labelStyle}>CueScore-Link</label>
+              <input name="href" type="url" style={inputStyle}
                 placeholder="https://cuescore.com/…"
                 defaultValue={row?.href ?? ''} />
             </div>
@@ -301,7 +301,9 @@ export function TurniereTable({ rows: initialRows }) {
                             {row[key] === 'intern' ? 'Intern' : 'Öffentlich'}
                           </span>
                         : key === 'href'
-                          ? <a href={row[key]} target="_blank" rel="noopener" style={{ color: 'var(--brass-500)', textDecoration: 'none', fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>↗ Link</a>
+                          ? row[key]
+                            ? <a href={row[key]} target="_blank" rel="noopener" style={{ color: 'var(--brass-500)', textDecoration: 'none', fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>↗ Link</a>
+                            : <span style={{ color: 'var(--bone-600)', fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>—</span>
                         : row[key] ?? <span style={{ color: 'var(--bone-600)' }}>—</span>
                       }
                     </td>

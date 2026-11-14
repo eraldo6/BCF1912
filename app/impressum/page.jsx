@@ -7,20 +7,20 @@ import { TRANSLATIONS } from "../../lib/translations";
 import React from "react";
 
 const VORSTAND_GESCHAEFTSFUEHREND = [
-  { name: "Max Mustermann",   rolle: "1. Vorsitzender" },
-  { name: "Erika Musterfrau", rolle: "2. Vorsitzende"  },
-  { name: "Hans Beispiel",    rolle: "Kassenwart"       },
+  { name: "Sydney Schindhelm",    rolle: "Präsident",              email: "1vorsitzender@bcfrankfurt.de" },
+  { name: "Daniel Forster",       rolle: "Vizepräsident Finanzen", email: "kasse@bcfrankfurt.de"         },
+  { name: "Robert v.d. Bossche",  rolle: "Vizepräsident Sport",    email: "vize-sport@bcfrankfurt.de"   },
 ];
 
 const VORSTAND_ERWEITERT = [
-  { name: "Maria Beispiel",   rolle: "Sportwart"        },
-  { name: "Peter Muster",     rolle: "Schriftführer"    },
-  { name: "Anna Muster",      rolle: "Beisitzerin"      },
-  { name: "Klaus Beispiel",   rolle: "Beisitzer"        },
-  { name: "Sara Musterfrau",  rolle: "Beisitzerin"      },
+  { name: "Ulrich Kneip",       rolle: "Sportwart Karambol", email: "karambol@bcfrankfurt.de" },
+  { name: "Olaf Matthias",      rolle: "Sportwart Pool",     email: "pool@bcfrankfurt.de"     },
+  { name: "Oleg Schantorenko",  rolle: "Sportwart Snooker",  email: "snooker@bcfrankfurt.de"  },
+  { name: "Justus Schmidt",     rolle: "Jugendwart",         email: "jugendwart@bcfrankfurt.de" },
+  { name: "Ludwig Bergemann",   rolle: "Web-Master"          },
 ];
 
-function PersonCard({ name, rolle }) {
+function PersonCard({ name, rolle, email }) {
   return (
     <div style={{
       background: "var(--ink-100)",
@@ -55,6 +55,9 @@ function PersonCard({ name, rolle }) {
       <div style={{ padding: "16px 18px 20px" }}>
         <div style={{ fontFamily: "var(--font-sans)", fontSize: 15, fontWeight: 600, color: "var(--bone-100)", marginBottom: 5 }}>{name}</div>
         <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--brass-500)" }}>{rolle}</div>
+        {email && (
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--bone-500)", marginTop: 8, letterSpacing: "0.03em", wordBreak: "break-all" }}>{email}</div>
+        )}
       </div>
     </div>
   );
@@ -151,11 +154,11 @@ export default function ImpressumPage() {
 
                 <ImpressumBlock label="Vertreten durch">
                   Sydney Schindhelm<br />
-                  <ObfuscatedEmail u="info" d="bcfrankfurt" t="de" style={{ color: "var(--brass-500)", textDecoration: "none" }} />
+                  <ObfuscatedEmail u="1vorsitzender" d="bcfrankfurt" t="de" style={{ color: "var(--brass-500)", textDecoration: "none" }} />
                 </ImpressumBlock>
 
                 <ImpressumBlock label="Kontakt">
-                  E-Mail: <ObfuscatedEmail u="info" d="bcfrankfurt" t="de" style={{ color: "var(--brass-500)", textDecoration: "none" }} /><br />
+                  E-Mail: <ObfuscatedEmail u="1vorsitzender" d="bcfrankfurt" t="de" style={{ color: "var(--brass-500)", textDecoration: "none" }} /><br />
                   Telefon: 06109 / 36780
                 </ImpressumBlock>
 
@@ -173,7 +176,7 @@ export default function ImpressumPage() {
 
                 <ImpressumBlock label="Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV">
                   Sydney Schindhelm<br />
-                  <ObfuscatedEmail u="info" d="bcfrankfurt" t="de" style={{ color: "var(--brass-500)", textDecoration: "none" }} />
+                  <ObfuscatedEmail u="1vorsitzender" d="bcfrankfurt" t="de" style={{ color: "var(--brass-500)", textDecoration: "none" }} />
                 </ImpressumBlock>
 
                 <ImpressumBlock label="Haftungsausschluss">
@@ -199,8 +202,13 @@ export default function ImpressumPage() {
                   <span style={{ display: "inline-block", width: 20, height: 1, background: "var(--bone-500)", opacity: 0.4 }} />
                   Der Vorstand
                 </div>
-                <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--bone-600)", marginBottom: 16 }}>
-                  Geschäftsführender Vorstand
+                <div style={{ marginBottom: 16 }}>
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 12, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--bone-600)" }}>
+                    Geschäftsführender Vorstand
+                  </div>
+                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--bone-500)", marginTop: 4 }}>
+                    nach § 26 BGB
+                  </div>
                 </div>
                 <div className="vorstand-geschaeftsfuehrend" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 40 }}>
                   {VORSTAND_GESCHAEFTSFUEHREND.map(p => <PersonCard key={p.name} {...p} />)}

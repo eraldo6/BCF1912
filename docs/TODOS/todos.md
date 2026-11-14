@@ -6,24 +6,14 @@
 
 (Eraldo) Disziplinen Section gestalten
 (Eraldo) Vereinsheim Section gestalten
+(Eraldo) All Games Sections gestalten
 
 ## kleinere todos oder bugfixes
 
-schreib noch im admin dashboard täglich um 3 Uhr aktualisiert bei Veranstaltungen Tabelle
-
 ## With Sydney
 
-text content drüber schauen und bearbeiten
-Disciplines (Karambol, Pool, Snooker) echte Beschreibungen
-Mitgliedschaftstexte überarbeiten (selber gucken auf alter Seite)
-Platzhalter Mail durch echte Mails ersetzen
 regelmäßiges training mit Trainern in allen Sparten erwähnen?
 Termin Datenbank füllen mit ihm zusammen (Newsbeiträge, Mannschaftstrainings, Trainings mit David, Turniere)
-exisiteren diese Emailadressen?
-sind diese Satzungen noch aktuell? Richtige Satzungen hinterlegen
-mitgliederanzahl auf hero prüfen "240+ Mitglieder"
-Impressum & Vorstand Subpage ergänzen
-News Beiträge füllen
 Admin Accounts einrichten
 
 # GoLive

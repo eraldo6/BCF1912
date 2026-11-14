@@ -367,6 +367,7 @@ export function VeranstaltungenTable({ rows: initialRows, userMap = {} }) {
     const t = setTimeout(() => setToast(null), 3000)
     return () => clearTimeout(t)
   }, [toast])
+
   const [isPending, startTransition] = useTransition()
   const topRef = useRef(null)
   const bottomRef = useRef(null)
@@ -414,7 +415,6 @@ export function VeranstaltungenTable({ rows: initialRows, userMap = {} }) {
   }
 
   const syncTop = () => { if (bottomRef.current) bottomRef.current.scrollLeft = topRef.current.scrollLeft }
-  const syncBottom = () => { if (topRef.current) topRef.current.scrollLeft = bottomRef.current.scrollLeft }
 
   return (
     <div>
@@ -488,7 +488,7 @@ export function VeranstaltungenTable({ rows: initialRows, userMap = {} }) {
       </div>
 
       {/* Tabelle */}
-      <div ref={bottomRef} onScroll={syncBottom} className="admin-scroll" style={{ overflowX: 'auto' }}>
+      <div ref={bottomRef} style={{ overflowX: 'hidden' }}>
         <table
           style={{
             width: '100%',

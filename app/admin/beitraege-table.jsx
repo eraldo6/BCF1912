@@ -283,7 +283,6 @@ export function BeitraegeTable({ rows: initialRows, userMap = {} }) {
   }
 
   const syncTop = () => { if (bottomRef.current) bottomRef.current.scrollLeft = topRef.current.scrollLeft }
-  const syncBottom = () => { if (topRef.current) topRef.current.scrollLeft = bottomRef.current.scrollLeft }
 
   return (
     <div>
@@ -347,7 +346,7 @@ export function BeitraegeTable({ rows: initialRows, userMap = {} }) {
           <div ref={topRef} onScroll={syncTop} className="admin-scroll" style={{ overflowX: 'auto', overflowY: 'hidden', marginBottom: '4px' }}>
             <div ref={tableRef} style={{ height: '1px' }} />
           </div>
-          <div ref={bottomRef} onScroll={syncBottom} className="admin-scroll" style={{ overflowX: 'auto' }}>
+          <div ref={bottomRef} style={{ overflowX: 'hidden' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--bone-300)' }}
               ref={el => { if (el && tableRef.current) tableRef.current.style.width = el.scrollWidth + 'px' }}>
               <thead>

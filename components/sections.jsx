@@ -4,7 +4,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { useTranslation } from "./translation-context";
 import { ObfuscatedEmail } from "./obfuscated-email";
-import { Arrow, ArrowOut, PoolTableHero, ScrollCue, DownloadIcon } from "./visuals";
+import { Arrow, ArrowOut, PoolTableHero, ScrollCue } from "./visuals";
 import DOMPurify from "dompurify";
 
 /* Sections — broken down for maintainability */
@@ -157,7 +157,7 @@ export const Hero = ({ images = [] }) => {
   const [slideIndex, setSlideIndex] = React.useState(0);
   const [jahre, jahreRef] = useCountUp(114, 2200);
   const [disziplinen, disziplinenRef] = useCountUp(3, 1400);
-  const [mitglieder, mitgliederRef] = useCountUp(240, 2600, "+");
+  const [mitglieder, mitgliederRef] = useCountUp(150, 2600, "+");
   React.useEffect(() => {
     const onScroll = () => setParallax(window.scrollY * 0.5);
     window.addEventListener("scroll", onScroll);
@@ -195,11 +195,11 @@ export const Hero = ({ images = [] }) => {
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingBottom: 32, borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
           <div className="hero-cta reveal in-view delay-3">
-            <a href="#contact" className="btn btn-brass">
-              {lang === "DE" ? "Vereinsheim besuchen" : "Visit us"} <ArrowOut />
+            <a href="#news" className="btn btn-brass">
+              News Board <ArrowOut />
             </a>
-            <a href="#news" className="btn btn-ghost">
-              News Board <Arrow />
+            <a href="#gallery" className="btn btn-ghost">
+              {lang === "DE" ? "Galerie" : "Gallery"} <Arrow />
             </a>
           </div>
 
@@ -293,7 +293,7 @@ export const About = () => {
               <div className="about-stat-label">Years active</div>
             </div>
             <div className="about-stat">
-              <div className="about-stat-num">240+</div>
+              <div className="about-stat-num">150+</div>
               <div className="about-stat-label">Members</div>
             </div>
             <div className="about-stat">
@@ -509,48 +509,57 @@ export const Experience = () => {
 
 const getPlans = (t) => [
   {
-    tag: t("membership.student.tag"),
-    name: t("membership.student.name"),
-    price: "20",
-    period: t("membership.period"),
-    tagline: t("membership.student.tagline"),
-    features: [
-      t("membership.student.feat1"),
-      t("membership.student.feat2"),
-      t("membership.student.feat3"),
-      t("membership.student.feat4"),
-    ],
-    cta: t("membership.student.cta"),
-    featured: false,
-  },
-  {
     tag: t("membership.regular.tag"),
     name: t("membership.regular.name"),
     price: "40",
     period: t("membership.period"),
+    kaution: t("membership.regular.kaution"),
     tagline: t("membership.regular.tagline"),
     features: [
       t("membership.regular.feat1"),
       t("membership.regular.feat2"),
       t("membership.regular.feat3"),
       t("membership.regular.feat4"),
+      t("membership.regular.feat5"),
     ],
     cta: t("membership.regular.cta"),
+    subject: "Mitgliedschaft%20Einzel%20Anfrage%20%7C%20BC%20Frankfurt%201912%20e.V.",
     featured: true,
   },
   {
-    tag: t("membership.family.tag"),
-    name: t("membership.family.name"),
-    price: "40",
+    tag: t("membership.student.tag"),
+    name: t("membership.student.name"),
+    price: "20",
     period: t("membership.period"),
-    tagline: t("membership.family.tagline"),
+    kaution: t("membership.student.kaution"),
+    tagline: t("membership.student.tagline"),
     features: [
-      t("membership.family.feat1"),
-      t("membership.family.feat2"),
-      t("membership.family.feat3"),
-      t("membership.family.feat4"),
+      t("membership.student.feat1"),
+      t("membership.student.feat2"),
+      t("membership.student.feat3"),
+      t("membership.student.feat4"),
+      t("membership.student.feat5"),
     ],
-    cta: t("membership.family.cta"),
+    cta: t("membership.student.cta"),
+    subject: "Mitgliedschaft%20Student%20Anfrage%20%7C%20BC%20Frankfurt%201912%20e.V.",
+    featured: false,
+  },
+  {
+    tag: t("membership.junior.tag"),
+    name: t("membership.junior.name"),
+    price: "10",
+    period: t("membership.period"),
+    kaution: t("membership.junior.kaution"),
+    tagline: t("membership.junior.tagline"),
+    features: [
+      t("membership.junior.feat1"),
+      t("membership.junior.feat2"),
+      t("membership.junior.feat3"),
+      t("membership.junior.feat4"),
+      t("membership.junior.feat5"),
+    ],
+    cta: t("membership.junior.cta"),
+    subject: "Mitgliedschaft%20Sch%C3%BCler%20Anfrage%20%7C%20BC%20Frankfurt%201912%20e.V.",
     featured: false,
   },
 ];
@@ -580,28 +589,18 @@ export const Membership = () => {
               <span className="member-price-num">{p.price}</span>
               <span className="member-price-period">{p.period}</span>
             </div>
-            <p className="member-tagline">{p.tagline}</p>
+            <div className="member-kaution">{p.kaution}</div>
             <ul className="member-features">
               {p.features.map(f => <li key={f}>{f}</li>)}
             </ul>
-            <a href="#contact" className={`btn ${p.featured ? "btn-brass" : "btn-ghost"} member-cta`}>
+            <a href="#" onClick={e => { e.preventDefault(); window.location.href = `mailto:${"1vorsitzender"}@${"bcfrankfurt"}.${"de"},${"vize-sport"}@${"bcfrankfurt"}.${"de"}?subject=${p.subject}`; }} className={`btn ${p.featured ? "btn-brass" : "btn-ghost"} member-cta`}>
               {p.cta} <Arrow />
             </a>
           </div>
         ))}
       </div>
 
-      {/* Download buttons */}
-      <div className="reveal member-downloads-row" style={{ marginTop: 60, display: "flex", gap: 12, flexWrap: "wrap", justifyContent: "flex-end" }}>
-        <a href="/aufnahmeantrag.pdf" download className="member-download-btn">
-          <span className="download-arrow"><DownloadIcon size={22} /></span>
-          <span className="member-download-label" style={{ fontFamily: "var(--font-sans)", fontSize: 18, fontWeight: 500, color: "var(--bone-200)" }}>{t("membership.docs.aufnahme.title")}</span>
-        </a>
-        <a href="/vereinssatzung.pdf" download className="member-download-btn">
-          <span className="download-arrow"><DownloadIcon size={22} /></span>
-          <span className="member-download-label" style={{ fontFamily: "var(--font-sans)", fontSize: 18, fontWeight: 500, color: "var(--bone-200)" }}>{t("membership.docs.satzung.title")}</span>
-        </a>
-      </div>
+
     </div>
   </section>
 );
@@ -700,7 +699,7 @@ export const Gallery = ({ images = [] }) => {
   }, [items.length]);
 
   return (
-  <section className="section" id="gallery" style={{ paddingTop: 0 }}>
+  <section className="section" id="gallery" style={{ paddingTop: 0, scrollMarginTop: 80 }}>
     <div className="container">
       <div className="reveal" style={{ marginBottom: 48 }}>
         <h2 className="section-title" style={{ fontSize: "clamp(42px, 5vw, 80px)" }} dangerouslySetInnerHTML={{ __html: t("gallery.title") }} />
@@ -1046,6 +1045,28 @@ const ArticleModal = ({ item, lang, onClose }) => {
   );
 };
 
+const NewsCard = ({ item, lang, onClick }) => (
+  <div className="news-card" onClick={onClick} style={{ borderRadius: 14, overflow: "hidden", position: "relative", marginBottom: 18, aspectRatio: item.noImage ? undefined : "3/2", cursor: "pointer" }}>
+    {item.noImage ? (
+      <div style={{ background: "linear-gradient(135deg, var(--ink-200) 0%, var(--ink-100) 100%)", padding: "20px 22px", height: "100%", boxSizing: "border-box", display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 7 }}>
+        <span style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--bone-400)", letterSpacing: "0.06em" }}>{formatDate(item.date, lang)}</span>
+        <h4 style={{ fontFamily: "var(--font-display)", fontSize: 17, fontWeight: 400, lineHeight: 1.3, color: "var(--bone-100)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{item.title}</h4>
+        <p style={{ fontSize: 13, lineHeight: 1.6, color: "rgba(255,255,255,0.55)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}>{item.excerpt}</p>
+      </div>
+    ) : (
+      <>
+        <div style={{ position: "absolute", inset: 0, backgroundImage: `url('${item.bild_url}')`, backgroundSize: "cover", backgroundPosition: "center" }} />
+        <div className="news-card-overlay" />
+        <div style={{ position: "absolute", inset: 0, padding: "20px 22px", display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 7 }}>
+          <span style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "rgba(255,255,255,0.7)", letterSpacing: "0.06em" }}>{formatDate(item.date, lang)}</span>
+          <h4 style={{ fontFamily: "var(--font-display)", fontSize: 17, fontWeight: 400, lineHeight: 1.3, color: "var(--bone-100)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{item.title}</h4>
+          <p style={{ fontSize: 13, lineHeight: 1.6, color: "rgba(255,255,255,0.55)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{item.excerpt}</p>
+        </div>
+      </>
+    )}
+  </div>
+);
+
 export const News = ({ items = [], turniere = [] }) => {
   const { t, lang } = useTranslation();
   const sorted = [...items].sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -1069,23 +1090,21 @@ export const News = ({ items = [], turniere = [] }) => {
   const [columnsHeight, setColumnsHeight] = React.useState(null);
   const [colWidth, setColWidth] = React.useState(null);
 
-  // Simulate CSS columns column-fill:auto using measured column width for accurate image card heights
-  const visibleRest = React.useMemo(() => {
+  // Distribute items round-robin across 3 columns (item 0→col0, 1→col1, 2→col2, 3→col0, …)
+  const columns3 = React.useMemo(() => {
     const ch = columnsHeight ?? 260;
     const colW = colWidth ?? 300;
-    const imageCardH = Math.round(colW * (2 / 3)) + 18; // aspect-ratio 3/2 + marginBottom
-let col = 0, colH = 0, count = 0;
-    for (const item of rest) {
-      const h = item.noImage ? 150 : imageCardH;
-      if (colH + h > ch) {
-        col++;
-        if (col >= 3) break;
-        colH = 0;
-      }
-      colH += h;
-      count++;
+    const imageCardH = Math.round(colW * (2 / 3)) + 18;
+    const cols = [[], [], []];
+    const colHeights = [0, 0, 0];
+    for (let i = 0; i < rest.length; i++) {
+      const ci = i % 3;
+      const h = rest[i].noImage ? 150 : imageCardH;
+      if (colHeights[ci] + h > ch) break;
+      cols[ci].push(rest[i]);
+      colHeights[ci] += h;
     }
-    return rest.slice(0, count);
+    return cols;
   }, [rest, columnsHeight, colWidth]);
 
   React.useEffect(() => {
@@ -1153,31 +1172,25 @@ let col = 0, colH = 0, count = 0;
             )
           )}
 
-          {/* Card grid — fills remaining space, columns flow top-to-bottom */}
+          {/* Card grid — 3 separate flex columns (fixes Safari compositing bug with CSS columns) */}
           <div>
-            <div ref={columnsContainerRef} className="news-columns" style={{ columnGap: 18, columnFill: "auto", height: columnsHeight ?? "auto" }}>
-              {(isMobile ? rest.slice(0, 2) : visibleRest).map((item, i) => (
-                <div key={i} className="news-card" onClick={() => setOpenArticle(item)} style={{ borderRadius: 14, overflow: "hidden", position: "relative", breakInside: "avoid", marginBottom: 18, aspectRatio: item.noImage ? undefined : "3/2", cursor: "pointer" }}>
-                  {item.noImage ? (
-                    <div style={{ background: "linear-gradient(135deg, var(--ink-200) 0%, var(--ink-100) 100%)", padding: "20px 22px", height: "100%", boxSizing: "border-box", display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 7 }}>
-                      <span style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "var(--bone-400)", letterSpacing: "0.06em" }}>{formatDate(item.date, lang)}</span>
-                      <h4 style={{ fontFamily: "var(--font-display)", fontSize: 17, fontWeight: 400, lineHeight: 1.3, color: "var(--bone-100)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{item.title}</h4>
-                      <p style={{ fontSize: 13, lineHeight: 1.6, color: "rgba(255,255,255,0.55)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}>{item.excerpt}</p>
-                    </div>
-                  ) : (
-                    <>
-                      <div style={{ position: "absolute", inset: 0, backgroundImage: `url('${item.bild_url}')`, backgroundSize: "cover", backgroundPosition: "center" }} />
-                      <div className="news-card-overlay" />
-                      <div style={{ position: "absolute", inset: 0, padding: "20px 22px", display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 7 }}>
-                        <span style={{ fontFamily: "var(--font-mono)", fontSize: 13, color: "rgba(255,255,255,0.7)", letterSpacing: "0.06em" }}>{formatDate(item.date, lang)}</span>
-                        <h4 style={{ fontFamily: "var(--font-display)", fontSize: 17, fontWeight: 400, lineHeight: 1.3, color: "var(--bone-100)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{item.title}</h4>
-                        <p style={{ fontSize: 13, lineHeight: 1.6, color: "rgba(255,255,255,0.55)", margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" }}>{item.excerpt}</p>
-                      </div>
-                    </>
-                  )}
-                </div>
-              ))}
-            </div>
+            {isMobile ? (
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                {rest.slice(0, 2).map((item, i) => (
+                  <NewsCard key={i} item={item} lang={lang} onClick={() => setOpenArticle(item)} />
+                ))}
+              </div>
+            ) : (
+              <div ref={columnsContainerRef} style={{ display: "flex", gap: 18, alignItems: "flex-start", height: columnsHeight ?? "auto" }}>
+                {columns3.map((colItems, ci) => (
+                  <div key={ci} style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+                    {colItems.map((item, i) => (
+                      <NewsCard key={i} item={item} lang={lang} onClick={() => setOpenArticle(item)} />
+                    ))}
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <a ref={btnRef} href="/vereinshistorie" className="btn btn-ghost news-history-btn" style={{ padding: "12px 22px", fontSize: 12, alignSelf: "flex-start", flexShrink: 0 }}>
@@ -1237,15 +1250,20 @@ let col = 0, colH = 0, count = 0;
                       <div style={{ fontSize: 12, lineHeight: 1, color: tr.typ === "intern" ? "rgba(248,113,113,0.5)" : "rgba(134,239,172,0.5)", marginTop: 14, fontFamily: "inherit" }}>{tr.typ === "intern" ? t("tournaments.intern") : t("tournaments.open")}</div>
                     </div>
                     <div style={{ fontSize: 17, fontWeight: 400, color: "var(--bone-100)", lineHeight: 1.3, marginBottom: 6, opacity: past ? 0.4 : 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{tr.name}</div>
-                    <a href={tr.href} target="_blank" rel="noopener" className="turnier-link" style={{}}>
-                      {past ? t("tournaments.resultsCuescore") : t("tournaments.registerCuescore")} <ArrowOut size={11} />
-                    </a>
+                    {tr.href
+                      ? <a href={tr.href} target="_blank" rel="noopener" className="turnier-link" style={{}}>
+                          {past ? t("tournaments.resultsCuescore") : t("tournaments.registerCuescore")} <ArrowOut size={11} />
+                        </a>
+                      : <span className="turnier-link" style={{ opacity: 0.4, cursor: "default", pointerEvents: "none" }}>
+                          {t("tournaments.linkSoon")}
+                        </span>
+                    }
                   </div>
                 );
               });
             })()}
           </div>
-          <a href="/calendar" className="btn btn-ghost" style={{ marginTop: 20, padding: "9px 14px", fontSize: 11, display: "inline-flex", alignItems: "center", gap: 5, justifyContent: "center" }}>
+          <a href="/calendar" className="btn btn-ghost" style={{ marginTop: 20, padding: "9px 14px", fontSize: 11, display: "inline-flex", alignItems: "center", gap: 5, justifyContent: "center", whiteSpace: "nowrap" }}>
             {t("tournaments.allOnCuescore")} <ArrowOut size={11} />
           </a>
         </div>

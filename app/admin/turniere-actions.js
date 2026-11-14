@@ -18,8 +18,7 @@ function validateTurnier(formData) {
   if (!['Pool', 'Snooker', 'Karambol GB', 'Karambol KB'].includes(disziplin)) return 'Ungültige Disziplin'
   const typ = str(formData, 'typ')
   if (!['offen', 'intern'].includes(typ)) return 'Ungültiger Typ'
-  const href = str(formData, 'href', 1000)
-  if (!href) return 'Link ist erforderlich'
+  const href = str(formData, 'href', 1000) || null
   return null
 }
 
