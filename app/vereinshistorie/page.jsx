@@ -3,28 +3,28 @@
 import { Nav, Footer } from "../../components/sections";
 import { TranslationContext } from "../../components/translation-context";
 import { TRANSLATIONS } from "../../lib/translations";
-import { VEREINSGESCHICHTE, CHRONIK, CHRONIK_ERAS } from "../../lib/chronik";
+import { VEREINSGESCHICHTE, CHRONIK, CHRONIK_DECADES } from "../../lib/chronik";
 import React from "react";
 
-function YearCard({ entry, side }) {
+function DecadeCard({ entry, side }) {
   return (
-    <div className="erfolge-row" data-side={side}>
+    <div className="erfolge-row" data-side={side} id={`decade-${entry.key}`}>
       {side === "left" && (
         <div className="erfolge-item reveal" style={{ textAlign: "right" }}>
-          <YearBody entry={entry} align="right" />
+          <DecadeBody entry={entry} />
         </div>
       )}
       <div className="erfolge-node" />
       {side === "right" && (
         <div className="erfolge-item reveal">
-          <YearBody entry={entry} align="left" />
+          <DecadeBody entry={entry} />
         </div>
       )}
     </div>
   );
 }
 
-function YearBody({ entry }) {
+function DecadeBody({ entry }) {
   return (
     <>
       <div
@@ -38,7 +38,7 @@ function YearBody({ entry }) {
           marginBottom: 10,
         }}
       >
-        {entry.year}
+        {entry.range}
       </div>
       <p
         style={{
@@ -81,9 +81,9 @@ export default function VereinshistoriePage() {
   const narrative = VEREINSGESCHICHTE[lang] || VEREINSGESCHICHTE.DE;
   const chronik = CHRONIK[lang] || CHRONIK.DE;
 
-  const scrollToEra = (key) => (e) => {
+  const scrollToDecade = (key) => (e) => {
     e.preventDefault();
-    document.getElementById(`era-${key}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    document.getElementById(`decade-${key}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
   return (
@@ -209,11 +209,11 @@ export default function VereinshistoriePage() {
               >
                 {t("history.jumpTo")}
               </span>
-              {CHRONIK_ERAS.map(era => (
+              {CHRONIK_DECADES.map(d => (
                 <a
-                  key={era.key}
-                  href={`#era-${era.key}`}
-                  onClick={scrollToEra(era.key)}
+                  key={d.key}
+                  href={`#decade-${d.key}`}
+                  onClick={scrollToDecade(d.key)}
                   className="tc-badge"
                   style={{
                     background: "var(--ink-100)",
@@ -223,29 +223,16 @@ export default function VereinshistoriePage() {
                     cursor: "pointer",
                   }}
                 >
-                  {t(`history.era.${era.key}`)}
+                  {d.label}
                 </a>
               ))}
             </div>
           </div>
 
           <div className="erfolge-timeline">
-            {chronik.map((entry, i) => {
-              const era = CHRONIK_ERAS.find(e => entry.year >= e.from && entry.year <= e.to);
-              const prev = i > 0 ? chronik[i - 1] : null;
-              const prevEra = prev ? CHRONIK_ERAS.find(e => prev.year >= e.from && prev.year <= e.to) : null;
-              const startsEra = era && era !== prevEra;
-              return (
-                <React.Fragment key={entry.year}>
-                  {startsEra && (
-                    <div className="chronik-era-sep" id={`era-${era.key}`}>
-                      <span>{t(`history.era.${era.key}`)}</span>
-                    </div>
-                  )}
-                  <YearCard entry={entry} side={i % 2 === 0 ? "left" : "right"} />
-                </React.Fragment>
-              );
-            })}
+            {chronik.map((entry, i) => (
+              <DecadeCard key={entry.key} entry={entry} side={i % 2 === 0 ? "left" : "right"} />
+            ))}
           </div>
         </div>
 
